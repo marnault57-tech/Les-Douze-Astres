@@ -398,8 +398,6 @@
     { key:'eau', label:'Eau', color:'var(--water)', glyph:'<svg class="glyph" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M7 1c3 4 5 6 5 8.5A5 5 0 0 1 2 9.5C2 7 4 5 7 1Z"/></svg>' },
   ];
 
-  const WORKER_URL = 'https://horoscope-api.marnault57.workers.dev';
-
   const cache = {};
   let selectedId = null;
   let isFetching = false;
@@ -507,6 +505,104 @@
     await loadHoroscope(sign, color, false);
   }
 
+  // --- Génération locale de l'horoscope (aucun serveur requis) ---
+
+  const OPENERS = [
+    "Aujourd'hui, {planet} éclaire votre chemin et vous pousse à faire confiance à votre instinct.",
+    "L'énergie de l'élément {element} circule fort en vous aujourd'hui, apportant clarté et détermination.",
+    "{sign}, cette journée vous invite à ralentir pour mieux observer ce qui compte vraiment.",
+    "Sous l'influence de {planet}, vos intentions gagnent en force et en netteté.",
+    "Le ciel s'aligne en votre faveur aujourd'hui : une occasion pourrait se présenter sans prévenir.",
+    "Une certaine agitation intérieure vous pousse à agir plutôt qu'à attendre.",
+    "{planet} favorise les échanges sincères et les décisions prises avec le cœur.",
+    "L'atmosphère du jour vous encourage à faire le tri entre l'essentiel et le superflu.",
+    "Votre nature de {element} prend le dessus aujourd'hui, pour le meilleur.",
+    "Un vent de renouveau souffle sur votre journée, {sign}."
+  ];
+  const MIDDLES = [
+    "Restez attentif·ve aux petits signaux, ils annoncent souvent de grands changements.",
+    "La patience sera votre meilleure alliée face aux imprévus.",
+    "Une conversation inattendue pourrait éclairer une situation en suspens.",
+    "Vos proches remarquent votre énergie particulière aujourd'hui.",
+    "C'est le moment idéal pour clarifier vos priorités.",
+    "Un léger doute peut surgir, mais votre intuition ne vous trompe pas.",
+    "Le rythme de la journée s'accélère en fin d'après-midi.",
+    "Une opportunité discrète mérite votre attention.",
+    "Prenez le temps d'écouter ce que votre corps essaie de vous dire.",
+    "Un détail du quotidien prend soudain plus de sens."
+  ];
+  const CLOSINGS = [
+    "Faites-vous confiance, la suite vous donnera raison.",
+    "Gardez l'esprit ouvert, la journée réserve encore des surprises.",
+    "Avancez à votre rythme, sans céder à la pression extérieure.",
+    "Ce qui semble incertain aujourd'hui deviendra limpide demain.",
+    "Osez dire ce que vous pensez, cela pourrait tout changer.",
+    "Laissez de la place à l'imprévu, il a du bon aujourd'hui.",
+    "Un moment de calme vous fera le plus grand bien ce soir.",
+    "Célébrez les petites victoires, elles comptent plus qu'il n'y paraît."
+  ];
+  const LOVE_PHRASES = [
+    "Un tendre échange adoucit la journée.", "La complicité prend le dessus sur les tensions.",
+    "Une déclaration surprend agréablement.", "Le cœur parle plus fort que la raison.",
+    "Un silence en dit plus qu'un discours.", "La sincérité renforce vos liens.",
+    "Un rapprochement inattendu se dessine.", "La patience nourrit une belle harmonie.",
+    "Un souvenir ravive une émotion douce.", "L'attirance se fait plus intense.",
+    "Une distance salutaire s'installe.", "Le dialogue apaise un malentendu.",
+    "Une invitation change vos plans.", "La tendresse l'emporte sur l'orgueil.",
+    "Un geste simple parle fort."
+  ];
+  const WORK_PHRASES = [
+    "Un projet avance plus vite que prévu.", "La concentration est votre meilleure alliée.",
+    "Une idée originale attire l'attention.", "La collaboration porte enfin ses fruits.",
+    "Un imprévu bouscule l'organisation du jour.", "La rigueur paie sur le long terme.",
+    "Une proposition mérite d'être étudiée.", "Le calme avant une échéance importante.",
+    "Une reconnaissance méritée arrive enfin.", "La créativité débloque une impasse.",
+    "Un détail administratif demande votre attention.", "L'ambition prend le dessus aujourd'hui.",
+    "Une négociation tourne en votre faveur.", "La fatigue invite à lever le pied.",
+    "Un nouveau départ professionnel se profile."
+  ];
+  const ENERGY_PHRASES = [
+    "Un regain de vitalité se fait sentir.", "Le corps réclame du mouvement.",
+    "Une pause s'impose en milieu de journée.", "L'enthousiasme est contagieux aujourd'hui.",
+    "Le sommeil mérite plus d'attention.", "Une respiration profonde change tout.",
+    "L'énergie monte doucement dès le matin.", "Le calme intérieur devient une force.",
+    "Une activité physique légère fait du bien.", "La lassitude cède la place à l'élan.",
+    "Un excès d'agitation demande à être canalisé.", "La nature vous ressource ce jour.",
+    "Une bouffée d'optimisme traverse la journée.", "Le corps demande à ralentir.",
+    "Une belle endurance vous porte aujourd'hui."
+  ];
+  const LUCKY_COLORS = ["Améthyste", "Or", "Bleu nuit", "Corail", "Vert sauge", "Argent", "Terracotta", "Turquoise", "Ivoire", "Bordeaux", "Lavande", "Ambre"];
+
+  function hashString(str){
+    let h = 5381;
+    for(let i=0;i<str.length;i++){ h = ((h << 5) + h) + str.charCodeAt(i); h |= 0; }
+    return h;
+  }
+
+  function fillTemplate(str, sign){
+    return str.replace('{sign}', sign.name).replace('{planet}', sign.planet).replace('{element}', sign.element);
+  }
+
+  function generateHoroscope(sign, seedStr){
+    const rng = mulberry32(hashString(seedStr));
+    const pick = (arr) => arr[Math.floor(rng() * arr.length)];
+    const level = () => 1 + Math.floor(rng() * 5);
+
+    const text = [pick(OPENERS), pick(MIDDLES), pick(CLOSINGS)].map(s => fillTemplate(s, sign)).join(' ');
+
+    return {
+      text,
+      love: pick(LOVE_PHRASES),
+      work: pick(WORK_PHRASES),
+      energy: pick(ENERGY_PHRASES),
+      loveLevel: level(),
+      workLevel: level(),
+      energyLevel: level(),
+      luckyNumber: 1 + Math.floor(rng() * 99),
+      luckyColor: pick(LUCKY_COLORS)
+    };
+  }
+
   async function loadHoroscope(sign, color, forceRefresh){
     const cacheKey = sign.id + '-' + dateKey;
     const textEl = document.getElementById('horoscopeText');
@@ -529,31 +625,17 @@
     document.getElementById('energyBar').innerHTML = '';
     document.getElementById('luckyRow').textContent = '';
 
-    try{
-      const prompt = `Tu es un astrologue. Écris l'horoscope du jour en français pour le signe ${sign.name} (élément ${sign.element}, astre régent ${sign.planet}), pour aujourd'hui (${todayLabel}). Réponds UNIQUEMENT avec un objet JSON valide, sans texte autour, sans balises markdown ni backticks, au format exact suivant : {"text": "2 à 3 phrases d'horoscope, ton chaleureux et concret, 40 à 60 mots", "love": "phrase de 4 à 8 mots", "work": "phrase de 4 à 8 mots", "energy": "phrase de 4 à 8 mots", "loveLevel": nombre entier de 1 à 5, "workLevel": nombre entier de 1 à 5, "energyLevel": nombre entier de 1 à 5, "luckyNumber": nombre entier de 1 à 99, "luckyColor": "un nom de couleur en français"}`;
+    // petite pause pour garder l'effet "consultation des astres"
+    await new Promise(resolve => setTimeout(resolve, 450));
 
-      const response = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt })
-      });
+    const seedStr = forceRefresh ? (sign.id + '-' + dateKey + '-' + Date.now()) : cacheKey;
+    const data = generateHoroscope(sign, seedStr);
 
-      const data = await response.json();
-      if(!response.ok || !data.text){
-        throw new Error(data.error || 'no text in response');
-      }
-      const cleaned = data.text.replace(/```json|```/g, '').trim();
-      const parsed = JSON.parse(cleaned);
+    cache[cacheKey] = data;
+    renderHoroscope(data, color);
 
-      cache[cacheKey] = parsed;
-      renderHoroscope(parsed, color);
-    }catch(err){
-      textEl.className = 'horoscope-text error';
-      textEl.textContent = "Les astres sont brouillés pour le moment — réessayez dans un instant.";
-    }finally{
-      isFetching = false;
-      regenBtn.disabled = false;
-    }
+    isFetching = false;
+    regenBtn.disabled = false;
   }
 
   function renderHoroscope(data, color){
