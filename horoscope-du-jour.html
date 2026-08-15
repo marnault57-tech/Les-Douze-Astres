@@ -611,6 +611,20 @@
     border-radius:6px;
     color-scheme:dark;
   }
+
+  .back-home{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:.04em;
+    color:var(--muted);
+    text-decoration:none;
+    margin-bottom:22px;
+    transition:color .15s ease;
+  }
+  .back-home:hover{ color:var(--gold); }
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -619,6 +633,7 @@
 <div class="aurora"></div>
 
 <div class="wrap">
+  <a class="back-home" href="index.html">← Retour à l'accueil</a>
   <p class="eyebrow" id="eyebrow">Carte du ciel</p>
   <h1>Horoscope du jour</h1>
   <p class="sub">Choisissez votre signe pour révéler ce que le ciel réserve aujourd'hui.</p>
