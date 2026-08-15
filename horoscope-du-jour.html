@@ -834,6 +834,7 @@
     <button class="tab-btn active" data-view="viewDay"><span class="tab-icon">☉</span>Jour</button>
     <button class="tab-btn" data-view="viewWeek"><span class="tab-icon">☾</span>Semaine</button>
     <button class="tab-btn" data-view="viewNews"><span class="tab-icon">★</span>Actualités</button>
+    <button class="tab-btn" data-view="viewHistory"><span class="tab-icon">Ω</span>Histoire</button>
     <button class="tab-btn" data-view="viewCompat"><span class="tab-icon">✦</span>Compatibilité</button>
     <button class="tab-btn" data-view="viewArchive"><span class="tab-icon">⟲</span>Archive</button>
   </div>
@@ -1054,6 +1055,29 @@
 
     <div class="section-title" style="margin-top:50px;"><span>Articles</span><div class="rule"></div></div>
     <div id="articlesList"></div>
+  </div>
+
+  <div class="view" id="viewHistory">
+    <div class="month-theme-card">
+      <div class="month-theme-title">Aux origines du zodiaque</div>
+      <p class="month-theme-text">Le zodiaque tel qu'on le connaît trouve ses racines chez les astronomes babyloniens, qui avaient déjà recensé douze constellations le long de l'écliptique (la trajectoire apparente du Soleil) dès le 2ᵉ millénaire avant notre ère. Les Grecs ont ensuite repris ce découpage et l'ont habillé de leurs propres mythes, avant que l'astronome Ptolémée ne codifie l'ensemble au IIᵉ siècle apr. J.-C. dans son <em>Tétrabible</em> — la base de l'astrologie occidentale encore utilisée aujourd'hui.</p>
+    </div>
+
+    <div class="chip-row" id="historyChips"></div>
+
+    <div class="featured-card" id="historyCard" style="margin-top:20px;">
+      <div class="featured-head">
+        <span class="featured-symbol" id="historySymbol"></span>
+        <div>
+          <div class="featured-title" id="historyRange"></div>
+          <div class="featured-name" id="historyName"></div>
+        </div>
+      </div>
+      <div class="news-card-title" style="margin-top:6px;">Origine mythologique</div>
+      <p class="featured-text" id="historyMyth"></p>
+      <div class="news-card-title" style="margin-top:22px;">Sens du symbole</div>
+      <p class="featured-text" id="historySymbolMeaning" style="margin-bottom:0;"></p>
+    </div>
   </div>
 </div>
 
@@ -1355,7 +1379,7 @@
   });
 
   // ouvre un onglet précis si l'URL contient #semaine, #compatibilite ou #archive
-  const hashToView = { semaine:'viewWeek', compatibilite:'viewCompat', archive:'viewArchive', actualites:'viewNews', jour:'viewDay' };
+  const hashToView = { semaine:'viewWeek', compatibilite:'viewCompat', archive:'viewArchive', actualites:'viewNews', histoire:'viewHistory', jour:'viewDay' };
   const initialHash = window.location.hash.replace('#','');
   if(hashToView[initialHash]){
     const targetBtn = document.querySelector(`.tab-btn[data-view="${hashToView[initialHash]}"]`);
@@ -1916,6 +1940,85 @@ Et toi, qu'as-tu ressenti pendant cette éclipse ? 🌑✨`
   }
 
   renderArticles();
+
+  // --- Onglet Histoire ---
+  const SIGN_HISTORY = {
+    aries: {
+      myth: "Dans la mythologie grecque, le Bélier est le bélier au pelage d'or qui sauva Phrixos et Hellé en les portant dans les airs pour échapper à un sacrifice. Sa toison, offerte aux dieux, devint plus tard la célèbre Toison d'or que Jason et les Argonautes partirent chercher.",
+      symbol: "Le symbole du Bélier représente les cornes recourbées de l'animal — une image de force, d'impulsion et de nouveau départ, puisque ce signe ouvre traditionnellement le zodiaque."
+    },
+    taurus: {
+      myth: "Le Taureau renvoie au mythe de Zeus qui, pour séduire la princesse Europe, se transforma en un magnifique taureau blanc. Il l'enleva sur son dos et traversa la mer jusqu'en Crète. C'est aussi l'une des plus anciennes constellations connues, déjà observée par les Babyloniens.",
+      symbol: "Le symbole figure la tête et les cornes du taureau, évoquant la force tranquille, l'ancrage et la ténacité associés à ce signe de terre."
+    },
+    gemini: {
+      myth: "Les Gémeaux représentent Castor et Pollux, fils jumeaux de Léda mais de pères différents — l'un mortel, l'autre fils de Zeus. À la mort de Castor, Pollux demanda à partager son immortalité avec son frère ; Zeus les réunit alors pour l'éternité dans le ciel.",
+      symbol: "Le symbole des deux traits parallèles représente les jumeaux, souvent lus comme deux colonnes ou deux silhouettes liées — image de dualité et de lien indéfectible."
+    },
+    cancer: {
+      myth: "Le Cancer fait référence au crabe envoyé par la déesse Héra pour distraire Héraclès pendant son combat contre l'Hydre de Lerne. Écrasé par le héros, il fut malgré tout placé parmi les étoiles par Héra, en récompense de sa loyauté.",
+      symbol: "Le symbole évoque les pinces du crabe, parfois interprétées comme une image de protection et de refuge — cohérent avec la sensibilité et l'attachement au foyer prêtés à ce signe."
+    },
+    leo: {
+      myth: "Le Lion est associé au Lion de Némée, une bête invulnérable aux armes que devait vaincre Héraclès lors de son premier travail. Le héros finit par l'étouffer à mains nues ; Zeus plaça ensuite l'animal dans le ciel en hommage à cet exploit.",
+      symbol: "Le symbole stylise la crinière et la queue du lion, incarnant la royauté, le courage et le rayonnement associés à ce signe gouverné par le Soleil."
+    },
+    virgo: {
+      myth: "La Vierge est souvent identifiée à Astrée, déesse de la justice et de l'innocence, qui vivait parmi les hommes durant l'Âge d'or avant de remonter au ciel, lassée de la corruption du monde. Elle est aussi parfois associée à Déméter, déesse des moissons.",
+      symbol: "Le symbole représente une jeune femme tenant un épi de blé, en écho à l'étoile la plus brillante de la constellation, Spica, dont le nom signifie justement « épi »."
+    },
+    libra: {
+      myth: "La Balance est le seul signe du zodiaque représenté par un objet plutôt qu'un être vivant. Les Grecs y voyaient à l'origine les pinces du Scorpion voisin ; ce sont les Romains qui en firent une constellation à part, symbole des scèptres de la justice tenus par Astrée ou Thémis.",
+      symbol: "Le symbole du plateau de balance évoque l'équilibre, la mesure et la recherche d'harmonie, en résonance avec l'équinoxe d'automne auquel ce signe est historiquement lié."
+    },
+    scorpio: {
+      myth: "Le Scorpion renvoie au mythe d'Orion, chasseur si fier de ses talents qu'il se vanta de pouvoir tuer n'importe quel animal. Pour le punir, un scorpion fut envoyé le piquer mortellement. Les deux furent placés aux extrémités opposées du ciel, de sorte qu'ils ne se lèvent jamais ensemble.",
+      symbol: "Le symbole figure la queue recourbée et le dard du scorpion, image de l'intensité, du pouvoir de transformation et de la part de mystère associés à ce signe."
+    },
+    sagittarius: {
+      myth: "Le Sagittaire est représenté par un centaure archer, souvent rapproché de Chiron, le plus sage des centaures, précepteur de nombreux héros grecs comme Achille. Sa nature mi-homme mi-cheval symbolise la tension entre instinct et sagesse.",
+      symbol: "Le symbole figure une flèche tendue vers le haut, évoquant la quête d'idéal, la curiosité et l'envie d'aller toujours plus loin propres à ce signe de feu."
+    },
+    capricorn: {
+      myth: "Le Capricorne est lié au dieu Pan, mi-homme mi-bouc, qui, pour échapper au monstre Typhon, plongea dans un fleuve et vit son bas du corps se transformer en queue de poisson. Zeus immortalisa cette forme hybride, chèvre et poisson, dans le ciel.",
+      symbol: "Le symbole combine les cornes de la chèvre et la queue du poisson, représentant l'ambition terrestre alliée à une profondeur émotionnelle plus discrète."
+    },
+    aquarius: {
+      myth: "Le Verseau est associé à Ganymède, jeune prince troyen d'une beauté remarquable, enlevé par Zeus (transformé en aigle) pour devenir l'échanson des dieux sur l'Olympe, chargé de leur verser le nectar.",
+      symbol: "Le symbole des deux lignes ondulées représente l'eau versée depuis la cruche de Ganymède, image de générosité, de circulation des idées et d'indépendance d'esprit."
+    },
+    pisces: {
+      myth: "Les Poissons évoquent Aphrodite et son fils Éros qui, poursuivis par le monstre Typhon, se jetèrent dans l'Euphrate et se transformèrent en poissons pour lui échapper, en prenant soin de nouer leurs queues ensemble pour ne jamais se perdre.",
+      symbol: "Le symbole figure deux poissons reliés par un cordon et nageant en sens opposés, image de la dualité intérieure et de la profonde sensibilité prêtées à ce signe d'eau."
+    }
+  };
+
+  const historyChipsEl = document.getElementById('historyChips');
+  SIGNS.forEach(sign => {
+    const chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.style.setProperty('--accent', elementColor(sign.element));
+    chip.dataset.id = sign.id;
+    chip.innerHTML = `<span class="chip-symbol">${sign.symbol}</span><span>${sign.name}</span>`;
+    chip.addEventListener('click', () => selectHistorySign(sign.id));
+    historyChipsEl.appendChild(chip);
+  });
+
+  function selectHistorySign(id){
+    document.querySelectorAll('#historyChips .chip').forEach(c => c.classList.toggle('selected', c.dataset.id === id));
+    const sign = SIGNS.find(s => s.id === id);
+    const info = SIGN_HISTORY[id];
+    const color = elementColor(sign.element);
+
+    document.getElementById('historySymbol').textContent = sign.symbol;
+    document.getElementById('historySymbol').style.color = color;
+    document.getElementById('historyName').textContent = sign.name;
+    document.getElementById('historyRange').textContent = sign.range;
+    document.getElementById('historyMyth').textContent = info.myth;
+    document.getElementById('historySymbolMeaning').textContent = info.symbol;
+  }
+
+  selectHistorySign(SIGNS[0].id); // pré-sélection pour éviter un onglet vide au premier affichage
 </script>
 
 </body>
