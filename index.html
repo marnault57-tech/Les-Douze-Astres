@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-<script defer src="/_vercel/insights/script.js"></script>
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -322,6 +321,199 @@
   }
   .regen:hover{ opacity:.8; }
   .regen:disabled{ opacity:.4; cursor:default; text-decoration:none; }
+
+  /* tabs */
+  .tabs{
+    display:flex;
+    gap:0;
+    margin-bottom:44px;
+    border-bottom:1px solid var(--line);
+  }
+  .tab-btn{
+    background:none;
+    border:none;
+    color:var(--muted);
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    padding:0 0 14px;
+    margin-right:28px;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    transition:color .15s ease;
+  }
+  .tab-btn:hover{ color:var(--starlight); }
+  .tab-btn.active{ color:var(--gold); border-bottom-color:var(--gold); }
+
+  .view{ display:none; }
+  .view.active{ display:block; }
+
+  /* chip picker (semaine) */
+  .chip-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:8px;
+  }
+  .chip{
+    --accent: var(--gold);
+    display:flex;
+    align-items:center;
+    gap:7px;
+    background:var(--nebula);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:8px 14px 8px 12px;
+    cursor:pointer;
+    color:var(--starlight);
+    font-family:'Karla', sans-serif;
+    font-size:13px;
+    transition:background .15s ease, box-shadow .15s ease;
+  }
+  .chip:hover{ background:var(--nebula-2); }
+  .chip.selected{ background:var(--nebula-2); box-shadow:0 0 0 1px var(--gold); }
+  .chip .chip-symbol{
+    font-family:'Cinzel', serif;
+    color:var(--accent);
+    font-size:15px;
+  }
+
+  .week-hint{ color:var(--muted); font-size:14px; margin:24px 0; }
+
+  .week-grid{
+    display:grid;
+    grid-template-columns:repeat(7, 1fr);
+    gap:10px;
+    margin-top:28px;
+  }
+  @media (max-width:760px){
+    .week-grid{ grid-template-columns:repeat(4, 1fr); }
+  }
+  @media (max-width:460px){
+    .week-grid{ grid-template-columns:repeat(2, 1fr); }
+  }
+  .day-card{
+    background:var(--nebula);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:16px 10px;
+    text-align:center;
+  }
+  .day-card.today{
+    border-color:var(--gold);
+    box-shadow:0 0 0 1px var(--gold);
+  }
+  .day-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:2px;
+  }
+  .day-date{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--muted);
+    margin-bottom:12px;
+  }
+  .day-phrase{
+    font-size:12.5px;
+    line-height:1.45;
+    min-height:54px;
+    margin-bottom:10px;
+  }
+
+  /* compatibilité */
+  .compat-pickers{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-bottom:36px;
+  }
+  .sign-select{
+    background:var(--nebula);
+    border:1px solid var(--line);
+    color:var(--starlight);
+    font-family:'Karla', sans-serif;
+    font-size:14px;
+    padding:10px 12px;
+    border-radius:6px;
+  }
+  .compat-plus{
+    font-family:'Cinzel', serif;
+    color:var(--gold);
+    font-size:18px;
+  }
+  .btn-primary{
+    background:var(--gold);
+    color:var(--void);
+    border:none;
+    padding:11px 20px;
+    border-radius:6px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    cursor:pointer;
+    font-weight:700;
+  }
+  .btn-primary:hover{ opacity:.88; }
+
+  .compat-result{
+    background:linear-gradient(180deg, var(--nebula), var(--nebula-2));
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:36px 32px;
+  }
+  .compat-symbols{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:22px;
+    margin-bottom:28px;
+  }
+  .compat-symbols .sym{
+    font-family:'Cinzel', serif;
+    font-size:46px;
+  }
+  .compat-symbols .divider{
+    color:var(--gold);
+    font-size:18px;
+  }
+  .compat-score-row{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:22px;
+    margin-bottom:30px;
+  }
+  @media (max-width:560px){
+    .compat-score-row{ grid-template-columns:1fr; }
+  }
+  .pct-bar{
+    height:6px;
+    background:var(--line);
+    border-radius:3px;
+    overflow:hidden;
+    margin-bottom:8px;
+  }
+  .pct-bar-fill{
+    height:100%;
+    width:0%;
+    background:var(--gold);
+    border-radius:3px;
+    transition:width .5s ease;
+  }
+  .compat-text{
+    font-size:16.5px;
+    line-height:1.75;
+    text-align:center;
+    max-width:600px;
+    margin:0 auto;
+    color:var(--starlight);
+  }
 </style>
 </head>
 <body>
@@ -333,45 +525,93 @@
   <h1>Horoscope du jour</h1>
   <p class="sub">Choisissez votre signe pour révéler ce que le ciel réserve aujourd'hui.</p>
 
-  <div id="rows"></div>
+  <div class="tabs">
+    <button class="tab-btn active" data-view="viewDay">Jour</button>
+    <button class="tab-btn" data-view="viewWeek">Semaine</button>
+    <button class="tab-btn" data-view="viewCompat">Compatibilité</button>
+  </div>
 
-  <div class="panel" id="panel">
-    <div class="panel-head">
-      <svg class="constellation" id="constellation" viewBox="0 0 180 130"></svg>
-      <div>
-        <div class="panel-title">
-          <span class="big-symbol" id="panelSymbol"></span><h2 id="panelName"></h2>
+  <div class="view active" id="viewDay">
+    <div id="rows"></div>
+
+    <div class="panel" id="panel">
+      <div class="panel-head">
+        <svg class="constellation" id="constellation" viewBox="0 0 180 130"></svg>
+        <div>
+          <div class="panel-title">
+            <span class="big-symbol" id="panelSymbol"></span><h2 id="panelName"></h2>
+          </div>
+          <div class="panel-meta">
+            <span id="panelRange"></span>
+            <span id="panelPlanet"></span>
+          </div>
         </div>
-        <div class="panel-meta">
-          <span id="panelRange"></span>
-          <span id="panelPlanet"></span>
+      </div>
+
+      <p class="horoscope-text" id="horoscopeText"></p>
+
+      <div class="stats">
+        <div>
+          <div class="stat-label">Amour</div>
+          <div class="stat-phrase" id="loveText"></div>
+          <div class="bar" id="loveBar"></div>
         </div>
+        <div>
+          <div class="stat-label">Travail</div>
+          <div class="stat-phrase" id="workText"></div>
+          <div class="bar" id="workBar"></div>
+        </div>
+        <div>
+          <div class="stat-label">Énergie</div>
+          <div class="stat-phrase" id="energyText"></div>
+          <div class="bar" id="energyBar"></div>
+        </div>
+      </div>
+
+      <div class="footer-row">
+        <div class="lucky" id="luckyRow"></div>
+        <button class="regen" id="regenBtn">Consulter à nouveau les astres →</button>
       </div>
     </div>
+  </div>
 
-    <p class="horoscope-text" id="horoscopeText"></p>
+  <div class="view" id="viewWeek">
+    <div class="chip-row" id="weekChips"></div>
+    <p class="week-hint" id="weekHint">Choisissez votre signe pour découvrir la tendance des 7 prochains jours.</p>
+    <div class="week-grid" id="weekGrid"></div>
+  </div>
 
-    <div class="stats">
-      <div>
-        <div class="stat-label">Amour</div>
-        <div class="stat-phrase" id="loveText"></div>
-        <div class="bar" id="loveBar"></div>
-      </div>
-      <div>
-        <div class="stat-label">Travail</div>
-        <div class="stat-phrase" id="workText"></div>
-        <div class="bar" id="workBar"></div>
-      </div>
-      <div>
-        <div class="stat-label">Énergie</div>
-        <div class="stat-phrase" id="energyText"></div>
-        <div class="bar" id="energyBar"></div>
-      </div>
+  <div class="view" id="viewCompat">
+    <div class="compat-pickers">
+      <select class="sign-select" id="compatA"></select>
+      <span class="compat-plus">+</span>
+      <select class="sign-select" id="compatB"></select>
+      <button class="btn-primary" id="compatBtn">Voir la compatibilité</button>
     </div>
-
-    <div class="footer-row">
-      <div class="lucky" id="luckyRow"></div>
-      <button class="regen" id="regenBtn">Consulter à nouveau les astres →</button>
+    <div class="compat-result" id="compatResult" style="display:none;">
+      <div class="compat-symbols">
+        <span class="sym" id="compatSymA"></span>
+        <span class="divider">✦</span>
+        <span class="sym" id="compatSymB"></span>
+      </div>
+      <div class="compat-score-row">
+        <div>
+          <div class="stat-label">Amour</div>
+          <div class="pct-bar"><div class="pct-bar-fill" id="compatLovePct"></div></div>
+          <div class="stat-phrase" id="compatLoveNum"></div>
+        </div>
+        <div>
+          <div class="stat-label">Amitié</div>
+          <div class="pct-bar"><div class="pct-bar-fill" id="compatFriendPct"></div></div>
+          <div class="stat-phrase" id="compatFriendNum"></div>
+        </div>
+        <div>
+          <div class="stat-label">Travail</div>
+          <div class="pct-bar"><div class="pct-bar-fill" id="compatWorkPct"></div></div>
+          <div class="stat-phrase" id="compatWorkNum"></div>
+        </div>
+      </div>
+      <p class="compat-text" id="compatText"></p>
     </div>
   </div>
 </div>
@@ -661,6 +901,149 @@
     const sign = SIGNS.find(s => s.id === selectedId);
     const color = elementColor(sign.element);
     loadHoroscope(sign, color, true);
+  });
+
+  // --- Onglets ---
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.getElementById(btn.dataset.view).classList.add('active');
+    });
+  });
+
+  // --- Vue Semaine ---
+  const DAY_NAMES_SHORT = ['DIM', 'LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM'];
+  const weekChipsEl = document.getElementById('weekChips');
+
+  SIGNS.forEach(sign => {
+    const chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.style.setProperty('--accent', elementColor(sign.element));
+    chip.dataset.id = sign.id;
+    chip.innerHTML = `<span class="chip-symbol">${sign.symbol}</span><span>${sign.name}</span>`;
+    chip.addEventListener('click', () => selectWeekSign(sign.id));
+    weekChipsEl.appendChild(chip);
+  });
+
+  function selectWeekSign(id){
+    document.querySelectorAll('#weekChips .chip').forEach(c => c.classList.toggle('selected', c.dataset.id === id));
+    document.getElementById('weekHint').style.display = 'none';
+    const sign = SIGNS.find(s => s.id === id);
+    renderWeek(sign);
+  }
+
+  function renderWeek(sign){
+    const grid = document.getElementById('weekGrid');
+    grid.innerHTML = '';
+    const color = elementColor(sign.element);
+    const pool = MIDDLES.concat(CLOSINGS);
+
+    for(let i=0; i<7; i++){
+      const d = new Date();
+      d.setDate(d.getDate() + i);
+      const dKey = d.toISOString().slice(0,10);
+      const rng = mulberry32(hashString(sign.id + '-week-' + dKey));
+      const phrase = fillTemplate(pool[Math.floor(rng() * pool.length)], sign);
+      const level = 1 + Math.floor(rng() * 5);
+      const dayLabel = i === 0 ? "Aujourd'hui" : DAY_NAMES_SHORT[d.getDay()];
+      const dateLabel = new Intl.DateTimeFormat('fr-FR', { day:'numeric', month:'short' }).format(d);
+
+      const card = document.createElement('div');
+      card.className = 'day-card' + (i === 0 ? ' today' : '');
+      card.innerHTML = `
+        <div class="day-label">${dayLabel}</div>
+        <div class="day-date">${dateLabel}</div>
+        <div class="day-phrase">${phrase}</div>
+        <div class="bar" id="weekBar${i}" style="justify-content:center;"></div>
+      `;
+      grid.appendChild(card);
+      renderBar('weekBar' + i, level, color);
+    }
+  }
+
+  // --- Vue Compatibilité ---
+  const compatA = document.getElementById('compatA');
+  const compatB = document.getElementById('compatB');
+  SIGNS.forEach(s => {
+    compatA.add(new Option(s.symbol + '  ' + s.name, s.id));
+    compatB.add(new Option(s.symbol + '  ' + s.name, s.id));
+  });
+  compatB.selectedIndex = 1;
+
+  function elementAffinity(e1, e2){
+    if(e1 === e2) return 'same';
+    const compatiblePairs = [['feu','air'], ['air','feu'], ['terre','eau'], ['eau','terre']];
+    if(compatiblePairs.some(p => p[0] === e1 && p[1] === e2)) return 'compatible';
+    return 'challenging';
+  }
+
+  const COMPAT_TEMPLATES = {
+    same: [
+      "{signA} et {signB} partagent la même énergie {elementA} : une compréhension presque instinctive s'installe entre eux, à condition de laisser de la place à l'autre.",
+      "Entre {signA} et {signB}, l'élément {elementA} crée un langage commun immédiat — l'alchimie est naturelle, presque évidente.",
+      "{signA} et {signB} se reconnaissent tout de suite : même élan, même intensité. Le duo peut être puissant, si chacun garde son espace."
+    ],
+    compatible: [
+      "{signA} ({elementA}) et {signB} ({elementB}) forment un duo complémentaire : l'un nourrit l'énergie de l'autre, pour un équilibre plutôt harmonieux.",
+      "L'alliance {elementA}-{elementB} entre {signA} et {signB} fonctionne bien : chacun apporte ce qui manque à l'autre.",
+      "{signA} et {signB} se stimulent mutuellement — leurs éléments {elementA} et {elementB} s'accordent naturellement."
+    ],
+    challenging: [
+      "{signA} et {signB} avancent avec des rythmes différents : {elementA} et {elementB} demandent des efforts d'adaptation de part et d'autre.",
+      "Entre {signA} et {signB}, l'alchimie n'est pas immédiate — {elementA} et {elementB} ont besoin de temps pour trouver leur équilibre.",
+      "{signA} et {signB} se complètent surtout dans la différence : {elementA} et {elementB} demandent de la patience mutuelle."
+    ]
+  };
+
+  const SCORE_RANGES = {
+    same: { love:[70,95], friend:[75,95], work:[65,90] },
+    compatible: { love:[65,90], friend:[70,90], work:[70,90] },
+    challenging: { love:[40,70], friend:[45,70], work:[40,65] }
+  };
+
+  function fillCompatTemplate(str, a, b){
+    return str.split('{signA}').join(a.name).split('{signB}').join(b.name)
+      .split('{elementA}').join(a.element).split('{elementB}').join(b.element);
+  }
+
+  function generateCompat(a, b){
+    const ids = [a.id, b.id].sort();
+    const rng = mulberry32(hashString('compat-' + ids.join('-')));
+    const affinity = elementAffinity(a.element, b.element);
+    const ranges = SCORE_RANGES[affinity];
+    const pctIn = ([min, max]) => min + Math.floor(rng() * (max - min + 1));
+    const templates = COMPAT_TEMPLATES[affinity];
+    const text = fillCompatTemplate(templates[Math.floor(rng() * templates.length)], a, b);
+    return {
+      love: pctIn(ranges.love),
+      friend: pctIn(ranges.friend),
+      work: pctIn(ranges.work),
+      text
+    };
+  }
+
+  document.getElementById('compatBtn').addEventListener('click', () => {
+    const a = SIGNS.find(s => s.id === compatA.value);
+    const b = SIGNS.find(s => s.id === compatB.value);
+    const result = generateCompat(a, b);
+
+    document.getElementById('compatResult').style.display = 'block';
+    const symA = document.getElementById('compatSymA');
+    const symB = document.getElementById('compatSymB');
+    symA.textContent = a.symbol;
+    symA.style.color = elementColor(a.element);
+    symB.textContent = b.symbol;
+    symB.style.color = elementColor(b.element);
+
+    document.getElementById('compatLovePct').style.width = result.love + '%';
+    document.getElementById('compatFriendPct').style.width = result.friend + '%';
+    document.getElementById('compatWorkPct').style.width = result.work + '%';
+    document.getElementById('compatLoveNum').textContent = result.love + '%';
+    document.getElementById('compatFriendNum').textContent = result.friend + '%';
+    document.getElementById('compatWorkNum').textContent = result.work + '%';
+    document.getElementById('compatText').textContent = result.text;
   });
 </script>
 
