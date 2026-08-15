@@ -625,6 +625,178 @@
     transition:color .15s ease;
   }
   .back-home:hover{ color:var(--gold); }
+
+  /* actualités */
+  .news-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-bottom:30px;
+  }
+  @media (max-width:680px){
+    .news-grid{ grid-template-columns:1fr; }
+  }
+  .news-card{
+    background:var(--nebula);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:28px 26px;
+  }
+  .news-card-title{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:16px;
+  }
+  .moon-display, .season-display{
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+  .moon-emoji{ font-size:42px; }
+  .moon-name{
+    font-family:'Cinzel', serif;
+    font-size:18px;
+    margin-bottom:4px;
+  }
+  .moon-illum{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .season-symbol{
+    font-family:'Cinzel', serif;
+    font-size:38px;
+    color:var(--gold);
+  }
+  .season-name{
+    font-family:'Cinzel', serif;
+    font-size:18px;
+    margin-bottom:4px;
+  }
+  .season-sub{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--muted);
+  }
+
+  .month-theme-card{
+    background:linear-gradient(180deg, var(--nebula), var(--nebula-2));
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:30px 28px;
+    margin-bottom:24px;
+  }
+  .month-theme-title{
+    font-family:'Cinzel', serif;
+    font-size:21px;
+    color:var(--gold);
+    margin-bottom:14px;
+  }
+  .month-theme-text{
+    font-size:15.5px;
+    line-height:1.7;
+    margin:0;
+  }
+
+  .featured-card{
+    background:var(--nebula);
+    border:1px solid var(--line);
+    border-left:3px solid var(--gold);
+    border-radius:10px;
+    padding:30px 28px;
+  }
+  .featured-head{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:18px;
+  }
+  .featured-symbol{
+    font-family:'Cinzel', serif;
+    font-size:38px;
+    color:var(--gold);
+  }
+  .featured-title{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:4px;
+  }
+  .featured-name{
+    font-family:'Cinzel', serif;
+    font-size:22px;
+  }
+  .featured-text{
+    font-size:15.5px;
+    line-height:1.7;
+    margin:0;
+  }
+
+  .section-title{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--muted);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:24px;
+  }
+  .section-title .rule{
+    flex:1;
+    height:1px;
+    background:linear-gradient(to right, var(--line), transparent);
+  }
+
+  .article-card{
+    background:var(--nebula);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:30px 28px;
+    margin-bottom:16px;
+  }
+  .article-title{
+    font-family:'Cinzel', serif;
+    font-size:20px;
+    margin-bottom:6px;
+  }
+  .article-date{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    margin-bottom:18px;
+  }
+  .article-body p{
+    font-size:15.5px;
+    line-height:1.7;
+    margin:0 0 14px;
+  }
+  .article-body p:last-child{ margin-bottom:0; }
+  .article-body strong{ color:var(--starlight); font-weight:700; }
+  .article-h3{
+    font-family:'Cinzel', serif;
+    font-size:16.5px;
+    color:var(--gold);
+    margin:24px 0 10px;
+  }
+  .article-h3:first-child{ margin-top:0; }
+  .article-list{
+    margin:0 0 16px;
+    padding-left:20px;
+  }
+  .article-list li{
+    font-size:15.5px;
+    line-height:1.7;
+    margin-bottom:6px;
+  }
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -643,6 +815,7 @@
     <button class="tab-btn" data-view="viewWeek">Semaine</button>
     <button class="tab-btn" data-view="viewCompat">Compatibilité</button>
     <button class="tab-btn" data-view="viewArchive">Archive</button>
+    <button class="tab-btn" data-view="viewNews">Actualités</button>
   </div>
 
   <div class="view active" id="viewDay">
@@ -805,6 +978,53 @@
         <div class="lucky" id="archiveLuckyRow"></div>
       </div>
     </div>
+  </div>
+
+  <div class="view" id="viewNews">
+    <p class="sub" style="margin-bottom:30px;">Ce que le ciel raconte cette semaine — phase lunaire réelle, saison zodiacale en cours, et le signe à la une.</p>
+
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="news-card-title">Phase lunaire du jour</div>
+        <div class="moon-display">
+          <span class="moon-emoji" id="moonEmoji"></span>
+          <div>
+            <div class="moon-name" id="moonName"></div>
+            <div class="moon-illum" id="moonIllum"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="news-card">
+        <div class="news-card-title">Saison zodiacale en cours</div>
+        <div class="season-display">
+          <span class="season-symbol" id="seasonSymbol"></span>
+          <div>
+            <div class="season-name" id="seasonName"></div>
+            <div class="season-sub" id="seasonSub"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="month-theme-card">
+      <div class="month-theme-title" id="monthThemeTitle"></div>
+      <p class="month-theme-text" id="monthThemeText"></p>
+    </div>
+
+    <div class="featured-card">
+      <div class="featured-head">
+        <span class="featured-symbol" id="featuredSymbol"></span>
+        <div>
+          <div class="featured-title">Signe à la une cette semaine</div>
+          <div class="featured-name" id="featuredName"></div>
+        </div>
+      </div>
+      <p class="featured-text" id="featuredText"></p>
+    </div>
+
+    <div class="section-title" style="margin-top:50px;"><span>Articles</span><div class="rule"></div></div>
+    <div id="articlesList"></div>
   </div>
 </div>
 
@@ -1106,7 +1326,7 @@
   });
 
   // ouvre un onglet précis si l'URL contient #semaine, #compatibilite ou #archive
-  const hashToView = { semaine:'viewWeek', compatibilite:'viewCompat', archive:'viewArchive', jour:'viewDay' };
+  const hashToView = { semaine:'viewWeek', compatibilite:'viewCompat', archive:'viewArchive', actualites:'viewNews', jour:'viewDay' };
   const initialHash = window.location.hash.replace('#','');
   if(hashToView[initialHash]){
     const targetBtn = document.querySelector(`.tab-btn[data-view="${hashToView[initialHash]}"]`);
@@ -1419,6 +1639,245 @@
     document.getElementById('archiveLuckyRow').innerHTML =
       `<b>${data.luckyNumber}</b> numéro chance &nbsp;·&nbsp; <b>${data.luckyColor}</b> couleur du jour`;
   }
+
+  // --- Onglet Actualités ---
+
+  // phase lunaire réelle (calcul astronomique approximatif, sans API)
+  function getMoonPhase(){
+    const synodic = 29.530588853;
+    const knownNewMoonUTC = Date.UTC(2000, 0, 6, 18, 14, 0);
+    let days = (Date.now() - knownNewMoonUTC) / 86400000;
+    days = days % synodic;
+    if(days < 0) days += synodic;
+    const illum = Math.round(((1 - Math.cos((2 * Math.PI * days) / synodic)) / 2) * 100);
+
+    let name, emoji;
+    if(days < 1.84566){ name = 'Nouvelle lune'; emoji = '🌑'; }
+    else if(days < 5.53699){ name = 'Premier croissant'; emoji = '🌒'; }
+    else if(days < 9.22831){ name = 'Premier quartier'; emoji = '🌓'; }
+    else if(days < 12.91963){ name = 'Lune gibbeuse croissante'; emoji = '🌔'; }
+    else if(days < 16.61096){ name = 'Pleine lune'; emoji = '🌕'; }
+    else if(days < 20.30228){ name = 'Lune gibbeuse décroissante'; emoji = '🌖'; }
+    else if(days < 23.99361){ name = 'Dernier quartier'; emoji = '🌗'; }
+    else if(days < 27.68493){ name = 'Dernier croissant'; emoji = '🌘'; }
+    else { name = 'Nouvelle lune'; emoji = '🌑'; }
+
+    return { name, emoji, illum };
+  }
+
+  // saison zodiacale en cours, calculée à partir de la date du jour
+  const SIGN_DATES = [
+    { id:'aries', start:[3,21], end:[4,19] },
+    { id:'taurus', start:[4,20], end:[5,20] },
+    { id:'gemini', start:[5,21], end:[6,20] },
+    { id:'cancer', start:[6,21], end:[7,22] },
+    { id:'leo', start:[7,23], end:[8,22] },
+    { id:'virgo', start:[8,23], end:[9,22] },
+    { id:'libra', start:[9,23], end:[10,22] },
+    { id:'scorpio', start:[10,23], end:[11,21] },
+    { id:'sagittarius', start:[11,22], end:[12,21] },
+    { id:'capricorn', start:[12,22], end:[1,19] },
+    { id:'aquarius', start:[1,20], end:[2,18] },
+    { id:'pisces', start:[2,19], end:[3,20] }
+  ];
+
+  function getCurrentSunSign(){
+    const now = new Date();
+    const val = (now.getMonth() + 1) * 100 + now.getDate();
+    for(const sd of SIGN_DATES){
+      const startVal = sd.start[0] * 100 + sd.start[1];
+      const endVal = sd.end[0] * 100 + sd.end[1];
+      if(startVal <= endVal){
+        if(val >= startVal && val <= endVal) return sd;
+      } else {
+        if(val >= startVal || val <= endVal) return sd;
+      }
+    }
+    return SIGN_DATES[0];
+  }
+
+  const MONTH_THEMES = [
+    { title:"Janvier — Nouveaux départs", text:"Le début d'année invite naturellement à poser des intentions claires. C'est une période propice pour structurer ses projets et repartir sur des bases solides." },
+    { title:"Février — Introspection et tendresse", text:"Un mois plus intérieur, où les émotions prennent le dessus sur la raison. Les liens affectifs se resserrent, et il est bon de ralentir un peu." },
+    { title:"Mars — Renouveau et élan", text:"L'énergie repart à la hausse. C'est le moment idéal pour initier ce qui a été mis en pause, avec une motivation renouvelée." },
+    { title:"Avril — Audace et action", text:"Un climat plus impulsif s'installe, qui pousse à sortir de sa zone de confort. L'action prime sur l'hésitation ce mois-ci." },
+    { title:"Mai — Ancrage et sensualité", text:"Le rythme ralentit légèrement, laissant plus de place au plaisir simple et à la stabilité. Un mois pour savourer plutôt que courir." },
+    { title:"Juin — Curiosité et échanges", text:"Les conversations se multiplient, les idées circulent. C'est une période fertile pour apprendre, discuter et se connecter aux autres." },
+    { title:"Juillet — Émotions et attachements", text:"Le cœur prend le devant de la scène. Les proches et le foyer occupent une place centrale, avec une sensibilité plus à fleur de peau." },
+    { title:"Août — Rayonnement et confiance", text:"Une énergie plus affirmée s'installe, portée par l'envie de se montrer et de créer. Le mois encourage à occuper sa place pleinement." },
+    { title:"Septembre — Équilibre et harmonie", text:"Après l'intensité de l'été, un besoin de remise en ordre se fait sentir. C'est un bon moment pour ajuster ce qui semblait déséquilibré." },
+    { title:"Octobre — Transformation et intensité", text:"Un climat plus profond s'installe, propice à l'introspection et aux remises en question. Ce qui doit changer commence à se révéler." },
+    { title:"Novembre — Expansion et liberté", text:"L'envie de voir plus loin domine. C'est une période stimulante pour élargir ses horizons, apprendre et explorer de nouvelles idées." },
+    { title:"Décembre — Bilan et structure", text:"L'année se referme, invitant à faire le point. Un mois pour consolider ce qui a été construit avant de repartir sur de nouvelles bases." }
+  ];
+
+  const TRAIT_OPENERS = [
+    "{sign} incarne à merveille l'énergie {element}, avec une intensité qui ne passe jamais inaperçue.",
+    "Sous l'influence de {planet}, {sign} développe naturellement un sens aigu de l'observation.",
+    "{sign} avance dans la vie avec une détermination tranquille, propre aux signes de {element}.",
+    "Gouverné par {planet}, {sign} a ce don rare de savoir ce qu'il veut, même dans le doute.",
+    "{sign} porte en lui toute la richesse de l'élément {element} : intense, entier, difficile à ignorer."
+  ];
+  const TRAIT_MIDDLES = [
+    "Sa plus grande force ? Une capacité à rester lui-même en toutes circonstances.",
+    "On lui reconnaît une loyauté sans faille envers ceux qu'il aime.",
+    "Son intuition le guide souvent mieux que n'importe quel calcul.",
+    "Il a ce talent discret de faire sentir aux autres qu'ils comptent.",
+    "Sa curiosité naturelle le pousse toujours à voir plus loin que les apparences."
+  ];
+  const TRAIT_CLOSINGS = [
+    "Son axe de progression : apprendre à lâcher prise sur ce qu'il ne contrôle pas.",
+    "Son défi : accepter que la vulnérabilité n'est pas une faiblesse.",
+    "Il gagnerait à faire un peu plus confiance au temps, plutôt qu'à vouloir tout accélérer.",
+    "Sa marge de progrès : oser demander de l'aide sans y voir un échec.",
+    "Le vrai travail pour lui : écouter aussi ce qu'il ressent, pas seulement ce qu'il pense."
+  ];
+
+  function renderNews(){
+    const moon = getMoonPhase();
+    document.getElementById('moonEmoji').textContent = moon.emoji;
+    document.getElementById('moonName').textContent = moon.name;
+    document.getElementById('moonIllum').textContent = moon.illum + '% de la lune est éclairée';
+
+    const sd = getCurrentSunSign();
+    const sunSign = SIGNS.find(s => s.id === sd.id);
+    document.getElementById('seasonSymbol').textContent = sunSign.symbol;
+    document.getElementById('seasonSymbol').style.color = elementColor(sunSign.element);
+    document.getElementById('seasonName').textContent = 'Saison ' + sunSign.name;
+    document.getElementById('seasonSub').textContent = sunSign.range;
+
+    const theme = MONTH_THEMES[new Date().getMonth()];
+    document.getElementById('monthThemeTitle').textContent = theme.title;
+    document.getElementById('monthThemeText').textContent = theme.text;
+
+    const weekNum = Math.floor(Date.now() / (7 * 86400000));
+    const featured = SIGNS[weekNum % SIGNS.length];
+    const rng = mulberry32(hashString(featured.id + '-featured-' + weekNum));
+    const pick = (arr) => arr[Math.floor(rng() * arr.length)];
+    const traitText = [pick(TRAIT_OPENERS), pick(TRAIT_MIDDLES), pick(TRAIT_CLOSINGS)]
+      .map(s => fillTemplate(s, featured)).join(' ');
+
+    document.getElementById('featuredSymbol').textContent = featured.symbol;
+    document.getElementById('featuredSymbol').style.color = elementColor(featured.element);
+    document.getElementById('featuredName').textContent = featured.name;
+    document.getElementById('featuredText').textContent = traitText;
+  }
+
+  renderNews();
+
+  // --- Articles ---
+  // Pour ajouter un article : donnez le titre et le texte à Claude, il l'ajoute ici.
+  // Dans le texte : une ligne vide sépare les paragraphes, "## " au début d'une ligne
+  // crée un sous-titre, "* " au début de plusieurs lignes crée une liste à puces,
+  // et **texte** met en gras.
+  const ARTICLES = [
+    {
+      title: "Éclipse solaire du 12 août 2026 : un phénomène exceptionnel",
+      date: "12 août 2026",
+      text: `Le 12 août 2026, le ciel a offert un spectacle particulièrement impressionnant : une éclipse solaire a traversé une partie de l'hémisphère Nord.
+
+Lors d'une éclipse solaire, la Lune vient se placer entre la Terre et le Soleil et masque temporairement une partie de sa lumière. Lorsque les trois astres sont parfaitement alignés et que la Lune recouvre entièrement le Soleil, on parle d'éclipse solaire totale.
+
+L'éclipse du 12 août 2026 était justement **totale sur une partie de sa trajectoire**, notamment en Islande, au Groenland, dans l'Atlantique Nord et en Espagne. En France métropolitaine, elle était en revanche **partielle** : le disque solaire n'était jamais complètement masqué.
+
+## ☀️ Une éclipse particulièrement visible en France
+
+La France a tout de même bénéficié d'un spectacle remarquable.
+
+À Paris, environ **92 % du Soleil** a été occulté au maximum de l'éclipse. Dans certaines régions proches de la frontière espagnole, l'occultation a dépassé 99 %. L'éclipse s'est produite en soirée, ce qui a également permis d'observer un Soleil très bas sur l'horizon.
+
+Dans les régions situées sur la bande de totalité, le phénomène était encore plus spectaculaire : pendant quelques instants, la Lune a complètement recouvert le disque solaire, plongeant temporairement le paysage dans une obscurité inhabituelle.
+
+La totalité a duré moins de deux minutes dans la plupart des endroits concernés.
+
+## 🌌 Pourquoi une éclipse solaire est-elle si impressionnante ?
+
+Une éclipse totale permet notamment d'observer la **couronne solaire**, l'atmosphère extérieure du Soleil normalement difficile à distinguer à cause de l'intense luminosité de sa surface.
+
+Pour les scientifiques, ces quelques minutes représentent également une occasion précieuse d'étudier notre étoile et son influence sur l'environnement terrestre. Des équipes soutenues par la NASA ont notamment utilisé des avions volant à haute altitude et des ballons scientifiques afin d'étudier le Soleil et les changements provoqués dans l'atmosphère par l'obscurcissement temporaire du ciel.
+
+## 🔮 Et en astrologie, que représente une éclipse solaire ?
+
+Au-delà de l'astronomie, les éclipses occupent une place importante dans l'astrologie.
+
+Dans l'interprétation astrologique, une **éclipse solaire** est traditionnellement associée aux nouveaux départs, aux changements et aux périodes de transition.
+
+Elle peut symboliser la fermeture d'un chapitre et l'ouverture d'une nouvelle période. Certains astrologues considèrent également les éclipses comme des moments où certaines situations deviennent plus difficiles à ignorer.
+
+Il est toutefois important de distinguer ces interprétations de l'astronomie : **l'astrologie est une pratique symbolique et culturelle et ne constitue pas une méthode scientifique permettant de prédire les événements ou la personnalité.**
+
+## ♌ Quels signes peuvent ressentir cette période plus fortement ?
+
+Dans une lecture astrologique, l'impact d'une éclipse est généralement interprété en fonction du signe dans lequel elle se produit ainsi que du thème natal de chaque personne.
+
+Les signes fixes — **Taureau, Lion, Scorpion et Verseau** — peuvent notamment être mis en avant dans les interprétations liées aux périodes de transformation et de changement.
+
+Pour ces signes, cette période peut symboliquement être associée à une remise en question, à une décision importante ou à la nécessité de tourner une page.
+
+Mais chaque thème astrologique étant différent, il n'existe pas une interprétation unique valable pour toutes les personnes nées sous le même signe.
+
+## ✨ Une période idéale pour prendre un nouveau départ ?
+
+Dans la tradition astrologique, une éclipse solaire peut être considérée comme une invitation à réfléchir à ce que l'on souhaite réellement changer.
+
+C'est donc une période symbolique qui peut encourager à :
+
+* 🌙 laisser derrière soi certaines habitudes
+* ❤️ réfléchir à ses relations
+* 💼 revoir ses objectifs professionnels
+* 🔮 écouter davantage ses intuitions
+* ✨ ouvrir un nouveau chapitre de sa vie
+
+L'éclipse ne signifie pas nécessairement qu'un événement précis va se produire. Elle peut plutôt être utilisée comme un **moment symbolique de réflexion et de renouveau**.
+
+## 🌟 Et maintenant ?
+
+L'éclipse du 12 août 2026 restera comme l'un des grands rendez-vous astronomiques de l'année.
+
+Pour certains, elle aura été avant tout un phénomène scientifique exceptionnel. Pour d'autres, elle représentera également un symbole de changement et de renouveau.
+
+Une chose est certaine : lorsque la Lune vient temporairement cacher le Soleil, le ciel nous rappelle à quel point les mouvements des astres peuvent encore susciter notre curiosité et notre imagination.
+
+Et toi, qu'as-tu ressenti pendant cette éclipse ? 🌑✨`
+    }
+  ];
+
+  function inlineFormat(str){
+    return str.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  }
+
+  function formatArticleBody(text){
+    const blocks = text.split(/\n\s*\n/);
+    return blocks.map(block => {
+      const trimmed = block.trim();
+      if(trimmed.startsWith('## ')){
+        return `<h3 class="article-h3">${inlineFormat(trimmed.replace(/^##\s*/, ''))}</h3>`;
+      }
+      const lines = trimmed.split('\n').map(l => l.trim()).filter(Boolean);
+      if(lines.length > 1 && lines.every(l => l.startsWith('* '))){
+        const items = lines.map(l => `<li>${inlineFormat(l.replace(/^\*\s*/, ''))}</li>`).join('');
+        return `<ul class="article-list">${items}</ul>`;
+      }
+      return `<p>${inlineFormat(trimmed)}</p>`;
+    }).join('');
+  }
+
+  function renderArticles(){
+    const el = document.getElementById('articlesList');
+    if(ARTICLES.length === 0){
+      el.innerHTML = '<p class="week-hint">Aucun article pour l\'instant — revenez bientôt.</p>';
+      return;
+    }
+    el.innerHTML = ARTICLES.map(a => `
+      <div class="article-card">
+        <div class="article-title">${a.title}</div>
+        <div class="article-date">${a.date}</div>
+        <div class="article-body">${formatArticleBody(a.text)}</div>
+      </div>
+    `).join('');
+  }
+
+  renderArticles();
 </script>
 
 </body>
