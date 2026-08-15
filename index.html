@@ -514,6 +514,45 @@
     margin:0 auto;
     color:var(--starlight);
   }
+
+  /* archive */
+  .archive-controls{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    margin:24px 0 36px;
+  }
+  .day-pill-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .day-pill{
+    background:var(--nebula);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:7px 13px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .day-pill:hover{ background:var(--nebula-2); color:var(--starlight); }
+  .day-pill.selected{ border-color:var(--gold); color:var(--gold); background:var(--nebula-2); }
+
+  .date-input{
+    background:var(--nebula);
+    border:1px solid var(--line);
+    color:var(--starlight);
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    padding:8px 10px;
+    border-radius:6px;
+    color-scheme:dark;
+  }
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -530,6 +569,7 @@
     <button class="tab-btn active" data-view="viewDay">Jour</button>
     <button class="tab-btn" data-view="viewWeek">Semaine</button>
     <button class="tab-btn" data-view="viewCompat">Compatibilité</button>
+    <button class="tab-btn" data-view="viewArchive">Archive</button>
   </div>
 
   <div class="view active" id="viewDay">
@@ -615,6 +655,57 @@
       <p class="compat-text" id="compatText"></p>
     </div>
   </div>
+
+  <div class="view" id="viewArchive">
+    <div class="chip-row" id="archiveChips"></div>
+    <p class="week-hint" id="archiveHint">Choisissez votre signe pour explorer les horoscopes des jours précédents.</p>
+
+    <div class="archive-controls" id="archiveControls" style="display:none;">
+      <div class="day-pill-row" id="archivePills"></div>
+      <label style="display:flex; align-items:center; gap:8px;">
+        <span class="stat-label" style="margin:0;">Ou une date précise</span>
+        <input type="date" class="date-input" id="archiveDate">
+      </label>
+    </div>
+
+    <div class="panel" id="archivePanel">
+      <div class="panel-head">
+        <svg class="constellation" id="archiveConstellation" viewBox="0 0 180 130"></svg>
+        <div>
+          <div class="panel-title">
+            <span class="big-symbol" id="archiveSymbol"></span><h2 id="archiveName"></h2>
+          </div>
+          <div class="panel-meta">
+            <span id="archiveDateLabel"></span>
+          </div>
+        </div>
+      </div>
+
+      <p class="horoscope-text" id="archiveText"></p>
+
+      <div class="stats">
+        <div>
+          <div class="stat-label">Amour</div>
+          <div class="stat-phrase" id="archiveLoveText"></div>
+          <div class="bar" id="archiveLoveBar"></div>
+        </div>
+        <div>
+          <div class="stat-label">Travail</div>
+          <div class="stat-phrase" id="archiveWorkText"></div>
+          <div class="bar" id="archiveWorkBar"></div>
+        </div>
+        <div>
+          <div class="stat-label">Énergie</div>
+          <div class="stat-phrase" id="archiveEnergyText"></div>
+          <div class="bar" id="archiveEnergyBar"></div>
+        </div>
+      </div>
+
+      <div class="footer-row">
+        <div class="lucky" id="archiveLuckyRow"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -690,8 +781,8 @@
     };
   }
 
-  function renderConstellation(sign, index){
-    const svg = document.getElementById('constellation');
+  function renderConstellation(sign, index, svgId){
+    const svg = document.getElementById(svgId || 'constellation');
     const rng = mulberry32(index * 97 + 13);
     const n = 5 + Math.floor(rng() * 3); // 5-7 stars
     const pts = [];
@@ -1046,6 +1137,97 @@
     document.getElementById('compatWorkNum').textContent = result.work + '%';
     document.getElementById('compatText').textContent = result.text;
   });
+
+  // --- Vue Archive ---
+  let archiveSign = null;
+  const archiveChipsEl = document.getElementById('archiveChips');
+  const archiveDateInput = document.getElementById('archiveDate');
+  const todayISO = new Date().toISOString().slice(0,10);
+  archiveDateInput.max = todayISO;
+
+  SIGNS.forEach(sign => {
+    const chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.style.setProperty('--accent', elementColor(sign.element));
+    chip.dataset.id = sign.id;
+    chip.innerHTML = `<span class="chip-symbol">${sign.symbol}</span><span>${sign.name}</span>`;
+    chip.addEventListener('click', () => selectArchiveSign(sign.id));
+    archiveChipsEl.appendChild(chip);
+  });
+
+  function selectArchiveSign(id){
+    document.querySelectorAll('#archiveChips .chip').forEach(c => c.classList.toggle('selected', c.dataset.id === id));
+    document.getElementById('archiveHint').style.display = 'none';
+    document.getElementById('archiveControls').style.display = 'flex';
+    archiveSign = SIGNS.find(s => s.id === id);
+    buildArchivePills();
+    // par défaut, on montre hier (le premier jour "passé" disponible)
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yKey = yesterday.toISOString().slice(0,10);
+    archiveDateInput.value = yKey;
+    renderArchiveDay(archiveSign, yKey);
+  }
+
+  function buildArchivePills(){
+    const pillsEl = document.getElementById('archivePills');
+    pillsEl.innerHTML = '';
+    for(let i=1; i<=7; i++){
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dKey = d.toISOString().slice(0,10);
+      const label = i === 1 ? 'Hier' : new Intl.DateTimeFormat('fr-FR', { weekday:'short', day:'numeric' }).format(d);
+      const pill = document.createElement('button');
+      pill.className = 'day-pill' + (i === 1 ? ' selected' : '');
+      pill.textContent = label;
+      pill.dataset.date = dKey;
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('#archivePills .day-pill').forEach(p => p.classList.remove('selected'));
+        pill.classList.add('selected');
+        archiveDateInput.value = dKey;
+        renderArchiveDay(archiveSign, dKey);
+      });
+      pillsEl.appendChild(pill);
+    }
+  }
+
+  archiveDateInput.addEventListener('change', () => {
+    if(!archiveSign || !archiveDateInput.value) return;
+    document.querySelectorAll('#archivePills .day-pill').forEach(p => p.classList.toggle('selected', p.dataset.date === archiveDateInput.value));
+    renderArchiveDay(archiveSign, archiveDateInput.value);
+  });
+
+  function renderArchiveDay(sign, dKeyStr){
+    const index = SIGNS.indexOf(sign);
+    const color = elementColor(sign.element);
+    const data = generateHoroscope(sign, sign.id + '-' + dKeyStr);
+
+    const panel = document.getElementById('archivePanel');
+    panel.classList.add('show');
+    requestAnimationFrame(() => panel.classList.add('visible'));
+
+    document.getElementById('archiveSymbol').textContent = sign.symbol;
+    document.getElementById('archiveSymbol').style.color = color;
+    document.getElementById('archiveName').textContent = sign.name;
+
+    const d = new Date(dKeyStr + 'T00:00:00');
+    const label = dKeyStr === todayISO
+      ? "Aujourd'hui"
+      : new Intl.DateTimeFormat('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' }).format(d);
+    document.getElementById('archiveDateLabel').textContent = label;
+
+    renderConstellation(sign, index, 'archiveConstellation');
+
+    document.getElementById('archiveText').textContent = data.text;
+    document.getElementById('archiveLoveText').textContent = data.love;
+    document.getElementById('archiveWorkText').textContent = data.work;
+    document.getElementById('archiveEnergyText').textContent = data.energy;
+    renderBar('archiveLoveBar', data.loveLevel, color);
+    renderBar('archiveWorkBar', data.workLevel, color);
+    renderBar('archiveEnergyBar', data.energyLevel, color);
+    document.getElementById('archiveLuckyRow').innerHTML =
+      `<b>${data.luckyNumber}</b> numéro chance &nbsp;·&nbsp; <b>${data.luckyColor}</b> couleur du jour`;
+  }
 </script>
 
 </body>
