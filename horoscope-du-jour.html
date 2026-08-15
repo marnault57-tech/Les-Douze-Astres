@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Horoscope du jour</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Karla:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --void:#0F1220;
+    --nebula:#181C31;
+    --nebula-2:#232847;
+    --line:#31365A;
+    --starlight:#EDEAE0;
+    --muted:#9A9FC0;
+    --gold:#D4AF6A;
+    --fire:#C1502B;
+    --earth:#8A9A5B;
+    --air:#7CAFD1;
+    --water:#2E8A8A;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    margin:0;
+    padding:0;
+    background:var(--void);
+    color:var(--starlight);
+    font-family:'Karla', sans-serif;
+    min-height:100vh;
+  }
+
+  body{
+    background-image:
+      radial-gradient(1.5px 1.5px at 10% 20%, rgba(237,234,224,.5) 50%, transparent),
+      radial-gradient(1.5px 1.5px at 80% 10%, rgba(237,234,224,.4) 50%, transparent),
+      radial-gradient(1px 1px at 60% 40%, rgba(237,234,224,.45) 50%, transparent),
+      radial-gradient(1.5px 1.5px at 30% 65%, rgba(237,234,224,.35) 50%, transparent),
+      radial-gradient(1px 1px at 90% 75%, rgba(237,234,224,.4) 50%, transparent),
+      radial-gradient(1.5px 1.5px at 45% 85%, rgba(237,234,224,.3) 50%, transparent),
+      radial-gradient(1px 1px at 15% 90%, rgba(237,234,224,.35) 50%, transparent),
+      radial-gradient(1.5px 1.5px at 70% 55%, rgba(237,234,224,.3) 50%, transparent);
+    background-repeat:repeat;
+    background-size:600px 600px;
+  }
+
+  .aurora{
+    position:fixed;
+    top:-30%;
+    left:50%;
+    transform:translateX(-50%);
+    width:900px;
+    height:600px;
+    background:radial-gradient(ellipse at center, rgba(124,175,209,.16), rgba(46,138,138,.10) 40%, transparent 70%);
+    filter:blur(10px);
+    pointer-events:none;
+    animation:drift 22s ease-in-out infinite alternate;
+    z-index:0;
+  }
+  @keyframes drift{
+    from{ transform:translateX(-55%) translateY(0); }
+    to{ transform:translateX(-45%) translateY(30px); }
+  }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    max-width:920px;
+    margin:0 auto;
+    padding:64px 24px 96px;
+  }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin:0 0 14px;
+  }
+
+  h1{
+    font-family:'Cinzel', serif;
+    font-weight:600;
+    font-size:44px;
+    line-height:1.1;
+    margin:0 0 14px;
+    letter-spacing:.01em;
+  }
+
+  .sub{
+    color:var(--muted);
+    font-size:16px;
+    max-width:520px;
+    line-height:1.55;
+    margin:0 0 48px;
+  }
+
+  .element-row{ margin-bottom:34px; }
+
+  .element-label{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:14px;
+  }
+  .element-label .glyph{ width:14px; height:14px; flex:none; }
+  .element-label .rule{
+    flex:1;
+    height:1px;
+    background:linear-gradient(to right, var(--line), transparent);
+  }
+
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:12px;
+  }
+  @media (max-width:640px){
+    .cards{ grid-template-columns:repeat(2, 1fr); }
+  }
+
+  .card{
+    --accent: var(--gold);
+    position:relative;
+    background:var(--nebula);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:6px;
+    padding:16px 14px;
+    text-align:left;
+    cursor:pointer;
+    color:var(--starlight);
+    font-family:inherit;
+    transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .card:hover{
+    background:var(--nebula-2);
+    transform:translateY(-2px);
+    box-shadow:0 8px 24px -12px var(--accent);
+  }
+  .card:focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:2px;
+  }
+  .card.selected{
+    background:var(--nebula-2);
+    box-shadow:0 0 0 1px var(--gold), 0 10px 28px -14px var(--accent);
+  }
+  .card .symbol{
+    font-family:'Cinzel', serif;
+    font-size:26px;
+    color:var(--accent);
+    display:block;
+    margin-bottom:6px;
+  }
+  .card .name{
+    font-weight:700;
+    font-size:15px;
+    display:block;
+    margin-bottom:3px;
+  }
+  .card .range{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--muted);
+  }
+
+  /* reveal panel */
+  .panel{
+    margin-top:52px;
+    background:linear-gradient(180deg, var(--nebula), var(--nebula-2));
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:32px;
+    display:none;
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity .35s ease, transform .35s ease;
+  }
+  .panel.show{
+    display:block;
+  }
+  .panel.visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  .panel-head{
+    display:flex;
+    gap:24px;
+    align-items:center;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+  }
+
+  .constellation{
+    width:180px;
+    height:130px;
+    flex:none;
+  }
+  .constellation line{
+    stroke-width:1;
+    fill:none;
+    stroke-dasharray:300;
+    stroke-dashoffset:300;
+    animation:draw 1.1s ease forwards;
+  }
+  .constellation circle{
+    opacity:0;
+    animation:pop .3s ease forwards;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @keyframes pop{ to{ opacity:1; } }
+  @media (prefers-reduced-motion:reduce){
+    .constellation line{ animation:none; stroke-dashoffset:0; }
+    .constellation circle{ animation:none; opacity:1; }
+  }
+
+  .panel-title .big-symbol{
+    font-family:'Cinzel', serif;
+    font-size:28px;
+    margin-right:8px;
+  }
+  .panel-title h2{
+    font-family:'Cinzel', serif;
+    font-size:26px;
+    margin:0 0 6px;
+    display:inline;
+  }
+  .panel-meta{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:8px;
+  }
+  .panel-meta span{ margin-right:16px; }
+
+  .horoscope-text{
+    font-size:17px;
+    line-height:1.7;
+    color:var(--starlight);
+    min-height:52px;
+    margin-bottom:26px;
+  }
+  .horoscope-text.loading{
+    color:var(--muted);
+    font-style:italic;
+  }
+  .horoscope-text.error{
+    color:#E0A8A0;
+  }
+
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:18px;
+    margin-bottom:24px;
+  }
+  @media (max-width:560px){
+    .stats{ grid-template-columns:1fr; }
+  }
+  .stat-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  .stat-phrase{
+    font-size:14px;
+    margin-bottom:8px;
+    min-height:18px;
+  }
+  .bar{
+    display:flex;
+    gap:3px;
+  }
+  .bar i{
+    width:16px;
+    height:5px;
+    border-radius:2px;
+    background:var(--line);
+  }
+  .bar i.filled{ background:var(--accent-current, var(--gold)); }
+
+  .footer-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:14px;
+    padding-top:18px;
+    border-top:1px solid var(--line);
+  }
+  .lucky{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .lucky b{ color:var(--starlight); }
+
+  .regen{
+    background:none;
+    border:none;
+    color:var(--gold);
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    cursor:pointer;
+    padding:0;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .regen:hover{ opacity:.8; }
+  .regen:disabled{ opacity:.4; cursor:default; text-decoration:none; }
+
+  /* tabs */
+  .tabs{
+    display:flex;
+    gap:0;
+    margin-bottom:44px;
+    border-bottom:1px solid var(--line);
+  }
+  .tab-btn{
+    background:none;
+    border:none;
+    color:var(--muted);
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    padding:0 0 14px;
+    margin-right:28px;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    transition:color .15s ease;
+  }
+  .tab-btn:hover{ color:var(--starlight); }
+  .tab-btn.active{ color:var(--gold); border-bottom-color:var(--gold); }
+
+  .view{ display:none; }
+  .view.active{ display:block; }
+
+  /* chip picker (semaine) */
+  .chip-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:8px;
+  }
+  .chip{
+    --accent: var(--gold);
+    display:flex;
+    align-items:center;
+    gap:7px;
+    background:var(--nebula);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:8px 14px 8px 12px;
+    cursor:pointer;
+    color:var(--starlight);
+    font-family:'Karla', sans-serif;
+    font-size:13px;
+    transition:background .15s ease, box-shadow .15s ease;
+  }
+  .chip:hover{ background:var(--nebula-2); }
+  .chip.selected{ background:var(--nebula-2); box-shadow:0 0 0 1px var(--gold); }
+  .chip .chip-symbol{
+    font-family:'Cinzel', serif;
+    color:var(--accent);
+    font-size:15px;
+  }
+
+  .week-hint{ color:var(--muted); font-size:14px; margin:24px 0; }
+
+  .week-summary{
+    background:var(--nebula-2);
+    border:1px solid var(--gold);
+    border-radius:8px;
+    padding:14px 18px;
+    font-size:14px;
+    line-height:1.5;
+    color:var(--starlight);
+    margin:24px 0 30px;
+  }
+  .week-summary strong{ color:var(--gold); }
+
+  .week-grid{ display:block; }
+
+  .week-day-card{
+    display:grid;
+    grid-template-columns:130px 1fr;
+    gap:28px;
+    background:var(--nebula);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:26px 28px;
+    margin-bottom:14px;
+  }
+  .week-day-card.today{
+    border-color:var(--gold);
+    box-shadow:0 0 0 1px var(--gold);
+  }
+  @media (max-width:640px){
+    .week-day-card{ grid-template-columns:1fr; gap:14px; }
+  }
+  .week-day-label{
+    font-family:'Cinzel', serif;
+    font-size:18px;
+    color:var(--gold);
+    margin-bottom:5px;
+  }
+  .week-day-date{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+  }
+  .week-day-text{
+    font-size:15.5px;
+    line-height:1.65;
+    color:var(--starlight);
+    margin:0 0 20px;
+  }
+  .week-day-stats{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
+  }
+  @media (max-width:560px){
+    .week-day-stats{ grid-template-columns:1fr; }
+  }
+  .week-stat-phrase{
+    font-size:13px;
+    display:block;
+    margin:5px 0 9px;
+    color:var(--starlight);
+  }
+
+  /* compatibilité */
+  .compat-pickers{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-bottom:36px;
+  }
+  .sign-select{
+    background:var(--nebula);
+    border:1px solid var(--line);
+    color:var(--starlight);
+    font-family:'Karla', sans-serif;
+    font-size:14px;
+    padding:10px 12px;
+    border-radius:6px;
+  }
+  .compat-plus{
+    font-family:'Cinzel', serif;
+    color:var(--gold);
+    font-size:18px;
+  }
+  .btn-primary{
+    background:var(--gold);
+    color:var(--void);
+    border:none;
+    padding:11px 20px;
+    border-radius:6px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    cursor:pointer;
+    font-weight:700;
+  }
+  .btn-primary:hover{ opacity:.88; }
+
+  .compat-result{
+    background:linear-gradient(180deg, var(--nebula), var(--nebula-2));
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:40px 36px;
+  }
+  .compat-symbols{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:22px;
+    margin-bottom:18px;
+  }
+  .compat-symbols .sym{
+    font-family:'Cinzel', serif;
+    font-size:52px;
+  }
+  .compat-symbols .divider{
+    color:var(--gold);
+    font-size:18px;
+  }
+  .compat-headline{
+    text-align:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:36px;
+  }
+  .compat-headline .score{
+    display:block;
+    font-family:'Cinzel', serif;
+    font-size:40px;
+    letter-spacing:0;
+    text-transform:none;
+    color:var(--gold);
+    margin-top:6px;
+  }
+  .compat-category-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px 28px;
+    margin-bottom:38px;
+  }
+  @media (max-width:680px){
+    .compat-category-grid{ grid-template-columns:repeat(2, 1fr); }
+  }
+  @media (max-width:420px){
+    .compat-category-grid{ grid-template-columns:1fr; }
+  }
+  .pct-bar{
+    height:6px;
+    background:var(--line);
+    border-radius:3px;
+    overflow:hidden;
+    margin-bottom:8px;
+  }
+  .pct-bar-fill{
+    height:100%;
+    width:0%;
+    background:var(--gold);
+    border-radius:3px;
+    transition:width .5s ease;
+  }
+  .compat-blocks{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:32px;
+    padding-top:28px;
+    border-top:1px solid var(--line);
+  }
+  @media (max-width:640px){
+    .compat-blocks{ grid-template-columns:1fr; }
+  }
+  .compat-block-title{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:10px;
+  }
+  .compat-block-text{
+    font-size:14.5px;
+    line-height:1.65;
+    color:var(--starlight);
+    margin:0;
+  }
+
+  /* archive */
+  .archive-controls{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    margin:24px 0 36px;
+  }
+  .day-pill-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .day-pill{
+    background:var(--nebula);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:7px 13px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .day-pill:hover{ background:var(--nebula-2); color:var(--starlight); }
+  .day-pill.selected{ border-color:var(--gold); color:var(--gold); background:var(--nebula-2); }
+
+  .date-input{
+    background:var(--nebula);
+    border:1px solid var(--line);
+    color:var(--starlight);
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    padding:8px 10px;
+    border-radius:6px;
+    color-scheme:dark;
+  }
+</style>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+<div class="aurora"></div>
+
+<div class="wrap">
+  <p class="eyebrow" id="eyebrow">Carte du ciel</p>
+  <h1>Horoscope du jour</h1>
+  <p class="sub">Choisissez votre signe pour révéler ce que le ciel réserve aujourd'hui.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-view="viewDay">Jour</button>
+    <button class="tab-btn" data-view="viewWeek">Semaine</button>
+    <button class="tab-btn" data-view="viewCompat">Compatibilité</button>
+    <button class="tab-btn" data-view="viewArchive">Archive</button>
+  </div>
+
+  <div class="view active" id="viewDay">
+    <div id="rows"></div>
+
+    <div class="panel" id="panel">
+      <div class="panel-head">
+        <svg class="constellation" id="constellation" viewBox="0 0 180 130"></svg>
+        <div>
+          <div class="panel-title">
+            <span class="big-symbol" id="panelSymbol"></span><h2 id="panelName"></h2>
+          </div>
+          <div class="panel-meta">
+            <span id="panelRange"></span>
+            <span id="panelPlanet"></span>
+          </div>
+        </div>
+      </div>
+
+      <p class="horoscope-text" id="horoscopeText"></p>
+
+      <div class="stats">
+        <div>
+          <div class="stat-label">Amour</div>
+          <div class="stat-phrase" id="loveText"></div>
+          <div class="bar" id="loveBar"></div>
+        </div>
+        <div>
+          <div class="stat-label">Travail</div>
+          <div class="stat-phrase" id="workText"></div>
+          <div class="bar" id="workBar"></div>
+        </div>
+        <div>
+          <div class="stat-label">Énergie</div>
+          <div class="stat-phrase" id="energyText"></div>
+          <div class="bar" id="energyBar"></div>
+        </div>
+      </div>
+
+      <div class="footer-row">
+        <div class="lucky" id="luckyRow"></div>
+        <button class="regen" id="regenBtn">Consulter à nouveau les astres →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="view" id="viewWeek">
+    <div class="chip-row" id="weekChips"></div>
+    <p class="week-hint" id="weekHint">Choisissez votre signe pour découvrir la tendance des 7 prochains jours.</p>
+    <div id="weekSummary"></div>
+    <div class="week-grid" id="weekGrid"></div>
+  </div>
+
+  <div class="view" id="viewCompat">
+    <div class="compat-pickers">
+      <select class="sign-select" id="compatA"></select>
+      <span class="compat-plus">+</span>
+      <select class="sign-select" id="compatB"></select>
+      <button class="btn-primary" id="compatBtn">Voir la compatibilité</button>
+    </div>
+    <div class="compat-result" id="compatResult" style="display:none;">
+      <div class="compat-symbols">
+        <span class="sym" id="compatSymA"></span>
+        <span class="divider">✦</span>
+        <span class="sym" id="compatSymB"></span>
+      </div>
+
+      <div class="compat-headline">
+        Affinité globale
+        <span class="score" id="compatGlobalScore"></span>
+      </div>
+
+      <div class="compat-category-grid">
+        <div>
+          <div class="stat-label">Amour</div>
+          <div class="pct-bar"><div class="pct-bar-fill" id="compatLovePct"></div></div>
+          <div class="stat-phrase" id="compatLoveNum"></div>
+        </div>
+        <div>
+          <div class="stat-label">Amitié</div>
+          <div class="pct-bar"><div class="pct-bar-fill" id="compatFriendPct"></div></div>
+          <div class="stat-phrase" id="compatFriendNum"></div>
+        </div>
+        <div>
+          <div class="stat-label">Travail</div>
+          <div class="pct-bar"><div class="pct-bar-fill" id="compatWorkPct"></div></div>
+          <div class="stat-phrase" id="compatWorkNum"></div>
+        </div>
+        <div>
+          <div class="stat-label">Argent</div>
+          <div class="pct-bar"><div class="pct-bar-fill" id="compatMoneyPct"></div></div>
+          <div class="stat-phrase" id="compatMoneyNum"></div>
+        </div>
+        <div>
+          <div class="stat-label">Communication</div>
+          <div class="pct-bar"><div class="pct-bar-fill" id="compatCommPct"></div></div>
+          <div class="stat-phrase" id="compatCommNum"></div>
+        </div>
+      </div>
+
+      <div class="compat-blocks">
+        <div>
+          <div class="compat-block-title">✦ Ce qui vous rapproche</div>
+          <p class="compat-block-text" id="compatTextGood"></p>
+        </div>
+        <div>
+          <div class="compat-block-title">◈ Points de vigilance</div>
+          <p class="compat-block-text" id="compatTextWatch"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view" id="viewArchive">
+    <div class="chip-row" id="archiveChips"></div>
+    <p class="week-hint" id="archiveHint">Choisissez votre signe pour explorer les horoscopes des jours précédents.</p>
+
+    <div class="archive-controls" id="archiveControls" style="display:none;">
+      <div class="day-pill-row" id="archivePills"></div>
+      <label style="display:flex; align-items:center; gap:8px;">
+        <span class="stat-label" style="margin:0;">Ou une date précise</span>
+        <input type="date" class="date-input" id="archiveDate">
+      </label>
+    </div>
+
+    <div class="panel" id="archivePanel">
+      <div class="panel-head">
+        <svg class="constellation" id="archiveConstellation" viewBox="0 0 180 130"></svg>
+        <div>
+          <div class="panel-title">
+            <span class="big-symbol" id="archiveSymbol"></span><h2 id="archiveName"></h2>
+          </div>
+          <div class="panel-meta">
+            <span id="archiveDateLabel"></span>
+          </div>
+        </div>
+      </div>
+
+      <p class="horoscope-text" id="archiveText"></p>
+
+      <div class="stats">
+        <div>
+          <div class="stat-label">Amour</div>
+          <div class="stat-phrase" id="archiveLoveText"></div>
+          <div class="bar" id="archiveLoveBar"></div>
+        </div>
+        <div>
+          <div class="stat-label">Travail</div>
+          <div class="stat-phrase" id="archiveWorkText"></div>
+          <div class="bar" id="archiveWorkBar"></div>
+        </div>
+        <div>
+          <div class="stat-label">Énergie</div>
+          <div class="stat-phrase" id="archiveEnergyText"></div>
+          <div class="bar" id="archiveEnergyBar"></div>
+        </div>
+      </div>
+
+      <div class="footer-row">
+        <div class="lucky" id="archiveLuckyRow"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const SIGNS = [
+    { id:'aries', name:'Bélier', symbol:'♈', range:'21 mars – 19 avril', element:'feu', planet:'Mars' },
+    { id:'leo', name:'Lion', symbol:'♌', range:'23 juillet – 22 août', element:'feu', planet:'Soleil' },
+    { id:'sagittarius', name:'Sagittaire', symbol:'♐', range:'22 nov. – 21 déc.', element:'feu', planet:'Jupiter' },
+    { id:'taurus', name:'Taureau', symbol:'♉', range:'20 avril – 20 mai', element:'terre', planet:'Vénus' },
+    { id:'virgo', name:'Vierge', symbol:'♍', range:'23 août – 22 sept.', element:'terre', planet:'Mercure' },
+    { id:'capricorn', name:'Capricorne', symbol:'♑', range:'22 déc. – 19 janv.', element:'terre', planet:'Saturne' },
+    { id:'gemini', name:'Gémeaux', symbol:'♊', range:'21 mai – 20 juin', element:'air', planet:'Mercure' },
+    { id:'libra', name:'Balance', symbol:'♎', range:'23 sept. – 22 oct.', element:'air', planet:'Vénus' },
+    { id:'aquarius', name:'Verseau', symbol:'♒', range:'20 janv. – 18 fév.', element:'air', planet:'Uranus' },
+    { id:'cancer', name:'Cancer', symbol:'♋', range:'21 juin – 22 juillet', element:'eau', planet:'Lune' },
+    { id:'scorpio', name:'Scorpion', symbol:'♏', range:'23 oct. – 21 nov.', element:'eau', planet:'Pluton' },
+    { id:'pisces', name:'Poissons', symbol:'♓', range:'19 fév. – 20 mars', element:'eau', planet:'Neptune' },
+  ];
+
+  const ELEMENTS = [
+    { key:'feu', label:'Feu', color:'var(--fire)', glyph:'<svg class="glyph" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M7 1c0 3-3 3-3 6a3 3 0 0 0 6 0c0-1-.5-1.5-1-2 .3 1.3-.5 2-1 1 0-2-3-2-1-5Z"/></svg>' },
+    { key:'terre', label:'Terre', color:'var(--earth)', glyph:'<svg class="glyph" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M1 12 7 2l6 10Z"/></svg>' },
+    { key:'air', label:'Air', color:'var(--air)', glyph:'<svg class="glyph" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M1 5h9a2 2 0 1 0-2-2M1 9h11a2 2 0 1 1-2 2"/></svg>' },
+    { key:'eau', label:'Eau', color:'var(--water)', glyph:'<svg class="glyph" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M7 1c3 4 5 6 5 8.5A5 5 0 0 1 2 9.5C2 7 4 5 7 1Z"/></svg>' },
+  ];
+
+  const cache = {};
+  let selectedId = null;
+  let isFetching = false;
+
+  const todayLabel = new Intl.DateTimeFormat('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' }).format(new Date());
+  document.getElementById('eyebrow').textContent = 'Carte du ciel · ' + todayLabel;
+  const dateKey = new Date().toISOString().slice(0,10);
+
+  // build rows
+  const rowsEl = document.getElementById('rows');
+  ELEMENTS.forEach(el => {
+    const row = document.createElement('div');
+    row.className = 'element-row';
+    row.innerHTML = `
+      <div class="element-label" style="color:${el.color}">
+        ${el.glyph}<span>${el.label}</span><div class="rule"></div>
+      </div>
+      <div class="cards"></div>
+    `;
+    const cardsEl = row.querySelector('.cards');
+    SIGNS.filter(s => s.element === el.key).forEach(sign => {
+      const card = document.createElement('button');
+      card.className = 'card';
+      card.style.setProperty('--accent', el.color);
+      card.dataset.id = sign.id;
+      card.innerHTML = `
+        <span class="symbol">${sign.symbol}</span>
+        <span class="name">${sign.name}</span>
+        <span class="range">${sign.range}</span>
+      `;
+      card.addEventListener('click', () => selectSign(sign.id));
+      cardsEl.appendChild(card);
+    });
+    rowsEl.appendChild(row);
+  });
+
+  function elementColor(key){
+    return ELEMENTS.find(e => e.key === key).color;
+  }
+
+  // seeded procedural constellation
+  function mulberry32(seed){
+    return function(){
+      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function renderConstellation(sign, index, svgId){
+    const svg = document.getElementById(svgId || 'constellation');
+    const rng = mulberry32(index * 97 + 13);
+    const n = 5 + Math.floor(rng() * 3); // 5-7 stars
+    const pts = [];
+    for(let i=0;i<n;i++){
+      pts.push({
+        x: 16 + rng() * 148,
+        y: 14 + rng() * 102,
+        r: 1.4 + rng() * 1.8
+      });
+    }
+    const color = elementColor(sign.element);
+    let svgContent = '';
+    for(let i=0;i<pts.length-1;i++){
+      svgContent += `<line x1="${pts[i].x.toFixed(1)}" y1="${pts[i].y.toFixed(1)}" x2="${pts[i+1].x.toFixed(1)}" y2="${pts[i+1].y.toFixed(1)}" stroke="${color}" style="animation-delay:${(i*0.12).toFixed(2)}s"/>`;
+    }
+    pts.forEach((p, i) => {
+      svgContent += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.r.toFixed(1)}" fill="${color==='var(--gold)'?'var(--gold)':color}" style="animation-delay:${(i*0.1+0.1).toFixed(2)}s"/>`;
+    });
+    svg.innerHTML = svgContent;
+  }
+
+  function renderBar(elId, level, color){
+    const el = document.getElementById(elId);
+    el.style.setProperty('--accent-current', color);
+    el.innerHTML = '';
+    for(let i=0;i<5;i++){
+      const bar = document.createElement('i');
+      if(i < level) bar.className = 'filled';
+      el.appendChild(bar);
+    }
+  }
+
+  async function selectSign(id){
+    if(isFetching) return;
+    selectedId = id;
+    document.querySelectorAll('.card').forEach(c => c.classList.toggle('selected', c.dataset.id === id));
+
+    const sign = SIGNS.find(s => s.id === id);
+    const index = SIGNS.indexOf(sign);
+    const color = elementColor(sign.element);
+
+    const panel = document.getElementById('panel');
+    panel.classList.add('show');
+    requestAnimationFrame(() => panel.classList.add('visible'));
+
+    document.getElementById('panelSymbol').textContent = sign.symbol;
+    document.getElementById('panelSymbol').style.color = color;
+    document.getElementById('panelName').textContent = sign.name;
+    document.getElementById('panelRange').textContent = sign.range;
+    document.getElementById('panelPlanet').textContent = 'Astre : ' + sign.planet;
+    renderConstellation(sign, index);
+
+    await loadHoroscope(sign, color, false);
+  }
+
+  // --- Génération locale de l'horoscope (aucun serveur requis) ---
+
+  const OPENERS = [
+    "Aujourd'hui, {planet} éclaire votre chemin et vous pousse à faire confiance à votre instinct.",
+    "L'énergie de l'élément {element} circule fort en vous aujourd'hui, apportant clarté et détermination.",
+    "{sign}, cette journée vous invite à ralentir pour mieux observer ce qui compte vraiment.",
+    "Sous l'influence de {planet}, vos intentions gagnent en force et en netteté.",
+    "Le ciel s'aligne en votre faveur aujourd'hui : une occasion pourrait se présenter sans prévenir.",
+    "Une certaine agitation intérieure vous pousse à agir plutôt qu'à attendre.",
+    "{planet} favorise les échanges sincères et les décisions prises avec le cœur.",
+    "L'atmosphère du jour vous encourage à faire le tri entre l'essentiel et le superflu.",
+    "Votre nature de {element} prend le dessus aujourd'hui, pour le meilleur.",
+    "Un vent de renouveau souffle sur votre journée, {sign}."
+  ];
+  const MIDDLES = [
+    "Restez attentif·ve aux petits signaux, ils annoncent souvent de grands changements.",
+    "La patience sera votre meilleure alliée face aux imprévus.",
+    "Une conversation inattendue pourrait éclairer une situation en suspens.",
+    "Vos proches remarquent votre énergie particulière aujourd'hui.",
+    "C'est le moment idéal pour clarifier vos priorités.",
+    "Un léger doute peut surgir, mais votre intuition ne vous trompe pas.",
+    "Le rythme de la journée s'accélère en fin d'après-midi.",
+    "Une opportunité discrète mérite votre attention.",
+    "Prenez le temps d'écouter ce que votre corps essaie de vous dire.",
+    "Un détail du quotidien prend soudain plus de sens."
+  ];
+  const CLOSINGS = [
+    "Faites-vous confiance, la suite vous donnera raison.",
+    "Gardez l'esprit ouvert, la journée réserve encore des surprises.",
+    "Avancez à votre rythme, sans céder à la pression extérieure.",
+    "Ce qui semble incertain aujourd'hui deviendra limpide demain.",
+    "Osez dire ce que vous pensez, cela pourrait tout changer.",
+    "Laissez de la place à l'imprévu, il a du bon aujourd'hui.",
+    "Un moment de calme vous fera le plus grand bien ce soir.",
+    "Célébrez les petites victoires, elles comptent plus qu'il n'y paraît."
+  ];
+  const LOVE_PHRASES = [
+    "Un tendre échange adoucit la journée.", "La complicité prend le dessus sur les tensions.",
+    "Une déclaration surprend agréablement.", "Le cœur parle plus fort que la raison.",
+    "Un silence en dit plus qu'un discours.", "La sincérité renforce vos liens.",
+    "Un rapprochement inattendu se dessine.", "La patience nourrit une belle harmonie.",
+    "Un souvenir ravive une émotion douce.", "L'attirance se fait plus intense.",
+    "Une distance salutaire s'installe.", "Le dialogue apaise un malentendu.",
+    "Une invitation change vos plans.", "La tendresse l'emporte sur l'orgueil.",
+    "Un geste simple parle fort."
+  ];
+  const WORK_PHRASES = [
+    "Un projet avance plus vite que prévu.", "La concentration est votre meilleure alliée.",
+    "Une idée originale attire l'attention.", "La collaboration porte enfin ses fruits.",
+    "Un imprévu bouscule l'organisation du jour.", "La rigueur paie sur le long terme.",
+    "Une proposition mérite d'être étudiée.", "Le calme avant une échéance importante.",
+    "Une reconnaissance méritée arrive enfin.", "La créativité débloque une impasse.",
+    "Un détail administratif demande votre attention.", "L'ambition prend le dessus aujourd'hui.",
+    "Une négociation tourne en votre faveur.", "La fatigue invite à lever le pied.",
+    "Un nouveau départ professionnel se profile."
+  ];
+  const ENERGY_PHRASES = [
+    "Un regain de vitalité se fait sentir.", "Le corps réclame du mouvement.",
+    "Une pause s'impose en milieu de journée.", "L'enthousiasme est contagieux aujourd'hui.",
+    "Le sommeil mérite plus d'attention.", "Une respiration profonde change tout.",
+    "L'énergie monte doucement dès le matin.", "Le calme intérieur devient une force.",
+    "Une activité physique légère fait du bien.", "La lassitude cède la place à l'élan.",
+    "Un excès d'agitation demande à être canalisé.", "La nature vous ressource ce jour.",
+    "Une bouffée d'optimisme traverse la journée.", "Le corps demande à ralentir.",
+    "Une belle endurance vous porte aujourd'hui."
+  ];
+  const LUCKY_COLORS = ["Améthyste", "Or", "Bleu nuit", "Corail", "Vert sauge", "Argent", "Terracotta", "Turquoise", "Ivoire", "Bordeaux", "Lavande", "Ambre"];
+
+  function hashString(str){
+    let h = 5381;
+    for(let i=0;i<str.length;i++){ h = ((h << 5) + h) + str.charCodeAt(i); h |= 0; }
+    return h;
+  }
+
+  function fillTemplate(str, sign){
+    return str.replace('{sign}', sign.name).replace('{planet}', sign.planet).replace('{element}', sign.element);
+  }
+
+  function generateHoroscope(sign, seedStr){
+    const rng = mulberry32(hashString(seedStr));
+    const pick = (arr) => arr[Math.floor(rng() * arr.length)];
+    const level = () => 1 + Math.floor(rng() * 5);
+
+    const text = [pick(OPENERS), pick(MIDDLES), pick(CLOSINGS)].map(s => fillTemplate(s, sign)).join(' ');
+
+    return {
+      text,
+      love: pick(LOVE_PHRASES),
+      work: pick(WORK_PHRASES),
+      energy: pick(ENERGY_PHRASES),
+      loveLevel: level(),
+      workLevel: level(),
+      energyLevel: level(),
+      luckyNumber: 1 + Math.floor(rng() * 99),
+      luckyColor: pick(LUCKY_COLORS)
+    };
+  }
+
+  async function loadHoroscope(sign, color, forceRefresh){
+    const cacheKey = sign.id + '-' + dateKey;
+    const textEl = document.getElementById('horoscopeText');
+    const regenBtn = document.getElementById('regenBtn');
+
+    if(!forceRefresh && cache[cacheKey]){
+      renderHoroscope(cache[cacheKey], color);
+      return;
+    }
+
+    isFetching = true;
+    regenBtn.disabled = true;
+    textEl.className = 'horoscope-text loading';
+    textEl.textContent = 'Consultation des astres…';
+    document.getElementById('loveText').textContent = '';
+    document.getElementById('workText').textContent = '';
+    document.getElementById('energyText').textContent = '';
+    document.getElementById('loveBar').innerHTML = '';
+    document.getElementById('workBar').innerHTML = '';
+    document.getElementById('energyBar').innerHTML = '';
+    document.getElementById('luckyRow').textContent = '';
+
+    // petite pause pour garder l'effet "consultation des astres"
+    await new Promise(resolve => setTimeout(resolve, 450));
+
+    const seedStr = forceRefresh ? (sign.id + '-' + dateKey + '-' + Date.now()) : cacheKey;
+    const data = generateHoroscope(sign, seedStr);
+
+    cache[cacheKey] = data;
+    renderHoroscope(data, color);
+
+    isFetching = false;
+    regenBtn.disabled = false;
+  }
+
+  function renderHoroscope(data, color){
+    const textEl = document.getElementById('horoscopeText');
+    textEl.className = 'horoscope-text';
+    textEl.textContent = data.text;
+
+    document.getElementById('loveText').textContent = data.love;
+    document.getElementById('workText').textContent = data.work;
+    document.getElementById('energyText').textContent = data.energy;
+
+    renderBar('loveBar', data.loveLevel, color);
+    renderBar('workBar', data.workLevel, color);
+    renderBar('energyBar', data.energyLevel, color);
+
+    document.getElementById('luckyRow').innerHTML =
+      `<b>${data.luckyNumber}</b> numéro chance &nbsp;·&nbsp; <b>${data.luckyColor}</b> couleur du jour`;
+  }
+
+  document.getElementById('regenBtn').addEventListener('click', () => {
+    if(!selectedId) return;
+    const sign = SIGNS.find(s => s.id === selectedId);
+    const color = elementColor(sign.element);
+    loadHoroscope(sign, color, true);
+  });
+
+  // --- Onglets ---
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.getElementById(btn.dataset.view).classList.add('active');
+    });
+  });
+
+  // ouvre un onglet précis si l'URL contient #semaine, #compatibilite ou #archive
+  const hashToView = { semaine:'viewWeek', compatibilite:'viewCompat', archive:'viewArchive', jour:'viewDay' };
+  const initialHash = window.location.hash.replace('#','');
+  if(hashToView[initialHash]){
+    const targetBtn = document.querySelector(`.tab-btn[data-view="${hashToView[initialHash]}"]`);
+    if(targetBtn) targetBtn.click();
+  }
+
+  // --- Vue Semaine ---
+  const DAY_NAMES_SHORT = ['DIM', 'LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM'];
+  const weekChipsEl = document.getElementById('weekChips');
+
+  SIGNS.forEach(sign => {
+    const chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.style.setProperty('--accent', elementColor(sign.element));
+    chip.dataset.id = sign.id;
+    chip.innerHTML = `<span class="chip-symbol">${sign.symbol}</span><span>${sign.name}</span>`;
+    chip.addEventListener('click', () => selectWeekSign(sign.id));
+    weekChipsEl.appendChild(chip);
+  });
+
+  function selectWeekSign(id){
+    document.querySelectorAll('#weekChips .chip').forEach(c => c.classList.toggle('selected', c.dataset.id === id));
+    document.getElementById('weekHint').style.display = 'none';
+    const sign = SIGNS.find(s => s.id === id);
+    renderWeek(sign);
+  }
+
+  function renderWeek(sign){
+    const color = elementColor(sign.element);
+    const days = [];
+    for(let i=0; i<7; i++){
+      const d = new Date();
+      d.setDate(d.getDate() + i);
+      const dKey = d.toISOString().slice(0,10);
+      const data = generateHoroscope(sign, sign.id + '-' + dKey);
+      days.push({ d, dKey, data });
+    }
+
+    // journée la plus favorable de la semaine (énergie la plus haute)
+    let best = days[0];
+    days.forEach(day => { if(day.data.energyLevel > best.data.energyLevel) best = day; });
+    const bestLabel = best.dKey === dateKey
+      ? "aujourd'hui"
+      : new Intl.DateTimeFormat('fr-FR', { weekday:'long' }).format(best.d);
+    const summaryEl = document.getElementById('weekSummary');
+    summaryEl.innerHTML = `<div class="week-summary">✦ Journée la plus favorable pour ${sign.name} cette semaine : <strong>${bestLabel}</strong> — ${best.data.energy.toLowerCase()}</div>`;
+
+    const grid = document.getElementById('weekGrid');
+    grid.innerHTML = '';
+
+    days.forEach((day, i) => {
+      const dayLabel = i === 0 ? "Aujourd'hui" : new Intl.DateTimeFormat('fr-FR', { weekday:'long' }).format(day.d);
+      const dateLabel = new Intl.DateTimeFormat('fr-FR', { day:'numeric', month:'long' }).format(day.d);
+
+      const card = document.createElement('div');
+      card.className = 'week-day-card' + (i === 0 ? ' today' : '');
+      card.innerHTML = `
+        <div>
+          <div class="week-day-label">${dayLabel.charAt(0).toUpperCase() + dayLabel.slice(1)}</div>
+          <div class="week-day-date">${dateLabel}</div>
+        </div>
+        <div>
+          <p class="week-day-text">${day.data.text}</p>
+          <div class="week-day-stats">
+            <div>
+              <div class="stat-label">Amour</div>
+              <span class="week-stat-phrase">${day.data.love}</span>
+              <div class="bar" id="wkLove${i}"></div>
+            </div>
+            <div>
+              <div class="stat-label">Travail</div>
+              <span class="week-stat-phrase">${day.data.work}</span>
+              <div class="bar" id="wkWork${i}"></div>
+            </div>
+            <div>
+              <div class="stat-label">Énergie</div>
+              <span class="week-stat-phrase">${day.data.energy}</span>
+              <div class="bar" id="wkEnergy${i}"></div>
+            </div>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+      renderBar('wkLove' + i, day.data.loveLevel, color);
+      renderBar('wkWork' + i, day.data.workLevel, color);
+      renderBar('wkEnergy' + i, day.data.energyLevel, color);
+    });
+  }
+
+  // --- Vue Compatibilité ---
+  const compatA = document.getElementById('compatA');
+  const compatB = document.getElementById('compatB');
+  SIGNS.forEach(s => {
+    compatA.add(new Option(s.symbol + '  ' + s.name, s.id));
+    compatB.add(new Option(s.symbol + '  ' + s.name, s.id));
+  });
+  compatB.selectedIndex = 1;
+
+  function elementAffinity(e1, e2){
+    if(e1 === e2) return 'same';
+    const compatiblePairs = [['feu','air'], ['air','feu'], ['terre','eau'], ['eau','terre']];
+    if(compatiblePairs.some(p => p[0] === e1 && p[1] === e2)) return 'compatible';
+    return 'challenging';
+  }
+
+  const COMPAT_TEMPLATES = {
+    same: [
+      "{signA} et {signB} partagent la même énergie {elementA} : une compréhension presque instinctive s'installe entre eux, à condition de laisser de la place à l'autre.",
+      "Entre {signA} et {signB}, l'élément {elementA} crée un langage commun immédiat — l'alchimie est naturelle, presque évidente.",
+      "{signA} et {signB} se reconnaissent tout de suite : même élan, même intensité. Le duo peut être puissant, si chacun garde son espace."
+    ],
+    compatible: [
+      "{signA} ({elementA}) et {signB} ({elementB}) forment un duo complémentaire : l'un nourrit l'énergie de l'autre, pour un équilibre plutôt harmonieux.",
+      "L'alliance {elementA}-{elementB} entre {signA} et {signB} fonctionne bien : chacun apporte ce qui manque à l'autre.",
+      "{signA} et {signB} se stimulent mutuellement — leurs éléments {elementA} et {elementB} s'accordent naturellement."
+    ],
+    challenging: [
+      "{signA} et {signB} avancent avec des rythmes différents : {elementA} et {elementB} demandent des efforts d'adaptation de part et d'autre.",
+      "Entre {signA} et {signB}, l'alchimie n'est pas immédiate — {elementA} et {elementB} ont besoin de temps pour trouver leur équilibre.",
+      "{signA} et {signB} se complètent surtout dans la différence : {elementA} et {elementB} demandent de la patience mutuelle."
+    ]
+  };
+
+  const VIGILANCE_TEMPLATES = {
+    same: [
+      "Attention à ne pas nourrir les mêmes travers en miroir — un peu de recul aide à équilibrer la relation.",
+      "La ressemblance peut parfois manquer de piment : cultivez aussi vos différences.",
+      "Deux tempéraments {elementA} au même endroit peuvent vite s'épuiser mutuellement — pensez à souffler chacun de votre côté."
+    ],
+    compatible: [
+      "La complémentarité fonctionne bien, mais elle demande à chacun de reconnaître la valeur de l'autre.",
+      "Ne laissez pas les rôles se figer : l'équilibre se construit dans les deux sens.",
+      "Cette belle entente mérite d'être entretenue activement, pas seulement subie."
+    ],
+    challenging: [
+      "La patience sera votre meilleure alliée pour dépasser vos différences de rythme.",
+      "Prenez le temps d'expliquer vos besoins, plutôt que de les supposer compris.",
+      "Ce duo demande des efforts réguliers, mais peut devenir une vraie force une fois apprivoisé."
+    ]
+  };
+
+  const CATEGORY_PHRASES = {
+    love: ["Une alchimie évidente au premier regard.", "L'attirance grandit avec le temps.", "Un lien qui demande de la patience.", "Une complicité sincère et naturelle.", "Les non-dits pourraient créer des tensions.", "Une belle énergie de couple.", "L'alchimie est là, à cultiver.", "Un duo attachant mais parfois orageux."],
+    friend: ["Des fous rires assurés entre vous.", "Une confiance qui se construit vite.", "Des points de vue qui s'opposent parfois.", "Une amitié solide sur la durée.", "Vous vous comprenez sans trop parler.", "Il faudra accepter vos différences.", "Une belle complicité au quotidien.", "Des débats animés mais stimulants."],
+    work: ["Une collaboration efficace et fluide.", "Vos méthodes de travail diffèrent.", "Ensemble, vous allez droit au but.", "Un bon équilibre entre vos forces.", "Des frictions possibles sur l'organisation.", "Une équipe complémentaire et productive.", "Il faudra clarifier les rôles.", "Vos ambitions s'alignent naturellement."],
+    money: ["Une vision commune de l'épargne.", "Vos rapports à l'argent diffèrent.", "Une bonne entente sur les dépenses.", "Mieux vaut clarifier les comptes ensemble.", "Un duo plutôt raisonnable côté finances.", "L'un dépense, l'autre économise.", "Des projets communs bien gérés.", "La transparence financière sera clé."],
+    comm: ["Vous vous comprenez à demi-mot.", "Le dialogue demande un peu d'effort.", "Des échanges francs et directs.", "Il faudra apprendre à s'écouter.", "Une belle fluidité dans les discussions.", "Les malentendus seront rares.", "Prenez le temps de vous expliquer.", "Une communication naturelle et sincère."]
+  };
+
+  const SCORE_RANGES = {
+    same: { love:[70,95], friend:[75,95], work:[65,90], money:[60,90], comm:[70,95] },
+    compatible: { love:[65,90], friend:[70,90], work:[70,90], money:[65,88], comm:[68,90] },
+    challenging: { love:[40,70], friend:[45,70], work:[40,65], money:[38,65], comm:[40,68] }
+  };
+
+  function fillCompatTemplate(str, a, b){
+    return str.split('{signA}').join(a.name).split('{signB}').join(b.name)
+      .split('{elementA}').join(a.element).split('{elementB}').join(b.element);
+  }
+
+  function generateCompat(a, b){
+    const ids = [a.id, b.id].sort();
+    const rng = mulberry32(hashString('compat-' + ids.join('-')));
+    const affinity = elementAffinity(a.element, b.element);
+    const ranges = SCORE_RANGES[affinity];
+    const pctIn = ([min, max]) => min + Math.floor(rng() * (max - min + 1));
+    const pick = (arr) => arr[Math.floor(rng() * arr.length)];
+
+    const goodTemplates = COMPAT_TEMPLATES[affinity];
+    const watchTemplates = VIGILANCE_TEMPLATES[affinity];
+    const textGood = fillCompatTemplate(pick(goodTemplates), a, b);
+    const textWatch = fillCompatTemplate(pick(watchTemplates), a, b);
+
+    const love = pctIn(ranges.love);
+    const friend = pctIn(ranges.friend);
+    const work = pctIn(ranges.work);
+    const money = pctIn(ranges.money);
+    const comm = pctIn(ranges.comm);
+    const global = Math.round((love + friend + work + money + comm) / 5);
+
+    return {
+      love, friend, work, money, comm, global,
+      lovePhrase: pick(CATEGORY_PHRASES.love),
+      friendPhrase: pick(CATEGORY_PHRASES.friend),
+      workPhrase: pick(CATEGORY_PHRASES.work),
+      moneyPhrase: pick(CATEGORY_PHRASES.money),
+      commPhrase: pick(CATEGORY_PHRASES.comm),
+      textGood, textWatch
+    };
+  }
+
+  document.getElementById('compatBtn').addEventListener('click', () => {
+    const a = SIGNS.find(s => s.id === compatA.value);
+    const b = SIGNS.find(s => s.id === compatB.value);
+    const result = generateCompat(a, b);
+
+    document.getElementById('compatResult').style.display = 'block';
+    const symA = document.getElementById('compatSymA');
+    const symB = document.getElementById('compatSymB');
+    symA.textContent = a.symbol;
+    symA.style.color = elementColor(a.element);
+    symB.textContent = b.symbol;
+    symB.style.color = elementColor(b.element);
+
+    document.getElementById('compatGlobalScore').textContent = result.global + '%';
+
+    document.getElementById('compatLovePct').style.width = result.love + '%';
+    document.getElementById('compatFriendPct').style.width = result.friend + '%';
+    document.getElementById('compatWorkPct').style.width = result.work + '%';
+    document.getElementById('compatMoneyPct').style.width = result.money + '%';
+    document.getElementById('compatCommPct').style.width = result.comm + '%';
+
+    document.getElementById('compatLoveNum').textContent = result.love + '% — ' + result.lovePhrase;
+    document.getElementById('compatFriendNum').textContent = result.friend + '% — ' + result.friendPhrase;
+    document.getElementById('compatWorkNum').textContent = result.work + '% — ' + result.workPhrase;
+    document.getElementById('compatMoneyNum').textContent = result.money + '% — ' + result.moneyPhrase;
+    document.getElementById('compatCommNum').textContent = result.comm + '% — ' + result.commPhrase;
+
+    document.getElementById('compatTextGood').textContent = result.textGood;
+    document.getElementById('compatTextWatch').textContent = result.textWatch;
+  });
+
+  // --- Vue Archive ---
+  let archiveSign = null;
+  const archiveChipsEl = document.getElementById('archiveChips');
+  const archiveDateInput = document.getElementById('archiveDate');
+  const todayISO = new Date().toISOString().slice(0,10);
+  archiveDateInput.max = todayISO;
+
+  SIGNS.forEach(sign => {
+    const chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.style.setProperty('--accent', elementColor(sign.element));
+    chip.dataset.id = sign.id;
+    chip.innerHTML = `<span class="chip-symbol">${sign.symbol}</span><span>${sign.name}</span>`;
+    chip.addEventListener('click', () => selectArchiveSign(sign.id));
+    archiveChipsEl.appendChild(chip);
+  });
+
+  function selectArchiveSign(id){
+    document.querySelectorAll('#archiveChips .chip').forEach(c => c.classList.toggle('selected', c.dataset.id === id));
+    document.getElementById('archiveHint').style.display = 'none';
+    document.getElementById('archiveControls').style.display = 'flex';
+    archiveSign = SIGNS.find(s => s.id === id);
+    buildArchivePills();
+    // par défaut, on montre hier (le premier jour "passé" disponible)
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yKey = yesterday.toISOString().slice(0,10);
+    archiveDateInput.value = yKey;
+    renderArchiveDay(archiveSign, yKey);
+  }
+
+  function buildArchivePills(){
+    const pillsEl = document.getElementById('archivePills');
+    pillsEl.innerHTML = '';
+    for(let i=1; i<=7; i++){
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dKey = d.toISOString().slice(0,10);
+      const label = i === 1 ? 'Hier' : new Intl.DateTimeFormat('fr-FR', { weekday:'short', day:'numeric' }).format(d);
+      const pill = document.createElement('button');
+      pill.className = 'day-pill' + (i === 1 ? ' selected' : '');
+      pill.textContent = label;
+      pill.dataset.date = dKey;
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('#archivePills .day-pill').forEach(p => p.classList.remove('selected'));
+        pill.classList.add('selected');
+        archiveDateInput.value = dKey;
+        renderArchiveDay(archiveSign, dKey);
+      });
+      pillsEl.appendChild(pill);
+    }
+  }
+
+  archiveDateInput.addEventListener('change', () => {
+    if(!archiveSign || !archiveDateInput.value) return;
+    document.querySelectorAll('#archivePills .day-pill').forEach(p => p.classList.toggle('selected', p.dataset.date === archiveDateInput.value));
+    renderArchiveDay(archiveSign, archiveDateInput.value);
+  });
+
+  function renderArchiveDay(sign, dKeyStr){
+    const index = SIGNS.indexOf(sign);
+    const color = elementColor(sign.element);
+    const data = generateHoroscope(sign, sign.id + '-' + dKeyStr);
+
+    const panel = document.getElementById('archivePanel');
+    panel.classList.add('show');
+    requestAnimationFrame(() => panel.classList.add('visible'));
+
+    document.getElementById('archiveSymbol').textContent = sign.symbol;
+    document.getElementById('archiveSymbol').style.color = color;
+    document.getElementById('archiveName').textContent = sign.name;
+
+    const d = new Date(dKeyStr + 'T00:00:00');
+    const label = dKeyStr === todayISO
+      ? "Aujourd'hui"
+      : new Intl.DateTimeFormat('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' }).format(d);
+    document.getElementById('archiveDateLabel').textContent = label;
+
+    renderConstellation(sign, index, 'archiveConstellation');
+
+    document.getElementById('archiveText').textContent = data.text;
+    document.getElementById('archiveLoveText').textContent = data.love;
+    document.getElementById('archiveWorkText').textContent = data.work;
+    document.getElementById('archiveEnergyText').textContent = data.energy;
+    renderBar('archiveLoveBar', data.loveLevel, color);
+    renderBar('archiveWorkBar', data.workLevel, color);
+    renderBar('archiveEnergyBar', data.energyLevel, color);
+    document.getElementById('archiveLuckyRow').innerHTML =
+      `<b>${data.luckyNumber}</b> numéro chance &nbsp;·&nbsp; <b>${data.luckyColor}</b> couleur du jour`;
+  }
+</script>
+
+</body>
+</html>
