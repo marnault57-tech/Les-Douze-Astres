@@ -323,28 +323,55 @@
   .regen:disabled{ opacity:.4; cursor:default; text-decoration:none; }
 
   /* tabs */
-  .tabs{
-    display:flex;
-    gap:0;
-    margin-bottom:44px;
+  .tabbar-sticky{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(15,18,32,0.9);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line);
   }
+  .tabbar-inner{
+    max-width:920px;
+    margin:0 auto;
+    padding:14px 24px;
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .tabbar-inner::-webkit-scrollbar{ display:none; }
+
   .tab-btn{
-    background:none;
-    border:none;
+    flex:none;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    background:transparent;
+    border:1px solid var(--line);
     color:var(--muted);
     font-family:'JetBrains Mono', monospace;
     font-size:11.5px;
-    letter-spacing:.1em;
+    letter-spacing:.06em;
     text-transform:uppercase;
-    padding:0 0 14px;
-    margin-right:28px;
+    padding:9px 16px;
+    border-radius:999px;
     cursor:pointer;
-    border-bottom:2px solid transparent;
-    transition:color .15s ease;
+    white-space:nowrap;
+    transition:background .15s ease, border-color .15s ease, color .15s ease;
   }
-  .tab-btn:hover{ color:var(--starlight); }
-  .tab-btn.active{ color:var(--gold); border-bottom-color:var(--gold); }
+  .tab-btn .tab-icon{
+    font-family:'Cinzel', serif;
+    font-size:14px;
+    line-height:1;
+  }
+  .tab-btn:hover{ color:var(--starlight); border-color:var(--muted); }
+  .tab-btn.active{
+    background:rgba(212, 175, 106, 0.14);
+    border-color:var(--gold);
+    color:var(--gold);
+  }
 
   .view{ display:none; }
   .view.active{ display:block; }
@@ -802,6 +829,16 @@
 </head>
 <body>
 
+<div class="tabbar-sticky">
+  <div class="tabbar-inner">
+    <button class="tab-btn active" data-view="viewDay"><span class="tab-icon">☉</span>Jour</button>
+    <button class="tab-btn" data-view="viewWeek"><span class="tab-icon">☾</span>Semaine</button>
+    <button class="tab-btn" data-view="viewNews"><span class="tab-icon">★</span>Actualités</button>
+    <button class="tab-btn" data-view="viewCompat"><span class="tab-icon">✦</span>Compatibilité</button>
+    <button class="tab-btn" data-view="viewArchive"><span class="tab-icon">⟲</span>Archive</button>
+  </div>
+</div>
+
 <div class="aurora"></div>
 
 <div class="wrap">
@@ -809,14 +846,6 @@
   <p class="eyebrow" id="eyebrow">Carte du ciel</p>
   <h1>Les Douze Astres</h1>
   <p class="sub">Choisissez votre signe pour révéler ce que le ciel réserve aujourd'hui.</p>
-
-  <div class="tabs">
-    <button class="tab-btn active" data-view="viewDay">Jour</button>
-    <button class="tab-btn" data-view="viewWeek">Semaine</button>
-    <button class="tab-btn" data-view="viewCompat">Compatibilité</button>
-    <button class="tab-btn" data-view="viewArchive">Archive</button>
-    <button class="tab-btn" data-view="viewNews">Actualités</button>
-  </div>
 
   <div class="view active" id="viewDay">
     <div id="rows"></div>
