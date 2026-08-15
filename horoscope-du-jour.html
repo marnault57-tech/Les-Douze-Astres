@@ -893,7 +893,7 @@
 
   <div class="view" id="viewWeek">
     <div class="chip-row" id="weekChips"></div>
-    <p class="week-hint" id="weekHint">Choisissez votre signe pour découvrir la tendance des 7 prochains jours.</p>
+    <p class="week-hint" id="weekHint">Tendance de la semaine pour le Bélier — changez de signe à tout moment.</p>
     <div id="weekSummary"></div>
     <div class="week-grid" id="weekGrid"></div>
   </div>
@@ -960,7 +960,7 @@
 
   <div class="view" id="viewArchive">
     <div class="chip-row" id="archiveChips"></div>
-    <p class="week-hint" id="archiveHint">Choisissez votre signe pour explorer les horoscopes des jours précédents.</p>
+    <p class="week-hint" id="archiveHint">Archive du Bélier — changez de signe ou de date à tout moment.</p>
 
     <div class="archive-controls" id="archiveControls" style="display:none;">
       <div class="day-pill-row" id="archivePills"></div>
@@ -1376,6 +1376,8 @@
     weekChipsEl.appendChild(chip);
   });
 
+  selectWeekSign(SIGNS[0].id); // pré-sélection pour éviter un onglet vide au premier affichage
+
   function selectWeekSign(id){
     document.querySelectorAll('#weekChips .chip').forEach(c => c.classList.toggle('selected', c.dataset.id === id));
     document.getElementById('weekHint').style.display = 'none';
@@ -1547,7 +1549,7 @@
     };
   }
 
-  document.getElementById('compatBtn').addEventListener('click', () => {
+  function renderCompatResult(){
     const a = SIGNS.find(s => s.id === compatA.value);
     const b = SIGNS.find(s => s.id === compatB.value);
     const result = generateCompat(a, b);
@@ -1576,7 +1578,12 @@
 
     document.getElementById('compatTextGood').textContent = result.textGood;
     document.getElementById('compatTextWatch').textContent = result.textWatch;
-  });
+  }
+
+  document.getElementById('compatBtn').addEventListener('click', renderCompatResult);
+  compatA.addEventListener('change', renderCompatResult);
+  compatB.addEventListener('change', renderCompatResult);
+  renderCompatResult(); // pré-affichage pour éviter un onglet vide au premier affichage
 
   // --- Vue Archive ---
   let archiveSign = null;
@@ -1594,6 +1601,8 @@
     chip.addEventListener('click', () => selectArchiveSign(sign.id));
     archiveChipsEl.appendChild(chip);
   });
+
+  selectArchiveSign(SIGNS[0].id); // pré-sélection pour éviter un onglet vide au premier affichage
 
   function selectArchiveSign(id){
     document.querySelectorAll('#archiveChips .chip').forEach(c => c.classList.toggle('selected', c.dataset.id === id));
