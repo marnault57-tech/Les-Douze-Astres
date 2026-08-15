@@ -381,48 +381,69 @@
 
   .week-hint{ color:var(--muted); font-size:14px; margin:24px 0; }
 
-  .week-grid{
+  .week-summary{
+    background:var(--nebula-2);
+    border:1px solid var(--gold);
+    border-radius:8px;
+    padding:14px 18px;
+    font-size:14px;
+    line-height:1.5;
+    color:var(--starlight);
+    margin:24px 0 30px;
+  }
+  .week-summary strong{ color:var(--gold); }
+
+  .week-grid{ display:block; }
+
+  .week-day-card{
     display:grid;
-    grid-template-columns:repeat(7, 1fr);
-    gap:10px;
-    margin-top:28px;
-  }
-  @media (max-width:760px){
-    .week-grid{ grid-template-columns:repeat(4, 1fr); }
-  }
-  @media (max-width:460px){
-    .week-grid{ grid-template-columns:repeat(2, 1fr); }
-  }
-  .day-card{
+    grid-template-columns:130px 1fr;
+    gap:28px;
     background:var(--nebula);
     border:1px solid var(--line);
-    border-radius:8px;
-    padding:16px 10px;
-    text-align:center;
+    border-radius:10px;
+    padding:26px 28px;
+    margin-bottom:14px;
   }
-  .day-card.today{
+  .week-day-card.today{
     border-color:var(--gold);
     box-shadow:0 0 0 1px var(--gold);
   }
-  .day-label{
-    font-family:'JetBrains Mono', monospace;
-    font-size:10px;
-    letter-spacing:.06em;
-    text-transform:uppercase;
+  @media (max-width:640px){
+    .week-day-card{ grid-template-columns:1fr; gap:14px; }
+  }
+  .week-day-label{
+    font-family:'Cinzel', serif;
+    font-size:18px;
     color:var(--gold);
-    margin-bottom:2px;
+    margin-bottom:5px;
   }
-  .day-date{
+  .week-day-date{
     font-family:'JetBrains Mono', monospace;
-    font-size:10.5px;
+    font-size:11px;
     color:var(--muted);
-    margin-bottom:12px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
   }
-  .day-phrase{
-    font-size:12.5px;
-    line-height:1.45;
-    min-height:54px;
-    margin-bottom:10px;
+  .week-day-text{
+    font-size:15.5px;
+    line-height:1.65;
+    color:var(--starlight);
+    margin:0 0 20px;
+  }
+  .week-day-stats{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
+  }
+  @media (max-width:560px){
+    .week-day-stats{ grid-template-columns:1fr; }
+  }
+  .week-stat-phrase{
+    font-size:13px;
+    display:block;
+    margin:5px 0 9px;
+    color:var(--starlight);
   }
 
   /* compatibilité */
@@ -466,31 +487,52 @@
     background:linear-gradient(180deg, var(--nebula), var(--nebula-2));
     border:1px solid var(--line);
     border-radius:10px;
-    padding:36px 32px;
+    padding:40px 36px;
   }
   .compat-symbols{
     display:flex;
     align-items:center;
     justify-content:center;
     gap:22px;
-    margin-bottom:28px;
+    margin-bottom:18px;
   }
   .compat-symbols .sym{
     font-family:'Cinzel', serif;
-    font-size:46px;
+    font-size:52px;
   }
   .compat-symbols .divider{
     color:var(--gold);
     font-size:18px;
   }
-  .compat-score-row{
+  .compat-headline{
+    text-align:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:36px;
+  }
+  .compat-headline .score{
+    display:block;
+    font-family:'Cinzel', serif;
+    font-size:40px;
+    letter-spacing:0;
+    text-transform:none;
+    color:var(--gold);
+    margin-top:6px;
+  }
+  .compat-category-grid{
     display:grid;
     grid-template-columns:repeat(3, 1fr);
-    gap:22px;
-    margin-bottom:30px;
+    gap:24px 28px;
+    margin-bottom:38px;
   }
-  @media (max-width:560px){
-    .compat-score-row{ grid-template-columns:1fr; }
+  @media (max-width:680px){
+    .compat-category-grid{ grid-template-columns:repeat(2, 1fr); }
+  }
+  @media (max-width:420px){
+    .compat-category-grid{ grid-template-columns:1fr; }
   }
   .pct-bar{
     height:6px;
@@ -506,13 +548,29 @@
     border-radius:3px;
     transition:width .5s ease;
   }
-  .compat-text{
-    font-size:16.5px;
-    line-height:1.75;
-    text-align:center;
-    max-width:600px;
-    margin:0 auto;
+  .compat-blocks{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:32px;
+    padding-top:28px;
+    border-top:1px solid var(--line);
+  }
+  @media (max-width:640px){
+    .compat-blocks{ grid-template-columns:1fr; }
+  }
+  .compat-block-title{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:10px;
+  }
+  .compat-block-text{
+    font-size:14.5px;
+    line-height:1.65;
     color:var(--starlight);
+    margin:0;
   }
 
   /* archive */
@@ -619,6 +677,7 @@
   <div class="view" id="viewWeek">
     <div class="chip-row" id="weekChips"></div>
     <p class="week-hint" id="weekHint">Choisissez votre signe pour découvrir la tendance des 7 prochains jours.</p>
+    <div id="weekSummary"></div>
     <div class="week-grid" id="weekGrid"></div>
   </div>
 
@@ -635,7 +694,13 @@
         <span class="divider">✦</span>
         <span class="sym" id="compatSymB"></span>
       </div>
-      <div class="compat-score-row">
+
+      <div class="compat-headline">
+        Affinité globale
+        <span class="score" id="compatGlobalScore"></span>
+      </div>
+
+      <div class="compat-category-grid">
         <div>
           <div class="stat-label">Amour</div>
           <div class="pct-bar"><div class="pct-bar-fill" id="compatLovePct"></div></div>
@@ -651,8 +716,28 @@
           <div class="pct-bar"><div class="pct-bar-fill" id="compatWorkPct"></div></div>
           <div class="stat-phrase" id="compatWorkNum"></div>
         </div>
+        <div>
+          <div class="stat-label">Argent</div>
+          <div class="pct-bar"><div class="pct-bar-fill" id="compatMoneyPct"></div></div>
+          <div class="stat-phrase" id="compatMoneyNum"></div>
+        </div>
+        <div>
+          <div class="stat-label">Communication</div>
+          <div class="pct-bar"><div class="pct-bar-fill" id="compatCommPct"></div></div>
+          <div class="stat-phrase" id="compatCommNum"></div>
+        </div>
       </div>
-      <p class="compat-text" id="compatText"></p>
+
+      <div class="compat-blocks">
+        <div>
+          <div class="compat-block-title">✦ Ce qui vous rapproche</div>
+          <p class="compat-block-text" id="compatTextGood"></p>
+        </div>
+        <div>
+          <div class="compat-block-title">◈ Points de vigilance</div>
+          <p class="compat-block-text" id="compatTextWatch"></p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1027,32 +1112,65 @@
   }
 
   function renderWeek(sign){
-    const grid = document.getElementById('weekGrid');
-    grid.innerHTML = '';
     const color = elementColor(sign.element);
-    const pool = MIDDLES.concat(CLOSINGS);
-
+    const days = [];
     for(let i=0; i<7; i++){
       const d = new Date();
       d.setDate(d.getDate() + i);
       const dKey = d.toISOString().slice(0,10);
-      const rng = mulberry32(hashString(sign.id + '-week-' + dKey));
-      const phrase = fillTemplate(pool[Math.floor(rng() * pool.length)], sign);
-      const level = 1 + Math.floor(rng() * 5);
-      const dayLabel = i === 0 ? "Aujourd'hui" : DAY_NAMES_SHORT[d.getDay()];
-      const dateLabel = new Intl.DateTimeFormat('fr-FR', { day:'numeric', month:'short' }).format(d);
+      const data = generateHoroscope(sign, sign.id + '-' + dKey);
+      days.push({ d, dKey, data });
+    }
+
+    // journée la plus favorable de la semaine (énergie la plus haute)
+    let best = days[0];
+    days.forEach(day => { if(day.data.energyLevel > best.data.energyLevel) best = day; });
+    const bestLabel = best.dKey === dateKey
+      ? "aujourd'hui"
+      : new Intl.DateTimeFormat('fr-FR', { weekday:'long' }).format(best.d);
+    const summaryEl = document.getElementById('weekSummary');
+    summaryEl.innerHTML = `<div class="week-summary">✦ Journée la plus favorable pour ${sign.name} cette semaine : <strong>${bestLabel}</strong> — ${best.data.energy.toLowerCase()}</div>`;
+
+    const grid = document.getElementById('weekGrid');
+    grid.innerHTML = '';
+
+    days.forEach((day, i) => {
+      const dayLabel = i === 0 ? "Aujourd'hui" : new Intl.DateTimeFormat('fr-FR', { weekday:'long' }).format(day.d);
+      const dateLabel = new Intl.DateTimeFormat('fr-FR', { day:'numeric', month:'long' }).format(day.d);
 
       const card = document.createElement('div');
-      card.className = 'day-card' + (i === 0 ? ' today' : '');
+      card.className = 'week-day-card' + (i === 0 ? ' today' : '');
       card.innerHTML = `
-        <div class="day-label">${dayLabel}</div>
-        <div class="day-date">${dateLabel}</div>
-        <div class="day-phrase">${phrase}</div>
-        <div class="bar" id="weekBar${i}" style="justify-content:center;"></div>
+        <div>
+          <div class="week-day-label">${dayLabel.charAt(0).toUpperCase() + dayLabel.slice(1)}</div>
+          <div class="week-day-date">${dateLabel}</div>
+        </div>
+        <div>
+          <p class="week-day-text">${day.data.text}</p>
+          <div class="week-day-stats">
+            <div>
+              <div class="stat-label">Amour</div>
+              <span class="week-stat-phrase">${day.data.love}</span>
+              <div class="bar" id="wkLove${i}"></div>
+            </div>
+            <div>
+              <div class="stat-label">Travail</div>
+              <span class="week-stat-phrase">${day.data.work}</span>
+              <div class="bar" id="wkWork${i}"></div>
+            </div>
+            <div>
+              <div class="stat-label">Énergie</div>
+              <span class="week-stat-phrase">${day.data.energy}</span>
+              <div class="bar" id="wkEnergy${i}"></div>
+            </div>
+          </div>
+        </div>
       `;
       grid.appendChild(card);
-      renderBar('weekBar' + i, level, color);
-    }
+      renderBar('wkLove' + i, day.data.loveLevel, color);
+      renderBar('wkWork' + i, day.data.workLevel, color);
+      renderBar('wkEnergy' + i, day.data.energyLevel, color);
+    });
   }
 
   // --- Vue Compatibilité ---
@@ -1089,10 +1207,36 @@
     ]
   };
 
+  const VIGILANCE_TEMPLATES = {
+    same: [
+      "Attention à ne pas nourrir les mêmes travers en miroir — un peu de recul aide à équilibrer la relation.",
+      "La ressemblance peut parfois manquer de piment : cultivez aussi vos différences.",
+      "Deux tempéraments {elementA} au même endroit peuvent vite s'épuiser mutuellement — pensez à souffler chacun de votre côté."
+    ],
+    compatible: [
+      "La complémentarité fonctionne bien, mais elle demande à chacun de reconnaître la valeur de l'autre.",
+      "Ne laissez pas les rôles se figer : l'équilibre se construit dans les deux sens.",
+      "Cette belle entente mérite d'être entretenue activement, pas seulement subie."
+    ],
+    challenging: [
+      "La patience sera votre meilleure alliée pour dépasser vos différences de rythme.",
+      "Prenez le temps d'expliquer vos besoins, plutôt que de les supposer compris.",
+      "Ce duo demande des efforts réguliers, mais peut devenir une vraie force une fois apprivoisé."
+    ]
+  };
+
+  const CATEGORY_PHRASES = {
+    love: ["Une alchimie évidente au premier regard.", "L'attirance grandit avec le temps.", "Un lien qui demande de la patience.", "Une complicité sincère et naturelle.", "Les non-dits pourraient créer des tensions.", "Une belle énergie de couple.", "L'alchimie est là, à cultiver.", "Un duo attachant mais parfois orageux."],
+    friend: ["Des fous rires assurés entre vous.", "Une confiance qui se construit vite.", "Des points de vue qui s'opposent parfois.", "Une amitié solide sur la durée.", "Vous vous comprenez sans trop parler.", "Il faudra accepter vos différences.", "Une belle complicité au quotidien.", "Des débats animés mais stimulants."],
+    work: ["Une collaboration efficace et fluide.", "Vos méthodes de travail diffèrent.", "Ensemble, vous allez droit au but.", "Un bon équilibre entre vos forces.", "Des frictions possibles sur l'organisation.", "Une équipe complémentaire et productive.", "Il faudra clarifier les rôles.", "Vos ambitions s'alignent naturellement."],
+    money: ["Une vision commune de l'épargne.", "Vos rapports à l'argent diffèrent.", "Une bonne entente sur les dépenses.", "Mieux vaut clarifier les comptes ensemble.", "Un duo plutôt raisonnable côté finances.", "L'un dépense, l'autre économise.", "Des projets communs bien gérés.", "La transparence financière sera clé."],
+    comm: ["Vous vous comprenez à demi-mot.", "Le dialogue demande un peu d'effort.", "Des échanges francs et directs.", "Il faudra apprendre à s'écouter.", "Une belle fluidité dans les discussions.", "Les malentendus seront rares.", "Prenez le temps de vous expliquer.", "Une communication naturelle et sincère."]
+  };
+
   const SCORE_RANGES = {
-    same: { love:[70,95], friend:[75,95], work:[65,90] },
-    compatible: { love:[65,90], friend:[70,90], work:[70,90] },
-    challenging: { love:[40,70], friend:[45,70], work:[40,65] }
+    same: { love:[70,95], friend:[75,95], work:[65,90], money:[60,90], comm:[70,95] },
+    compatible: { love:[65,90], friend:[70,90], work:[70,90], money:[65,88], comm:[68,90] },
+    challenging: { love:[40,70], friend:[45,70], work:[40,65], money:[38,65], comm:[40,68] }
   };
 
   function fillCompatTemplate(str, a, b){
@@ -1106,13 +1250,28 @@
     const affinity = elementAffinity(a.element, b.element);
     const ranges = SCORE_RANGES[affinity];
     const pctIn = ([min, max]) => min + Math.floor(rng() * (max - min + 1));
-    const templates = COMPAT_TEMPLATES[affinity];
-    const text = fillCompatTemplate(templates[Math.floor(rng() * templates.length)], a, b);
+    const pick = (arr) => arr[Math.floor(rng() * arr.length)];
+
+    const goodTemplates = COMPAT_TEMPLATES[affinity];
+    const watchTemplates = VIGILANCE_TEMPLATES[affinity];
+    const textGood = fillCompatTemplate(pick(goodTemplates), a, b);
+    const textWatch = fillCompatTemplate(pick(watchTemplates), a, b);
+
+    const love = pctIn(ranges.love);
+    const friend = pctIn(ranges.friend);
+    const work = pctIn(ranges.work);
+    const money = pctIn(ranges.money);
+    const comm = pctIn(ranges.comm);
+    const global = Math.round((love + friend + work + money + comm) / 5);
+
     return {
-      love: pctIn(ranges.love),
-      friend: pctIn(ranges.friend),
-      work: pctIn(ranges.work),
-      text
+      love, friend, work, money, comm, global,
+      lovePhrase: pick(CATEGORY_PHRASES.love),
+      friendPhrase: pick(CATEGORY_PHRASES.friend),
+      workPhrase: pick(CATEGORY_PHRASES.work),
+      moneyPhrase: pick(CATEGORY_PHRASES.money),
+      commPhrase: pick(CATEGORY_PHRASES.comm),
+      textGood, textWatch
     };
   }
 
@@ -1129,13 +1288,22 @@
     symB.textContent = b.symbol;
     symB.style.color = elementColor(b.element);
 
+    document.getElementById('compatGlobalScore').textContent = result.global + '%';
+
     document.getElementById('compatLovePct').style.width = result.love + '%';
     document.getElementById('compatFriendPct').style.width = result.friend + '%';
     document.getElementById('compatWorkPct').style.width = result.work + '%';
-    document.getElementById('compatLoveNum').textContent = result.love + '%';
-    document.getElementById('compatFriendNum').textContent = result.friend + '%';
-    document.getElementById('compatWorkNum').textContent = result.work + '%';
-    document.getElementById('compatText').textContent = result.text;
+    document.getElementById('compatMoneyPct').style.width = result.money + '%';
+    document.getElementById('compatCommPct').style.width = result.comm + '%';
+
+    document.getElementById('compatLoveNum').textContent = result.love + '% — ' + result.lovePhrase;
+    document.getElementById('compatFriendNum').textContent = result.friend + '% — ' + result.friendPhrase;
+    document.getElementById('compatWorkNum').textContent = result.work + '% — ' + result.workPhrase;
+    document.getElementById('compatMoneyNum').textContent = result.money + '% — ' + result.moneyPhrase;
+    document.getElementById('compatCommNum').textContent = result.comm + '% — ' + result.commPhrase;
+
+    document.getElementById('compatTextGood').textContent = result.textGood;
+    document.getElementById('compatTextWatch').textContent = result.textWatch;
   });
 
   // --- Vue Archive ---
