@@ -203,11 +203,14 @@
   /* feature grid */
   .features{
     display:grid;
-    grid-template-columns:repeat(4, 1fr);
+    grid-template-columns:repeat(5, 1fr);
     gap:12px;
     margin-bottom:88px;
   }
-  @media (max-width:720px){
+  @media (max-width:820px){
+    .features{ grid-template-columns:repeat(3, 1fr); }
+  }
+  @media (max-width:520px){
     .features{ grid-template-columns:repeat(2, 1fr); }
   }
   .feature-card{
@@ -326,6 +329,11 @@
       <span class="f-icon">⟲</span>
       <span class="f-title">Archive</span>
       <span class="f-desc">Retrouvez l'horoscope de n'importe quel jour passé.</span>
+    </a>
+    <a class="feature-card" href="horoscope-du-jour.html#actualites">
+      <span class="f-icon">☾</span>
+      <span class="f-title">Actualités</span>
+      <span class="f-desc">Phase lunaire réelle, saison zodiacale et signe à la une.</span>
     </a>
   </div>
 
