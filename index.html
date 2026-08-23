@@ -69,707 +69,120 @@
     z-index:1;
     max-width:920px;
     margin:0 auto;
-    padding:64px 24px 96px;
+    padding:80px 24px 96px;
   }
 
+  /* hero */
+  .hero{
+    text-align:center;
+    margin-bottom:88px;
+  }
   .eyebrow{
     font-family:'JetBrains Mono', monospace;
     font-size:12px;
     letter-spacing:.14em;
     text-transform:uppercase;
     color:var(--gold);
-    margin:0 0 14px;
+    margin:0 0 18px;
   }
-
+  .zodiac-ring{
+    width:64px;
+    height:64px;
+    margin:0 auto 22px;
+    border:1px solid var(--gold);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Cinzel', serif;
+    font-size:26px;
+    color:var(--gold);
+    opacity:.9;
+  }
   h1{
     font-family:'Cinzel', serif;
     font-weight:600;
-    font-size:44px;
+    font-size:52px;
     line-height:1.1;
-    margin:0 0 14px;
-    letter-spacing:.01em;
-  }
-
-  .sub{
-    color:var(--muted);
-    font-size:16px;
-    max-width:520px;
-    line-height:1.55;
-    margin:0 0 48px;
-  }
-
-  .element-row{ margin-bottom:34px; }
-
-  .element-label{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin-bottom:14px;
-  }
-  .element-label .glyph{ width:14px; height:14px; flex:none; }
-  .element-label .rule{
-    flex:1;
-    height:1px;
-    background:linear-gradient(to right, var(--line), transparent);
-  }
-
-  .cards{
-    display:grid;
-    grid-template-columns:repeat(3, 1fr);
-    gap:12px;
-  }
-  @media (max-width:640px){
-    .cards{ grid-template-columns:repeat(2, 1fr); }
-  }
-
-  .card{
-    --accent: var(--gold);
-    position:relative;
-    background:var(--nebula);
-    border:1px solid var(--line);
-    border-left:3px solid var(--accent);
-    border-radius:6px;
-    padding:16px 14px;
-    text-align:left;
-    cursor:pointer;
-    color:var(--starlight);
-    font-family:inherit;
-    transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
-  }
-  .card:hover{
-    background:var(--nebula-2);
-    transform:translateY(-2px);
-    box-shadow:0 8px 24px -12px var(--accent);
-  }
-  .card:focus-visible{
-    outline:2px solid var(--gold);
-    outline-offset:2px;
-  }
-  .card.selected{
-    background:var(--nebula-2);
-    box-shadow:0 0 0 1px var(--gold), 0 10px 28px -14px var(--accent);
-  }
-  .card .symbol{
-    font-family:'Cinzel', serif;
-    font-size:26px;
-    color:var(--accent);
-    display:block;
-    margin-bottom:6px;
-  }
-  .card .name{
-    font-weight:700;
-    font-size:15px;
-    display:block;
-    margin-bottom:3px;
-  }
-  .card .range{
-    font-family:'JetBrains Mono', monospace;
-    font-size:10.5px;
-    color:var(--muted);
-  }
-
-  /* reveal panel */
-  .panel{
-    margin-top:52px;
-    background:linear-gradient(180deg, var(--nebula), var(--nebula-2));
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:32px;
-    display:none;
-    opacity:0;
-    transform:translateY(8px);
-    transition:opacity .35s ease, transform .35s ease;
-  }
-  .panel.show{
-    display:block;
-  }
-  .panel.visible{
-    opacity:1;
-    transform:translateY(0);
-  }
-
-  .panel-head{
-    display:flex;
-    gap:24px;
-    align-items:center;
-    margin-bottom:22px;
-    flex-wrap:wrap;
-  }
-
-  .constellation{
-    width:180px;
-    height:130px;
-    flex:none;
-  }
-  .constellation line{
-    stroke-width:1;
-    fill:none;
-    stroke-dasharray:300;
-    stroke-dashoffset:300;
-    animation:draw 1.1s ease forwards;
-  }
-  .constellation circle{
-    opacity:0;
-    animation:pop .3s ease forwards;
-  }
-  @keyframes draw{ to{ stroke-dashoffset:0; } }
-  @keyframes pop{ to{ opacity:1; } }
-  @media (prefers-reduced-motion:reduce){
-    .constellation line{ animation:none; stroke-dashoffset:0; }
-    .constellation circle{ animation:none; opacity:1; }
-  }
-
-  .panel-title .big-symbol{
-    font-family:'Cinzel', serif;
-    font-size:28px;
-    margin-right:8px;
-  }
-  .panel-title h2{
-    font-family:'Cinzel', serif;
-    font-size:26px;
-    margin:0 0 6px;
-    display:inline;
-  }
-  .panel-meta{
-    font-family:'JetBrains Mono', monospace;
-    font-size:12px;
-    color:var(--muted);
-    margin-top:8px;
-  }
-  .panel-meta span{ margin-right:16px; }
-
-  .horoscope-text{
-    font-size:17px;
-    line-height:1.7;
-    color:var(--starlight);
-    min-height:52px;
-    margin-bottom:26px;
-  }
-  .horoscope-text.loading{
-    color:var(--muted);
-    font-style:italic;
-  }
-  .horoscope-text.error{
-    color:#E0A8A0;
-  }
-
-  .stats{
-    display:grid;
-    grid-template-columns:repeat(3, 1fr);
-    gap:18px;
-    margin-bottom:24px;
-  }
-  @media (max-width:560px){
-    .stats{ grid-template-columns:1fr; }
-  }
-  .stat-label{
-    font-family:'JetBrains Mono', monospace;
-    font-size:10.5px;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin-bottom:6px;
-  }
-  .stat-phrase{
-    font-size:14px;
-    margin-bottom:8px;
-    min-height:18px;
-  }
-  .bar{
-    display:flex;
-    gap:3px;
-  }
-  .bar i{
-    width:16px;
-    height:5px;
-    border-radius:2px;
-    background:var(--line);
-  }
-  .bar i.filled{ background:var(--accent-current, var(--gold)); }
-
-  .footer-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:14px;
-    padding-top:18px;
-    border-top:1px solid var(--line);
-  }
-  .lucky{
-    font-family:'JetBrains Mono', monospace;
-    font-size:12px;
-    color:var(--muted);
-  }
-  .lucky b{ color:var(--starlight); }
-
-  .regen{
-    background:none;
-    border:none;
-    color:var(--gold);
-    font-family:'JetBrains Mono', monospace;
-    font-size:12px;
-    cursor:pointer;
-    padding:0;
-    text-decoration:underline;
-    text-underline-offset:3px;
-  }
-  .regen:hover{ opacity:.8; }
-  .regen:disabled{ opacity:.4; cursor:default; text-decoration:none; }
-
-  /* tabs */
-  .tabbar-sticky{
-    position:sticky;
-    top:0;
-    z-index:20;
-    background:rgba(15,18,32,0.9);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-  }
-  .tabbar-inner{
-    max-width:920px;
-    margin:0 auto;
-    padding:14px 24px;
-    display:flex;
-    gap:10px;
-    overflow-x:auto;
-    scrollbar-width:none;
-  }
-  .tabbar-inner::-webkit-scrollbar{ display:none; }
-
-  .tab-btn{
-    flex:none;
-    display:flex;
-    align-items:center;
-    gap:7px;
-    background:transparent;
-    border:1px solid var(--line);
-    color:var(--muted);
-    font-family:'JetBrains Mono', monospace;
-    font-size:11.5px;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    padding:9px 16px;
-    border-radius:999px;
-    cursor:pointer;
-    white-space:nowrap;
-    transition:background .15s ease, border-color .15s ease, color .15s ease;
-  }
-  .tab-btn .tab-icon{
-    font-family:'Cinzel', serif;
-    font-size:14px;
-    line-height:1;
-  }
-  .tab-btn:hover{ color:var(--starlight); border-color:var(--muted); }
-  .tab-btn.active{
-    background:rgba(212, 175, 106, 0.14);
-    border-color:var(--gold);
-    color:var(--gold);
-  }
-
-  .view{ display:none; }
-  .view.active{ display:block; }
-
-  /* chip picker (semaine) */
-  .chip-row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-bottom:8px;
-  }
-  .chip{
-    --accent: var(--gold);
-    display:flex;
-    align-items:center;
-    gap:7px;
-    background:var(--nebula);
-    border:1px solid var(--line);
-    border-radius:999px;
-    padding:8px 14px 8px 12px;
-    cursor:pointer;
-    color:var(--starlight);
-    font-family:'Karla', sans-serif;
-    font-size:13px;
-    transition:background .15s ease, box-shadow .15s ease;
-  }
-  .chip:hover{ background:var(--nebula-2); }
-  .chip.selected{ background:var(--nebula-2); box-shadow:0 0 0 1px var(--gold); }
-  .chip .chip-symbol{
-    font-family:'Cinzel', serif;
-    color:var(--accent);
-    font-size:15px;
-  }
-
-  .week-hint{ color:var(--muted); font-size:14px; margin:24px 0; }
-
-  .week-summary{
-    background:var(--nebula-2);
-    border:1px solid var(--gold);
-    border-radius:8px;
-    padding:14px 18px;
-    font-size:14px;
-    line-height:1.5;
-    color:var(--starlight);
-    margin:24px 0 30px;
-  }
-  .week-summary strong{ color:var(--gold); }
-
-  .week-grid{ display:block; }
-
-  .week-day-card{
-    display:grid;
-    grid-template-columns:130px 1fr;
-    gap:28px;
-    background:var(--nebula);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:26px 28px;
-    margin-bottom:14px;
-  }
-  .week-day-card.today{
-    border-color:var(--gold);
-    box-shadow:0 0 0 1px var(--gold);
-  }
-  @media (max-width:640px){
-    .week-day-card{ grid-template-columns:1fr; gap:14px; }
-  }
-  .week-day-label{
-    font-family:'Cinzel', serif;
-    font-size:18px;
-    color:var(--gold);
-    margin-bottom:5px;
-  }
-  .week-day-date{
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
-    color:var(--muted);
-    text-transform:uppercase;
-    letter-spacing:.06em;
-  }
-  .week-day-text{
-    font-size:15.5px;
-    line-height:1.65;
-    color:var(--starlight);
     margin:0 0 20px;
+    letter-spacing:.02em;
   }
-  .week-day-stats{
-    display:grid;
-    grid-template-columns:repeat(3, 1fr);
-    gap:20px;
+  .bio{
+    color:var(--muted);
+    font-size:16.5px;
+    line-height:1.7;
+    max-width:560px;
+    margin:0 auto 34px;
   }
-  @media (max-width:560px){
-    .week-day-stats{ grid-template-columns:1fr; }
-  }
-  .week-stat-phrase{
-    font-size:13px;
-    display:block;
-    margin:5px 0 9px;
-    color:var(--starlight);
-  }
-
-  /* compatibilité */
-  .compat-pickers{
+  .cta-row{
     display:flex;
-    align-items:center;
+    justify-content:center;
     gap:14px;
     flex-wrap:wrap;
-    margin-bottom:36px;
-  }
-  .sign-select{
-    background:var(--nebula);
-    border:1px solid var(--line);
-    color:var(--starlight);
-    font-family:'Karla', sans-serif;
-    font-size:14px;
-    padding:10px 12px;
-    border-radius:6px;
-  }
-  .compat-plus{
-    font-family:'Cinzel', serif;
-    color:var(--gold);
-    font-size:18px;
   }
   .btn-primary{
     background:var(--gold);
     color:var(--void);
     border:none;
-    padding:11px 20px;
-    border-radius:6px;
-    font-family:'JetBrains Mono', monospace;
-    font-size:11.5px;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    cursor:pointer;
-    font-weight:700;
-  }
-  .btn-primary:hover{ opacity:.88; }
-
-  .compat-result{
-    background:linear-gradient(180deg, var(--nebula), var(--nebula-2));
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:40px 36px;
-  }
-  .compat-symbols{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:22px;
-    margin-bottom:18px;
-  }
-  .compat-symbols .sym{
-    font-family:'Cinzel', serif;
-    font-size:52px;
-  }
-  .compat-symbols .divider{
-    color:var(--gold);
-    font-size:18px;
-  }
-  .compat-headline{
-    text-align:center;
+    padding:14px 26px;
+    border-radius:8px;
     font-family:'JetBrains Mono', monospace;
     font-size:12px;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin-bottom:36px;
-  }
-  .compat-headline .score{
-    display:block;
-    font-family:'Cinzel', serif;
-    font-size:40px;
-    letter-spacing:0;
-    text-transform:none;
-    color:var(--gold);
-    margin-top:6px;
-  }
-  .compat-category-grid{
-    display:grid;
-    grid-template-columns:repeat(3, 1fr);
-    gap:24px 28px;
-    margin-bottom:38px;
-  }
-  @media (max-width:680px){
-    .compat-category-grid{ grid-template-columns:repeat(2, 1fr); }
-  }
-  @media (max-width:420px){
-    .compat-category-grid{ grid-template-columns:1fr; }
-  }
-  .pct-bar{
-    height:6px;
-    background:var(--line);
-    border-radius:3px;
-    overflow:hidden;
-    margin-bottom:8px;
-  }
-  .pct-bar-fill{
-    height:100%;
-    width:0%;
-    background:var(--gold);
-    border-radius:3px;
-    transition:width .5s ease;
-  }
-  .compat-blocks{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:32px;
-    padding-top:28px;
-    border-top:1px solid var(--line);
-  }
-  @media (max-width:640px){
-    .compat-blocks{ grid-template-columns:1fr; }
-  }
-  .compat-block-title{
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
     letter-spacing:.08em;
     text-transform:uppercase;
-    color:var(--gold);
-    margin-bottom:10px;
-  }
-  .compat-block-text{
-    font-size:14.5px;
-    line-height:1.65;
-    color:var(--starlight);
-    margin:0;
-  }
-
-  /* archive */
-  .archive-controls{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    gap:16px;
-    margin:24px 0 36px;
-  }
-  .day-pill-row{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-  }
-  .day-pill{
-    background:var(--nebula);
-    border:1px solid var(--line);
-    border-radius:999px;
-    padding:7px 13px;
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
-    color:var(--muted);
-    cursor:pointer;
-    transition:background .15s ease, color .15s ease, border-color .15s ease;
-  }
-  .day-pill:hover{ background:var(--nebula-2); color:var(--starlight); }
-  .day-pill.selected{ border-color:var(--gold); color:var(--gold); background:var(--nebula-2); }
-
-  .date-input{
-    background:var(--nebula);
-    border:1px solid var(--line);
-    color:var(--starlight);
-    font-family:'JetBrains Mono', monospace;
-    font-size:12.5px;
-    padding:8px 10px;
-    border-radius:6px;
-    color-scheme:dark;
-  }
-
-  .back-home{
+    font-weight:700;
+    text-decoration:none;
     display:inline-flex;
     align-items:center;
-    gap:6px;
+    gap:8px;
+    transition:transform .15s ease, opacity .15s ease;
+  }
+  .btn-primary:hover{ opacity:.9; transform:translateY(-1px); }
+  .btn-secondary{
+    background:transparent;
+    color:var(--starlight);
+    border:1px solid var(--line);
+    padding:14px 26px;
+    border-radius:8px;
     font-family:'JetBrains Mono', monospace;
-    font-size:11.5px;
-    letter-spacing:.04em;
-    color:var(--muted);
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
     text-decoration:none;
-    margin-bottom:22px;
-    transition:color .15s ease;
-  }
-  .back-home:hover{ color:var(--gold); }
-
-  /* actualités */
-  .news-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-    margin-bottom:30px;
-  }
-  @media (max-width:680px){
-    .news-grid{ grid-template-columns:1fr; }
-  }
-  .news-card{
-    background:var(--nebula);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:28px 26px;
-  }
-  .news-card-title{
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    color:var(--gold);
-    margin-bottom:16px;
-  }
-  .moon-display, .season-display{
-    display:flex;
+    display:inline-flex;
     align-items:center;
-    gap:18px;
+    gap:8px;
+    transition:border-color .15s ease, color .15s ease;
   }
-  .moon-emoji{ font-size:42px; }
-  .moon-name{
-    font-family:'Cinzel', serif;
-    font-size:18px;
-    margin-bottom:4px;
-  }
-  .moon-illum{
+  .btn-secondary:hover{ border-color:var(--gold); color:var(--gold); }
+
+  .btn-soon{
+    position:relative;
+    background:transparent;
+    color:var(--muted);
+    border:1px dashed var(--line);
+    padding:14px 26px;
+    border-radius:8px;
     font-family:'JetBrains Mono', monospace;
     font-size:12px;
-    color:var(--muted);
-  }
-  .season-symbol{
-    font-family:'Cinzel', serif;
-    font-size:38px;
-    color:var(--gold);
-  }
-  .season-name{
-    font-family:'Cinzel', serif;
-    font-size:18px;
-    margin-bottom:4px;
-  }
-  .season-sub{
-    font-family:'JetBrains Mono', monospace;
-    font-size:12px;
-    color:var(--muted);
-  }
-
-  .month-theme-card{
-    background:linear-gradient(180deg, var(--nebula), var(--nebula-2));
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:30px 28px;
-    margin-bottom:24px;
-  }
-  .month-theme-title{
-    font-family:'Cinzel', serif;
-    font-size:21px;
-    color:var(--gold);
-    margin-bottom:14px;
-  }
-  .month-theme-text{
-    font-size:15.5px;
-    line-height:1.7;
-    margin:0;
-  }
-
-  .featured-card{
-    background:var(--nebula);
-    border:1px solid var(--line);
-    border-left:3px solid var(--gold);
-    border-radius:10px;
-    padding:30px 28px;
-  }
-  .featured-head{
-    display:flex;
-    align-items:center;
-    gap:16px;
-    margin-bottom:18px;
-  }
-  .featured-symbol{
-    font-family:'Cinzel', serif;
-    font-size:38px;
-    color:var(--gold);
-  }
-  .featured-title{
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
-    letter-spacing:.1em;
+    letter-spacing:.08em;
     text-transform:uppercase;
-    color:var(--muted);
-    margin-bottom:4px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    cursor:default;
   }
-  .featured-name{
-    font-family:'Cinzel', serif;
-    font-size:22px;
-  }
-  .featured-text{
-    font-size:15.5px;
-    line-height:1.7;
-    margin:0;
-  }
-
-  .history-medallion{
-    width:130px;
-    height:130px;
-    flex:none;
+  .btn-soon .badge{
+    background:var(--gold);
+    color:var(--void);
+    font-size:9.5px;
+    letter-spacing:.06em;
+    font-weight:700;
+    padding:3px 7px;
+    border-radius:999px;
   }
 
+  /* section titles */
   .section-title{
     font-family:'JetBrains Mono', monospace;
     font-size:11px;
@@ -787,1416 +200,191 @@
     background:linear-gradient(to right, var(--line), transparent);
   }
 
-  .article-card{
+  /* feature grid */
+  .features{
+    display:grid;
+    grid-template-columns:repeat(6, 1fr);
+    gap:12px;
+    margin-bottom:88px;
+  }
+  @media (max-width:820px){
+    .features{ grid-template-columns:repeat(3, 1fr); }
+  }
+  @media (max-width:520px){
+    .features{ grid-template-columns:repeat(2, 1fr); }
+  }
+  .feature-card{
     background:var(--nebula);
     border:1px solid var(--line);
-    border-radius:10px;
-    padding:30px 28px;
-    margin-bottom:16px;
+    border-left:3px solid var(--gold);
+    border-radius:6px;
+    padding:20px 16px;
+    text-decoration:none;
+    color:var(--starlight);
+    display:block;
+    transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
   }
-  .article-title{
+  .feature-card:hover{
+    background:var(--nebula-2);
+    transform:translateY(-2px);
+    box-shadow:0 8px 24px -12px var(--gold);
+  }
+  .feature-card .f-icon{
     font-family:'Cinzel', serif;
-    font-size:20px;
-    margin-bottom:6px;
+    font-size:22px;
+    color:var(--gold);
+    display:block;
+    margin-bottom:10px;
   }
-  .article-date{
+  .feature-card .f-title{
+    font-weight:700;
+    font-size:14.5px;
+    display:block;
+    margin-bottom:5px;
+  }
+  .feature-card .f-desc{
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.4;
+  }
+
+  /* social section */
+  .social-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-bottom:88px;
+  }
+  @media (max-width:680px){
+    .social-grid{ grid-template-columns:1fr; }
+  }
+  .tiktok-card{
+    background:linear-gradient(180deg, var(--nebula), var(--nebula-2));
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:44px 32px;
+    text-align:center;
+    margin-bottom:0;
+  }
+  .tiktok-icon{
+    width:52px;
+    height:52px;
+    margin:0 auto 18px;
+  }
+  .tiktok-handle{
+    font-family:'Cinzel', serif;
+    font-size:22px;
+    color:var(--starlight);
+    margin:0 0 8px;
+  }
+  .tiktok-sub{
+    color:var(--muted);
+    font-size:14.5px;
+    margin:0 0 26px;
+  }
+
+  /* footer */
+  footer{
+    text-align:center;
+    color:var(--muted);
     font-family:'JetBrains Mono', monospace;
     font-size:11px;
-    color:var(--muted);
-    text-transform:uppercase;
-    letter-spacing:.06em;
-    margin-bottom:18px;
-  }
-  .article-body p{
-    font-size:15.5px;
-    line-height:1.7;
-    margin:0 0 14px;
-  }
-  .article-body p:last-child{ margin-bottom:0; }
-  .article-body strong{ color:var(--starlight); font-weight:700; }
-  .article-h3{
-    font-family:'Cinzel', serif;
-    font-size:16.5px;
-    color:var(--gold);
-    margin:24px 0 10px;
-  }
-  .article-h3:first-child{ margin-top:0; }
-  .article-list{
-    margin:0 0 16px;
-    padding-left:20px;
-  }
-  .article-list li{
-    font-size:15.5px;
-    line-height:1.7;
-    margin-bottom:6px;
+    letter-spacing:.04em;
+    padding-top:32px;
+    border-top:1px solid var(--line);
   }
 </style>
-<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-
-<div class="tabbar-sticky">
-  <div class="tabbar-inner">
-    <button class="tab-btn active" data-view="viewDay"><span class="tab-icon">☉</span>Jour</button>
-    <button class="tab-btn" data-view="viewWeek"><span class="tab-icon">☾</span>Semaine</button>
-    <button class="tab-btn" data-view="viewNews"><span class="tab-icon">★</span>Actualités</button>
-    <button class="tab-btn" data-view="viewHistory"><span class="tab-icon">Ω</span>Histoire</button>
-    <button class="tab-btn" data-view="viewCompat"><span class="tab-icon">✦</span>Compatibilité</button>
-    <button class="tab-btn" data-view="viewArchive"><span class="tab-icon">⟲</span>Archive</button>
-  </div>
-</div>
 
 <div class="aurora"></div>
 
 <div class="wrap">
-  <a class="back-home" href="index.html">← Retour à l'accueil</a>
-  <p class="eyebrow" id="eyebrow">Carte du ciel</p>
-  <h1>Les Douze Astres</h1>
-  <p class="sub">Choisissez votre signe pour révéler ce que le ciel réserve aujourd'hui.</p>
 
-  <div class="view active" id="viewDay">
-    <div id="rows"></div>
-
-    <div class="panel" id="panel">
-      <div class="panel-head">
-        <svg class="constellation" id="constellation" viewBox="0 0 180 130"></svg>
-        <div>
-          <div class="panel-title">
-            <span class="big-symbol" id="panelSymbol"></span><h2 id="panelName"></h2>
-          </div>
-          <div class="panel-meta">
-            <span id="panelRange"></span>
-            <span id="panelPlanet"></span>
-          </div>
-        </div>
-      </div>
-
-      <p class="horoscope-text" id="horoscopeText"></p>
-
-      <div class="stats">
-        <div>
-          <div class="stat-label">Amour</div>
-          <div class="stat-phrase" id="loveText"></div>
-          <div class="bar" id="loveBar"></div>
-        </div>
-        <div>
-          <div class="stat-label">Travail</div>
-          <div class="stat-phrase" id="workText"></div>
-          <div class="bar" id="workBar"></div>
-        </div>
-        <div>
-          <div class="stat-label">Énergie</div>
-          <div class="stat-phrase" id="energyText"></div>
-          <div class="bar" id="energyBar"></div>
-        </div>
-      </div>
-
-      <div class="footer-row">
-        <div class="lucky" id="luckyRow"></div>
-        <button class="regen" id="regenBtn">Consulter à nouveau les astres →</button>
-      </div>
+  <div class="hero">
+    <p class="eyebrow">Bienvenue sous le ciel de</p>
+    <div class="zodiac-ring">✦</div>
+    <h1>LES DOUZE ASTRES</h1>
+    <p class="bio">
+      Un espace pour explorer les 12 signes du zodiaque au quotidien : horoscope du jour,
+      tendances de la semaine, compatibilités entre signes et bien plus. Le tout mis à jour
+      chaque jour, gratuitement.
+    </p>
+    <div class="cta-row">
+      <a class="btn-primary" href="horoscope-du-jour.html">✦ Découvrir mon horoscope du jour</a>
+      <a class="btn-secondary" href="https://www.tiktok.com/@lesdouzeastres" target="_blank" rel="noopener">Suivre sur TikTok</a>
+      <a class="btn-secondary" href="https://www.instagram.com/lesdouzeastres/" target="_blank" rel="noopener">Suivre sur Instagram</a>
+      <span class="btn-soon">📱 Application mobile <span class="badge">Bientôt</span></span>
     </div>
   </div>
 
-  <div class="view" id="viewWeek">
-    <div class="chip-row" id="weekChips"></div>
-    <p class="week-hint" id="weekHint">Tendance de la semaine pour le Bélier — changez de signe à tout moment.</p>
-    <div id="weekSummary"></div>
-    <div class="week-grid" id="weekGrid"></div>
+  <div class="section-title"><span>Explorer le site</span><div class="rule"></div></div>
+  <div class="features">
+    <a class="feature-card" href="horoscope-du-jour.html#jour">
+      <span class="f-icon">☉</span>
+      <span class="f-title">Horoscope du jour</span>
+      <span class="f-desc">Ce que le ciel réserve à votre signe aujourd'hui.</span>
+    </a>
+    <a class="feature-card" href="horoscope-du-jour.html#semaine">
+      <span class="f-icon">☾</span>
+      <span class="f-title">Semaine</span>
+      <span class="f-desc">La tendance des 7 prochains jours, en détail.</span>
+    </a>
+    <a class="feature-card" href="horoscope-du-jour.html#actualites">
+      <span class="f-icon">★</span>
+      <span class="f-title">Actualités</span>
+      <span class="f-desc">Phase lunaire réelle, saison zodiacale et signe à la une.</span>
+    </a>
+    <a class="feature-card" href="horoscope-du-jour.html#histoire">
+      <span class="f-icon">Ω</span>
+      <span class="f-title">Histoire</span>
+      <span class="f-desc">Mythologie et origine du symbole de chaque signe.</span>
+    </a>
+    <a class="feature-card" href="horoscope-du-jour.html#compatibilite">
+      <span class="f-icon">✦</span>
+      <span class="f-title">Compatibilité</span>
+      <span class="f-desc">Amour, amitié, travail, argent entre deux signes.</span>
+    </a>
+    <a class="feature-card" href="horoscope-du-jour.html#archive">
+      <span class="f-icon">⟲</span>
+      <span class="f-title">Archive</span>
+      <span class="f-desc">Retrouvez l'horoscope de n'importe quel jour passé.</span>
+    </a>
   </div>
 
-  <div class="view" id="viewCompat">
-    <div class="compat-pickers">
-      <select class="sign-select" id="compatA"></select>
-      <span class="compat-plus">+</span>
-      <select class="sign-select" id="compatB"></select>
-      <button class="btn-primary" id="compatBtn">Voir la compatibilité</button>
+  <div class="section-title"><span>Sur les réseaux</span><div class="rule"></div></div>
+  <div class="social-grid">
+    <div class="tiktok-card">
+      <svg class="tiktok-icon" viewBox="0 0 48 48" fill="none">
+        <path d="M33 6c1.2 5.6 4.6 9 10 9.4v6.4c-3.7.2-7-1-10-3.2v12.8c0 8-6.5 13.6-14 13.6S5 39.4 5 31.4c0-7.7 6.1-13.2 13.2-13.5v6.7c-3.5.3-6.2 3-6.2 6.8 0 3.9 3.1 6.9 7 6.9s7.4-3 7.4-7.4V6h6.6Z" fill="#D4AF6A"/>
+      </svg>
+      <p class="tiktok-handle">@lesdouzeastres</p>
+      <p class="tiktok-sub">De nouvelles vidéos régulièrement — signes, mystères et coulisses du zodiaque.</p>
+      <a class="btn-primary" href="https://www.tiktok.com/@lesdouzeastres" target="_blank" rel="noopener">Voir mes vidéos sur TikTok</a>
+      <!--
+        Pour intégrer directement vos vidéos ici plus tard, envoyez-moi les liens
+        (https://www.tiktok.com/@lesdouzeastres/video/...) et je les intégrerai
+        avec le lecteur officiel TikTok, directement sur cette page.
+      -->
     </div>
-    <div class="compat-result" id="compatResult" style="display:none;">
-      <div class="compat-symbols">
-        <span class="sym" id="compatSymA"></span>
-        <span class="divider">✦</span>
-        <span class="sym" id="compatSymB"></span>
-      </div>
 
-      <div class="compat-headline">
-        Affinité globale
-        <span class="score" id="compatGlobalScore"></span>
-      </div>
-
-      <div class="compat-category-grid">
-        <div>
-          <div class="stat-label">Amour</div>
-          <div class="pct-bar"><div class="pct-bar-fill" id="compatLovePct"></div></div>
-          <div class="stat-phrase" id="compatLoveNum"></div>
-        </div>
-        <div>
-          <div class="stat-label">Amitié</div>
-          <div class="pct-bar"><div class="pct-bar-fill" id="compatFriendPct"></div></div>
-          <div class="stat-phrase" id="compatFriendNum"></div>
-        </div>
-        <div>
-          <div class="stat-label">Travail</div>
-          <div class="pct-bar"><div class="pct-bar-fill" id="compatWorkPct"></div></div>
-          <div class="stat-phrase" id="compatWorkNum"></div>
-        </div>
-        <div>
-          <div class="stat-label">Argent</div>
-          <div class="pct-bar"><div class="pct-bar-fill" id="compatMoneyPct"></div></div>
-          <div class="stat-phrase" id="compatMoneyNum"></div>
-        </div>
-        <div>
-          <div class="stat-label">Communication</div>
-          <div class="pct-bar"><div class="pct-bar-fill" id="compatCommPct"></div></div>
-          <div class="stat-phrase" id="compatCommNum"></div>
-        </div>
-      </div>
-
-      <div class="compat-blocks">
-        <div>
-          <div class="compat-block-title">✦ Ce qui vous rapproche</div>
-          <p class="compat-block-text" id="compatTextGood"></p>
-        </div>
-        <div>
-          <div class="compat-block-title">◈ Points de vigilance</div>
-          <p class="compat-block-text" id="compatTextWatch"></p>
-        </div>
-      </div>
+    <div class="tiktok-card">
+      <svg class="tiktok-icon" viewBox="0 0 48 48" fill="none">
+        <rect x="6" y="6" width="36" height="36" rx="10" fill="none" stroke="#D4AF6A" stroke-width="2.5"/>
+        <circle cx="24" cy="24" r="9" fill="none" stroke="#D4AF6A" stroke-width="2.5"/>
+        <circle cx="33.5" cy="14.5" r="2.2" fill="#D4AF6A"/>
+      </svg>
+      <p class="tiktok-handle">@lesdouzeastres</p>
+      <p class="tiktok-sub">Visuels, coulisses et mystères des signes, en images.</p>
+      <a class="btn-primary" href="https://www.instagram.com/lesdouzeastres/" target="_blank" rel="noopener">Voir mon Instagram</a>
     </div>
   </div>
 
-  <div class="view" id="viewArchive">
-    <div class="chip-row" id="archiveChips"></div>
-    <p class="week-hint" id="archiveHint">Archive du Bélier — changez de signe ou de date à tout moment.</p>
+  <footer>
+    ✦ Les Douze Astres
+  </footer>
 
-    <div class="archive-controls" id="archiveControls" style="display:none;">
-      <div class="day-pill-row" id="archivePills"></div>
-      <label style="display:flex; align-items:center; gap:8px;">
-        <span class="stat-label" style="margin:0;">Ou une date précise</span>
-        <input type="date" class="date-input" id="archiveDate">
-      </label>
-    </div>
-
-    <div class="panel" id="archivePanel">
-      <div class="panel-head">
-        <svg class="constellation" id="archiveConstellation" viewBox="0 0 180 130"></svg>
-        <div>
-          <div class="panel-title">
-            <span class="big-symbol" id="archiveSymbol"></span><h2 id="archiveName"></h2>
-          </div>
-          <div class="panel-meta">
-            <span id="archiveDateLabel"></span>
-          </div>
-        </div>
-      </div>
-
-      <p class="horoscope-text" id="archiveText"></p>
-
-      <div class="stats">
-        <div>
-          <div class="stat-label">Amour</div>
-          <div class="stat-phrase" id="archiveLoveText"></div>
-          <div class="bar" id="archiveLoveBar"></div>
-        </div>
-        <div>
-          <div class="stat-label">Travail</div>
-          <div class="stat-phrase" id="archiveWorkText"></div>
-          <div class="bar" id="archiveWorkBar"></div>
-        </div>
-        <div>
-          <div class="stat-label">Énergie</div>
-          <div class="stat-phrase" id="archiveEnergyText"></div>
-          <div class="bar" id="archiveEnergyBar"></div>
-        </div>
-      </div>
-
-      <div class="footer-row">
-        <div class="lucky" id="archiveLuckyRow"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="view" id="viewNews">
-    <p class="sub" style="margin-bottom:30px;">Ce que le ciel raconte cette semaine — phase lunaire réelle, saison zodiacale en cours, et le signe à la une.</p>
-
-    <div class="news-grid">
-      <div class="news-card">
-        <div class="news-card-title">Phase lunaire du jour</div>
-        <div class="moon-display">
-          <span class="moon-emoji" id="moonEmoji"></span>
-          <div>
-            <div class="moon-name" id="moonName"></div>
-            <div class="moon-illum" id="moonIllum"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="news-card">
-        <div class="news-card-title">Saison zodiacale en cours</div>
-        <div class="season-display">
-          <span class="season-symbol" id="seasonSymbol"></span>
-          <div>
-            <div class="season-name" id="seasonName"></div>
-            <div class="season-sub" id="seasonSub"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="month-theme-card">
-      <div class="month-theme-title" id="monthThemeTitle"></div>
-      <p class="month-theme-text" id="monthThemeText"></p>
-    </div>
-
-    <div class="featured-card">
-      <div class="featured-head">
-        <span class="featured-symbol" id="featuredSymbol"></span>
-        <div>
-          <div class="featured-title">Signe à la une cette semaine</div>
-          <div class="featured-name" id="featuredName"></div>
-        </div>
-      </div>
-      <p class="featured-text" id="featuredText"></p>
-    </div>
-
-    <div class="section-title" style="margin-top:50px;"><span>Articles</span><div class="rule"></div></div>
-    <div id="articlesList"></div>
-  </div>
-
-  <div class="view" id="viewHistory">
-    <div class="month-theme-card">
-      <div class="month-theme-title">Aux origines du zodiaque</div>
-      <p class="month-theme-text">Le zodiaque tel qu'on le connaît trouve ses racines chez les astronomes babyloniens, qui avaient déjà recensé douze constellations le long de l'écliptique (la trajectoire apparente du Soleil) dès le 2ᵉ millénaire avant notre ère. Les Grecs ont ensuite repris ce découpage et l'ont habillé de leurs propres mythes, avant que l'astronome Ptolémée ne codifie l'ensemble au IIᵉ siècle apr. J.-C. dans son <em>Tétrabible</em> — la base de l'astrologie occidentale encore utilisée aujourd'hui.</p>
-    </div>
-
-    <div class="chip-row" id="historyChips"></div>
-
-    <div class="featured-card" id="historyCard" style="margin-top:20px;">
-      <div class="featured-head">
-        <svg class="history-medallion" id="historyMedallion" viewBox="0 0 160 160"></svg>
-        <div>
-          <div class="featured-title" id="historyRange"></div>
-          <div class="featured-name" id="historyName"></div>
-        </div>
-      </div>
-      <div class="news-card-title" style="margin-top:6px;">Origine mythologique</div>
-      <p class="featured-text" id="historyMyth"></p>
-      <div class="news-card-title" style="margin-top:22px;">Sens du symbole</div>
-      <p class="featured-text" id="historySymbolMeaning" style="margin-bottom:0;"></p>
-    </div>
-  </div>
 </div>
-
-<script>
-  const SIGNS = [
-    { id:'aries', name:'Bélier', symbol:'♈', range:'21 mars – 19 avril', element:'feu', planet:'Mars' },
-    { id:'leo', name:'Lion', symbol:'♌', range:'23 juillet – 22 août', element:'feu', planet:'Soleil' },
-    { id:'sagittarius', name:'Sagittaire', symbol:'♐', range:'22 nov. – 21 déc.', element:'feu', planet:'Jupiter' },
-    { id:'taurus', name:'Taureau', symbol:'♉', range:'20 avril – 20 mai', element:'terre', planet:'Vénus' },
-    { id:'virgo', name:'Vierge', symbol:'♍', range:'23 août – 22 sept.', element:'terre', planet:'Mercure' },
-    { id:'capricorn', name:'Capricorne', symbol:'♑', range:'22 déc. – 19 janv.', element:'terre', planet:'Saturne' },
-    { id:'gemini', name:'Gémeaux', symbol:'♊', range:'21 mai – 20 juin', element:'air', planet:'Mercure' },
-    { id:'libra', name:'Balance', symbol:'♎', range:'23 sept. – 22 oct.', element:'air', planet:'Vénus' },
-    { id:'aquarius', name:'Verseau', symbol:'♒', range:'20 janv. – 18 fév.', element:'air', planet:'Uranus' },
-    { id:'cancer', name:'Cancer', symbol:'♋', range:'21 juin – 22 juillet', element:'eau', planet:'Lune' },
-    { id:'scorpio', name:'Scorpion', symbol:'♏', range:'23 oct. – 21 nov.', element:'eau', planet:'Pluton' },
-    { id:'pisces', name:'Poissons', symbol:'♓', range:'19 fév. – 20 mars', element:'eau', planet:'Neptune' },
-  ];
-
-  const ELEMENTS = [
-    { key:'feu', label:'Feu', color:'var(--fire)', glyph:'<svg class="glyph" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M7 1c0 3-3 3-3 6a3 3 0 0 0 6 0c0-1-.5-1.5-1-2 .3 1.3-.5 2-1 1 0-2-3-2-1-5Z"/></svg>' },
-    { key:'terre', label:'Terre', color:'var(--earth)', glyph:'<svg class="glyph" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M1 12 7 2l6 10Z"/></svg>' },
-    { key:'air', label:'Air', color:'var(--air)', glyph:'<svg class="glyph" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M1 5h9a2 2 0 1 0-2-2M1 9h11a2 2 0 1 1-2 2"/></svg>' },
-    { key:'eau', label:'Eau', color:'var(--water)', glyph:'<svg class="glyph" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M7 1c3 4 5 6 5 8.5A5 5 0 0 1 2 9.5C2 7 4 5 7 1Z"/></svg>' },
-  ];
-
-  const cache = {};
-  let selectedId = null;
-  let isFetching = false;
-
-  const todayLabel = new Intl.DateTimeFormat('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' }).format(new Date());
-  document.getElementById('eyebrow').textContent = 'Carte du ciel · ' + todayLabel;
-  const dateKey = new Date().toISOString().slice(0,10);
-
-  // build rows
-  const rowsEl = document.getElementById('rows');
-  ELEMENTS.forEach(el => {
-    const row = document.createElement('div');
-    row.className = 'element-row';
-    row.innerHTML = `
-      <div class="element-label" style="color:${el.color}">
-        ${el.glyph}<span>${el.label}</span><div class="rule"></div>
-      </div>
-      <div class="cards"></div>
-    `;
-    const cardsEl = row.querySelector('.cards');
-    SIGNS.filter(s => s.element === el.key).forEach(sign => {
-      const card = document.createElement('button');
-      card.className = 'card';
-      card.style.setProperty('--accent', el.color);
-      card.dataset.id = sign.id;
-      card.innerHTML = `
-        <span class="symbol">${sign.symbol}</span>
-        <span class="name">${sign.name}</span>
-        <span class="range">${sign.range}</span>
-      `;
-      card.addEventListener('click', () => selectSign(sign.id));
-      cardsEl.appendChild(card);
-    });
-    rowsEl.appendChild(row);
-  });
-
-  function elementColor(key){
-    return ELEMENTS.find(e => e.key === key).color;
-  }
-
-  // seeded procedural constellation
-  function mulberry32(seed){
-    return function(){
-      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
-      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  }
-
-  function renderConstellation(sign, index, svgId){
-    const svg = document.getElementById(svgId || 'constellation');
-    const rng = mulberry32(index * 97 + 13);
-    const n = 5 + Math.floor(rng() * 3); // 5-7 stars
-    const pts = [];
-    for(let i=0;i<n;i++){
-      pts.push({
-        x: 16 + rng() * 148,
-        y: 14 + rng() * 102,
-        r: 1.4 + rng() * 1.8
-      });
-    }
-    const color = elementColor(sign.element);
-    let svgContent = '';
-    for(let i=0;i<pts.length-1;i++){
-      svgContent += `<line x1="${pts[i].x.toFixed(1)}" y1="${pts[i].y.toFixed(1)}" x2="${pts[i+1].x.toFixed(1)}" y2="${pts[i+1].y.toFixed(1)}" stroke="${color}" style="animation-delay:${(i*0.12).toFixed(2)}s"/>`;
-    }
-    pts.forEach((p, i) => {
-      svgContent += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.r.toFixed(1)}" fill="${color==='var(--gold)'?'var(--gold)':color}" style="animation-delay:${(i*0.1+0.1).toFixed(2)}s"/>`;
-    });
-    svg.innerHTML = svgContent;
-  }
-
-  function renderBar(elId, level, color){
-    const el = document.getElementById(elId);
-    el.style.setProperty('--accent-current', color);
-    el.innerHTML = '';
-    for(let i=0;i<5;i++){
-      const bar = document.createElement('i');
-      if(i < level) bar.className = 'filled';
-      el.appendChild(bar);
-    }
-  }
-
-  async function selectSign(id){
-    if(isFetching) return;
-    selectedId = id;
-    document.querySelectorAll('.card').forEach(c => c.classList.toggle('selected', c.dataset.id === id));
-
-    const sign = SIGNS.find(s => s.id === id);
-    const index = SIGNS.indexOf(sign);
-    const color = elementColor(sign.element);
-
-    const panel = document.getElementById('panel');
-    panel.classList.add('show');
-    requestAnimationFrame(() => panel.classList.add('visible'));
-
-    document.getElementById('panelSymbol').textContent = sign.symbol;
-    document.getElementById('panelSymbol').style.color = color;
-    document.getElementById('panelName').textContent = sign.name;
-    document.getElementById('panelRange').textContent = sign.range;
-    document.getElementById('panelPlanet').textContent = 'Astre : ' + sign.planet;
-    renderConstellation(sign, index);
-
-    await loadHoroscope(sign, color, false);
-  }
-
-  // --- Génération locale de l'horoscope (aucun serveur requis) ---
-
-  const OPENERS = [
-    "Aujourd'hui, {planet} éclaire votre chemin et vous pousse à faire confiance à votre instinct.",
-    "L'énergie de l'élément {element} circule fort en vous aujourd'hui, apportant clarté et détermination.",
-    "{sign}, cette journée vous invite à ralentir pour mieux observer ce qui compte vraiment.",
-    "Sous l'influence de {planet}, vos intentions gagnent en force et en netteté.",
-    "Le ciel s'aligne en votre faveur aujourd'hui : une occasion pourrait se présenter sans prévenir.",
-    "Une certaine agitation intérieure vous pousse à agir plutôt qu'à attendre.",
-    "{planet} favorise les échanges sincères et les décisions prises avec le cœur.",
-    "L'atmosphère du jour vous encourage à faire le tri entre l'essentiel et le superflu.",
-    "Votre nature de {element} prend le dessus aujourd'hui, pour le meilleur.",
-    "Un vent de renouveau souffle sur votre journée, {sign}."
-  ];
-  const MIDDLES = [
-    "Restez attentif·ve aux petits signaux, ils annoncent souvent de grands changements.",
-    "La patience sera votre meilleure alliée face aux imprévus.",
-    "Une conversation inattendue pourrait éclairer une situation en suspens.",
-    "Vos proches remarquent votre énergie particulière aujourd'hui.",
-    "C'est le moment idéal pour clarifier vos priorités.",
-    "Un léger doute peut surgir, mais votre intuition ne vous trompe pas.",
-    "Le rythme de la journée s'accélère en fin d'après-midi.",
-    "Une opportunité discrète mérite votre attention.",
-    "Prenez le temps d'écouter ce que votre corps essaie de vous dire.",
-    "Un détail du quotidien prend soudain plus de sens."
-  ];
-  const CLOSINGS = [
-    "Faites-vous confiance, la suite vous donnera raison.",
-    "Gardez l'esprit ouvert, la journée réserve encore des surprises.",
-    "Avancez à votre rythme, sans céder à la pression extérieure.",
-    "Ce qui semble incertain aujourd'hui deviendra limpide demain.",
-    "Osez dire ce que vous pensez, cela pourrait tout changer.",
-    "Laissez de la place à l'imprévu, il a du bon aujourd'hui.",
-    "Un moment de calme vous fera le plus grand bien ce soir.",
-    "Célébrez les petites victoires, elles comptent plus qu'il n'y paraît."
-  ];
-  const LOVE_PHRASES = [
-    "Un tendre échange adoucit la journée.", "La complicité prend le dessus sur les tensions.",
-    "Une déclaration surprend agréablement.", "Le cœur parle plus fort que la raison.",
-    "Un silence en dit plus qu'un discours.", "La sincérité renforce vos liens.",
-    "Un rapprochement inattendu se dessine.", "La patience nourrit une belle harmonie.",
-    "Un souvenir ravive une émotion douce.", "L'attirance se fait plus intense.",
-    "Une distance salutaire s'installe.", "Le dialogue apaise un malentendu.",
-    "Une invitation change vos plans.", "La tendresse l'emporte sur l'orgueil.",
-    "Un geste simple parle fort."
-  ];
-  const WORK_PHRASES = [
-    "Un projet avance plus vite que prévu.", "La concentration est votre meilleure alliée.",
-    "Une idée originale attire l'attention.", "La collaboration porte enfin ses fruits.",
-    "Un imprévu bouscule l'organisation du jour.", "La rigueur paie sur le long terme.",
-    "Une proposition mérite d'être étudiée.", "Le calme avant une échéance importante.",
-    "Une reconnaissance méritée arrive enfin.", "La créativité débloque une impasse.",
-    "Un détail administratif demande votre attention.", "L'ambition prend le dessus aujourd'hui.",
-    "Une négociation tourne en votre faveur.", "La fatigue invite à lever le pied.",
-    "Un nouveau départ professionnel se profile."
-  ];
-  const ENERGY_PHRASES = [
-    "Un regain de vitalité se fait sentir.", "Le corps réclame du mouvement.",
-    "Une pause s'impose en milieu de journée.", "L'enthousiasme est contagieux aujourd'hui.",
-    "Le sommeil mérite plus d'attention.", "Une respiration profonde change tout.",
-    "L'énergie monte doucement dès le matin.", "Le calme intérieur devient une force.",
-    "Une activité physique légère fait du bien.", "La lassitude cède la place à l'élan.",
-    "Un excès d'agitation demande à être canalisé.", "La nature vous ressource ce jour.",
-    "Une bouffée d'optimisme traverse la journée.", "Le corps demande à ralentir.",
-    "Une belle endurance vous porte aujourd'hui."
-  ];
-  const LUCKY_COLORS = ["Améthyste", "Or", "Bleu nuit", "Corail", "Vert sauge", "Argent", "Terracotta", "Turquoise", "Ivoire", "Bordeaux", "Lavande", "Ambre"];
-
-  function hashString(str){
-    let h = 5381;
-    for(let i=0;i<str.length;i++){ h = ((h << 5) + h) + str.charCodeAt(i); h |= 0; }
-    return h;
-  }
-
-  function fillTemplate(str, sign){
-    return str.replace('{sign}', sign.name).replace('{planet}', sign.planet).replace('{element}', sign.element);
-  }
-
-  function generateHoroscope(sign, seedStr){
-    const rng = mulberry32(hashString(seedStr));
-    const pick = (arr) => arr[Math.floor(rng() * arr.length)];
-    const level = () => 1 + Math.floor(rng() * 5);
-
-    const text = [pick(OPENERS), pick(MIDDLES), pick(CLOSINGS)].map(s => fillTemplate(s, sign)).join(' ');
-
-    return {
-      text,
-      love: pick(LOVE_PHRASES),
-      work: pick(WORK_PHRASES),
-      energy: pick(ENERGY_PHRASES),
-      loveLevel: level(),
-      workLevel: level(),
-      energyLevel: level(),
-      luckyNumber: 1 + Math.floor(rng() * 99),
-      luckyColor: pick(LUCKY_COLORS)
-    };
-  }
-
-  async function loadHoroscope(sign, color, forceRefresh){
-    const cacheKey = sign.id + '-' + dateKey;
-    const textEl = document.getElementById('horoscopeText');
-    const regenBtn = document.getElementById('regenBtn');
-
-    if(!forceRefresh && cache[cacheKey]){
-      renderHoroscope(cache[cacheKey], color);
-      return;
-    }
-
-    isFetching = true;
-    regenBtn.disabled = true;
-    textEl.className = 'horoscope-text loading';
-    textEl.textContent = 'Consultation des astres…';
-    document.getElementById('loveText').textContent = '';
-    document.getElementById('workText').textContent = '';
-    document.getElementById('energyText').textContent = '';
-    document.getElementById('loveBar').innerHTML = '';
-    document.getElementById('workBar').innerHTML = '';
-    document.getElementById('energyBar').innerHTML = '';
-    document.getElementById('luckyRow').textContent = '';
-
-    // petite pause pour garder l'effet "consultation des astres"
-    await new Promise(resolve => setTimeout(resolve, 450));
-
-    const seedStr = forceRefresh ? (sign.id + '-' + dateKey + '-' + Date.now()) : cacheKey;
-    const data = generateHoroscope(sign, seedStr);
-
-    cache[cacheKey] = data;
-    renderHoroscope(data, color);
-
-    isFetching = false;
-    regenBtn.disabled = false;
-  }
-
-  function renderHoroscope(data, color){
-    const textEl = document.getElementById('horoscopeText');
-    textEl.className = 'horoscope-text';
-    textEl.textContent = data.text;
-
-    document.getElementById('loveText').textContent = data.love;
-    document.getElementById('workText').textContent = data.work;
-    document.getElementById('energyText').textContent = data.energy;
-
-    renderBar('loveBar', data.loveLevel, color);
-    renderBar('workBar', data.workLevel, color);
-    renderBar('energyBar', data.energyLevel, color);
-
-    document.getElementById('luckyRow').innerHTML =
-      `<b>${data.luckyNumber}</b> numéro chance &nbsp;·&nbsp; <b>${data.luckyColor}</b> couleur du jour`;
-  }
-
-  document.getElementById('regenBtn').addEventListener('click', () => {
-    if(!selectedId) return;
-    const sign = SIGNS.find(s => s.id === selectedId);
-    const color = elementColor(sign.element);
-    loadHoroscope(sign, color, true);
-  });
-
-  // --- Onglets ---
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-      document.getElementById(btn.dataset.view).classList.add('active');
-    });
-  });
-
-  // ouvre un onglet précis si l'URL contient #semaine, #compatibilite ou #archive
-  const hashToView = { semaine:'viewWeek', compatibilite:'viewCompat', archive:'viewArchive', actualites:'viewNews', histoire:'viewHistory', jour:'viewDay' };
-  const initialHash = window.location.hash.replace('#','');
-  if(hashToView[initialHash]){
-    const targetBtn = document.querySelector(`.tab-btn[data-view="${hashToView[initialHash]}"]`);
-    if(targetBtn) targetBtn.click();
-  }
-
-  // --- Vue Semaine ---
-  const DAY_NAMES_SHORT = ['DIM', 'LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM'];
-  const weekChipsEl = document.getElementById('weekChips');
-
-  SIGNS.forEach(sign => {
-    const chip = document.createElement('button');
-    chip.className = 'chip';
-    chip.style.setProperty('--accent', elementColor(sign.element));
-    chip.dataset.id = sign.id;
-    chip.innerHTML = `<span class="chip-symbol">${sign.symbol}</span><span>${sign.name}</span>`;
-    chip.addEventListener('click', () => selectWeekSign(sign.id));
-    weekChipsEl.appendChild(chip);
-  });
-
-  selectWeekSign(SIGNS[0].id); // pré-sélection pour éviter un onglet vide au premier affichage
-
-  function selectWeekSign(id){
-    document.querySelectorAll('#weekChips .chip').forEach(c => c.classList.toggle('selected', c.dataset.id === id));
-    document.getElementById('weekHint').style.display = 'none';
-    const sign = SIGNS.find(s => s.id === id);
-    renderWeek(sign);
-  }
-
-  function renderWeek(sign){
-    const color = elementColor(sign.element);
-    const days = [];
-    for(let i=0; i<7; i++){
-      const d = new Date();
-      d.setDate(d.getDate() + i);
-      const dKey = d.toISOString().slice(0,10);
-      const data = generateHoroscope(sign, sign.id + '-' + dKey);
-      days.push({ d, dKey, data });
-    }
-
-    // journée la plus favorable de la semaine (énergie la plus haute)
-    let best = days[0];
-    days.forEach(day => { if(day.data.energyLevel > best.data.energyLevel) best = day; });
-    const bestLabel = best.dKey === dateKey
-      ? "aujourd'hui"
-      : new Intl.DateTimeFormat('fr-FR', { weekday:'long' }).format(best.d);
-    const summaryEl = document.getElementById('weekSummary');
-    summaryEl.innerHTML = `<div class="week-summary">✦ Journée la plus favorable pour ${sign.name} cette semaine : <strong>${bestLabel}</strong> — ${best.data.energy.toLowerCase()}</div>`;
-
-    const grid = document.getElementById('weekGrid');
-    grid.innerHTML = '';
-
-    days.forEach((day, i) => {
-      const dayLabel = i === 0 ? "Aujourd'hui" : new Intl.DateTimeFormat('fr-FR', { weekday:'long' }).format(day.d);
-      const dateLabel = new Intl.DateTimeFormat('fr-FR', { day:'numeric', month:'long' }).format(day.d);
-
-      const card = document.createElement('div');
-      card.className = 'week-day-card' + (i === 0 ? ' today' : '');
-      card.innerHTML = `
-        <div>
-          <div class="week-day-label">${dayLabel.charAt(0).toUpperCase() + dayLabel.slice(1)}</div>
-          <div class="week-day-date">${dateLabel}</div>
-        </div>
-        <div>
-          <p class="week-day-text">${day.data.text}</p>
-          <div class="week-day-stats">
-            <div>
-              <div class="stat-label">Amour</div>
-              <span class="week-stat-phrase">${day.data.love}</span>
-              <div class="bar" id="wkLove${i}"></div>
-            </div>
-            <div>
-              <div class="stat-label">Travail</div>
-              <span class="week-stat-phrase">${day.data.work}</span>
-              <div class="bar" id="wkWork${i}"></div>
-            </div>
-            <div>
-              <div class="stat-label">Énergie</div>
-              <span class="week-stat-phrase">${day.data.energy}</span>
-              <div class="bar" id="wkEnergy${i}"></div>
-            </div>
-          </div>
-        </div>
-      `;
-      grid.appendChild(card);
-      renderBar('wkLove' + i, day.data.loveLevel, color);
-      renderBar('wkWork' + i, day.data.workLevel, color);
-      renderBar('wkEnergy' + i, day.data.energyLevel, color);
-    });
-  }
-
-  // --- Vue Compatibilité ---
-  const compatA = document.getElementById('compatA');
-  const compatB = document.getElementById('compatB');
-  SIGNS.forEach(s => {
-    compatA.add(new Option(s.symbol + '  ' + s.name, s.id));
-    compatB.add(new Option(s.symbol + '  ' + s.name, s.id));
-  });
-  compatB.selectedIndex = 1;
-
-  function elementAffinity(e1, e2){
-    if(e1 === e2) return 'same';
-    const compatiblePairs = [['feu','air'], ['air','feu'], ['terre','eau'], ['eau','terre']];
-    if(compatiblePairs.some(p => p[0] === e1 && p[1] === e2)) return 'compatible';
-    return 'challenging';
-  }
-
-  const COMPAT_TEMPLATES = {
-    same: [
-      "{signA} et {signB} partagent la même énergie {elementA} : une compréhension presque instinctive s'installe entre eux, à condition de laisser de la place à l'autre.",
-      "Entre {signA} et {signB}, l'élément {elementA} crée un langage commun immédiat — l'alchimie est naturelle, presque évidente.",
-      "{signA} et {signB} se reconnaissent tout de suite : même élan, même intensité. Le duo peut être puissant, si chacun garde son espace."
-    ],
-    compatible: [
-      "{signA} ({elementA}) et {signB} ({elementB}) forment un duo complémentaire : l'un nourrit l'énergie de l'autre, pour un équilibre plutôt harmonieux.",
-      "L'alliance {elementA}-{elementB} entre {signA} et {signB} fonctionne bien : chacun apporte ce qui manque à l'autre.",
-      "{signA} et {signB} se stimulent mutuellement — leurs éléments {elementA} et {elementB} s'accordent naturellement."
-    ],
-    challenging: [
-      "{signA} et {signB} avancent avec des rythmes différents : {elementA} et {elementB} demandent des efforts d'adaptation de part et d'autre.",
-      "Entre {signA} et {signB}, l'alchimie n'est pas immédiate — {elementA} et {elementB} ont besoin de temps pour trouver leur équilibre.",
-      "{signA} et {signB} se complètent surtout dans la différence : {elementA} et {elementB} demandent de la patience mutuelle."
-    ]
-  };
-
-  const VIGILANCE_TEMPLATES = {
-    same: [
-      "Attention à ne pas nourrir les mêmes travers en miroir — un peu de recul aide à équilibrer la relation.",
-      "La ressemblance peut parfois manquer de piment : cultivez aussi vos différences.",
-      "Deux tempéraments {elementA} au même endroit peuvent vite s'épuiser mutuellement — pensez à souffler chacun de votre côté."
-    ],
-    compatible: [
-      "La complémentarité fonctionne bien, mais elle demande à chacun de reconnaître la valeur de l'autre.",
-      "Ne laissez pas les rôles se figer : l'équilibre se construit dans les deux sens.",
-      "Cette belle entente mérite d'être entretenue activement, pas seulement subie."
-    ],
-    challenging: [
-      "La patience sera votre meilleure alliée pour dépasser vos différences de rythme.",
-      "Prenez le temps d'expliquer vos besoins, plutôt que de les supposer compris.",
-      "Ce duo demande des efforts réguliers, mais peut devenir une vraie force une fois apprivoisé."
-    ]
-  };
-
-  const CATEGORY_PHRASES = {
-    love: ["Une alchimie évidente au premier regard.", "L'attirance grandit avec le temps.", "Un lien qui demande de la patience.", "Une complicité sincère et naturelle.", "Les non-dits pourraient créer des tensions.", "Une belle énergie de couple.", "L'alchimie est là, à cultiver.", "Un duo attachant mais parfois orageux."],
-    friend: ["Des fous rires assurés entre vous.", "Une confiance qui se construit vite.", "Des points de vue qui s'opposent parfois.", "Une amitié solide sur la durée.", "Vous vous comprenez sans trop parler.", "Il faudra accepter vos différences.", "Une belle complicité au quotidien.", "Des débats animés mais stimulants."],
-    work: ["Une collaboration efficace et fluide.", "Vos méthodes de travail diffèrent.", "Ensemble, vous allez droit au but.", "Un bon équilibre entre vos forces.", "Des frictions possibles sur l'organisation.", "Une équipe complémentaire et productive.", "Il faudra clarifier les rôles.", "Vos ambitions s'alignent naturellement."],
-    money: ["Une vision commune de l'épargne.", "Vos rapports à l'argent diffèrent.", "Une bonne entente sur les dépenses.", "Mieux vaut clarifier les comptes ensemble.", "Un duo plutôt raisonnable côté finances.", "L'un dépense, l'autre économise.", "Des projets communs bien gérés.", "La transparence financière sera clé."],
-    comm: ["Vous vous comprenez à demi-mot.", "Le dialogue demande un peu d'effort.", "Des échanges francs et directs.", "Il faudra apprendre à s'écouter.", "Une belle fluidité dans les discussions.", "Les malentendus seront rares.", "Prenez le temps de vous expliquer.", "Une communication naturelle et sincère."]
-  };
-
-  const SCORE_RANGES = {
-    same: { love:[70,95], friend:[75,95], work:[65,90], money:[60,90], comm:[70,95] },
-    compatible: { love:[65,90], friend:[70,90], work:[70,90], money:[65,88], comm:[68,90] },
-    challenging: { love:[40,70], friend:[45,70], work:[40,65], money:[38,65], comm:[40,68] }
-  };
-
-  function fillCompatTemplate(str, a, b){
-    return str.split('{signA}').join(a.name).split('{signB}').join(b.name)
-      .split('{elementA}').join(a.element).split('{elementB}').join(b.element);
-  }
-
-  function generateCompat(a, b){
-    const ids = [a.id, b.id].sort();
-    const rng = mulberry32(hashString('compat-' + ids.join('-')));
-    const affinity = elementAffinity(a.element, b.element);
-    const ranges = SCORE_RANGES[affinity];
-    const pctIn = ([min, max]) => min + Math.floor(rng() * (max - min + 1));
-    const pick = (arr) => arr[Math.floor(rng() * arr.length)];
-
-    const goodTemplates = COMPAT_TEMPLATES[affinity];
-    const watchTemplates = VIGILANCE_TEMPLATES[affinity];
-    const textGood = fillCompatTemplate(pick(goodTemplates), a, b);
-    const textWatch = fillCompatTemplate(pick(watchTemplates), a, b);
-
-    const love = pctIn(ranges.love);
-    const friend = pctIn(ranges.friend);
-    const work = pctIn(ranges.work);
-    const money = pctIn(ranges.money);
-    const comm = pctIn(ranges.comm);
-    const global = Math.round((love + friend + work + money + comm) / 5);
-
-    return {
-      love, friend, work, money, comm, global,
-      lovePhrase: pick(CATEGORY_PHRASES.love),
-      friendPhrase: pick(CATEGORY_PHRASES.friend),
-      workPhrase: pick(CATEGORY_PHRASES.work),
-      moneyPhrase: pick(CATEGORY_PHRASES.money),
-      commPhrase: pick(CATEGORY_PHRASES.comm),
-      textGood, textWatch
-    };
-  }
-
-  function renderCompatResult(){
-    const a = SIGNS.find(s => s.id === compatA.value);
-    const b = SIGNS.find(s => s.id === compatB.value);
-    const result = generateCompat(a, b);
-
-    document.getElementById('compatResult').style.display = 'block';
-    const symA = document.getElementById('compatSymA');
-    const symB = document.getElementById('compatSymB');
-    symA.textContent = a.symbol;
-    symA.style.color = elementColor(a.element);
-    symB.textContent = b.symbol;
-    symB.style.color = elementColor(b.element);
-
-    document.getElementById('compatGlobalScore').textContent = result.global + '%';
-
-    document.getElementById('compatLovePct').style.width = result.love + '%';
-    document.getElementById('compatFriendPct').style.width = result.friend + '%';
-    document.getElementById('compatWorkPct').style.width = result.work + '%';
-    document.getElementById('compatMoneyPct').style.width = result.money + '%';
-    document.getElementById('compatCommPct').style.width = result.comm + '%';
-
-    document.getElementById('compatLoveNum').textContent = result.love + '% — ' + result.lovePhrase;
-    document.getElementById('compatFriendNum').textContent = result.friend + '% — ' + result.friendPhrase;
-    document.getElementById('compatWorkNum').textContent = result.work + '% — ' + result.workPhrase;
-    document.getElementById('compatMoneyNum').textContent = result.money + '% — ' + result.moneyPhrase;
-    document.getElementById('compatCommNum').textContent = result.comm + '% — ' + result.commPhrase;
-
-    document.getElementById('compatTextGood').textContent = result.textGood;
-    document.getElementById('compatTextWatch').textContent = result.textWatch;
-  }
-
-  document.getElementById('compatBtn').addEventListener('click', renderCompatResult);
-  compatA.addEventListener('change', renderCompatResult);
-  compatB.addEventListener('change', renderCompatResult);
-  renderCompatResult(); // pré-affichage pour éviter un onglet vide au premier affichage
-
-  // --- Vue Archive ---
-  let archiveSign = null;
-  const archiveChipsEl = document.getElementById('archiveChips');
-  const archiveDateInput = document.getElementById('archiveDate');
-  const todayISO = new Date().toISOString().slice(0,10);
-  archiveDateInput.max = todayISO;
-
-  SIGNS.forEach(sign => {
-    const chip = document.createElement('button');
-    chip.className = 'chip';
-    chip.style.setProperty('--accent', elementColor(sign.element));
-    chip.dataset.id = sign.id;
-    chip.innerHTML = `<span class="chip-symbol">${sign.symbol}</span><span>${sign.name}</span>`;
-    chip.addEventListener('click', () => selectArchiveSign(sign.id));
-    archiveChipsEl.appendChild(chip);
-  });
-
-  selectArchiveSign(SIGNS[0].id); // pré-sélection pour éviter un onglet vide au premier affichage
-
-  function selectArchiveSign(id){
-    document.querySelectorAll('#archiveChips .chip').forEach(c => c.classList.toggle('selected', c.dataset.id === id));
-    document.getElementById('archiveHint').style.display = 'none';
-    document.getElementById('archiveControls').style.display = 'flex';
-    archiveSign = SIGNS.find(s => s.id === id);
-    buildArchivePills();
-    // par défaut, on montre hier (le premier jour "passé" disponible)
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yKey = yesterday.toISOString().slice(0,10);
-    archiveDateInput.value = yKey;
-    renderArchiveDay(archiveSign, yKey);
-  }
-
-  function buildArchivePills(){
-    const pillsEl = document.getElementById('archivePills');
-    pillsEl.innerHTML = '';
-    for(let i=1; i<=7; i++){
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      const dKey = d.toISOString().slice(0,10);
-      const label = i === 1 ? 'Hier' : new Intl.DateTimeFormat('fr-FR', { weekday:'short', day:'numeric' }).format(d);
-      const pill = document.createElement('button');
-      pill.className = 'day-pill' + (i === 1 ? ' selected' : '');
-      pill.textContent = label;
-      pill.dataset.date = dKey;
-      pill.addEventListener('click', () => {
-        document.querySelectorAll('#archivePills .day-pill').forEach(p => p.classList.remove('selected'));
-        pill.classList.add('selected');
-        archiveDateInput.value = dKey;
-        renderArchiveDay(archiveSign, dKey);
-      });
-      pillsEl.appendChild(pill);
-    }
-  }
-
-  archiveDateInput.addEventListener('change', () => {
-    if(!archiveSign || !archiveDateInput.value) return;
-    document.querySelectorAll('#archivePills .day-pill').forEach(p => p.classList.toggle('selected', p.dataset.date === archiveDateInput.value));
-    renderArchiveDay(archiveSign, archiveDateInput.value);
-  });
-
-  function renderArchiveDay(sign, dKeyStr){
-    const index = SIGNS.indexOf(sign);
-    const color = elementColor(sign.element);
-    const data = generateHoroscope(sign, sign.id + '-' + dKeyStr);
-
-    const panel = document.getElementById('archivePanel');
-    panel.classList.add('show');
-    requestAnimationFrame(() => panel.classList.add('visible'));
-
-    document.getElementById('archiveSymbol').textContent = sign.symbol;
-    document.getElementById('archiveSymbol').style.color = color;
-    document.getElementById('archiveName').textContent = sign.name;
-
-    const d = new Date(dKeyStr + 'T00:00:00');
-    const label = dKeyStr === todayISO
-      ? "Aujourd'hui"
-      : new Intl.DateTimeFormat('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' }).format(d);
-    document.getElementById('archiveDateLabel').textContent = label;
-
-    renderConstellation(sign, index, 'archiveConstellation');
-
-    document.getElementById('archiveText').textContent = data.text;
-    document.getElementById('archiveLoveText').textContent = data.love;
-    document.getElementById('archiveWorkText').textContent = data.work;
-    document.getElementById('archiveEnergyText').textContent = data.energy;
-    renderBar('archiveLoveBar', data.loveLevel, color);
-    renderBar('archiveWorkBar', data.workLevel, color);
-    renderBar('archiveEnergyBar', data.energyLevel, color);
-    document.getElementById('archiveLuckyRow').innerHTML =
-      `<b>${data.luckyNumber}</b> numéro chance &nbsp;·&nbsp; <b>${data.luckyColor}</b> couleur du jour`;
-  }
-
-  // --- Onglet Actualités ---
-
-  // phase lunaire réelle (calcul astronomique approximatif, sans API)
-  function getMoonPhase(){
-    const synodic = 29.530588853;
-    const knownNewMoonUTC = Date.UTC(2000, 0, 6, 18, 14, 0);
-    let days = (Date.now() - knownNewMoonUTC) / 86400000;
-    days = days % synodic;
-    if(days < 0) days += synodic;
-    const illum = Math.round(((1 - Math.cos((2 * Math.PI * days) / synodic)) / 2) * 100);
-
-    let name, emoji;
-    if(days < 1.84566){ name = 'Nouvelle lune'; emoji = '🌑'; }
-    else if(days < 5.53699){ name = 'Premier croissant'; emoji = '🌒'; }
-    else if(days < 9.22831){ name = 'Premier quartier'; emoji = '🌓'; }
-    else if(days < 12.91963){ name = 'Lune gibbeuse croissante'; emoji = '🌔'; }
-    else if(days < 16.61096){ name = 'Pleine lune'; emoji = '🌕'; }
-    else if(days < 20.30228){ name = 'Lune gibbeuse décroissante'; emoji = '🌖'; }
-    else if(days < 23.99361){ name = 'Dernier quartier'; emoji = '🌗'; }
-    else if(days < 27.68493){ name = 'Dernier croissant'; emoji = '🌘'; }
-    else { name = 'Nouvelle lune'; emoji = '🌑'; }
-
-    return { name, emoji, illum };
-  }
-
-  // saison zodiacale en cours, calculée à partir de la date du jour
-  const SIGN_DATES = [
-    { id:'aries', start:[3,21], end:[4,19] },
-    { id:'taurus', start:[4,20], end:[5,20] },
-    { id:'gemini', start:[5,21], end:[6,20] },
-    { id:'cancer', start:[6,21], end:[7,22] },
-    { id:'leo', start:[7,23], end:[8,22] },
-    { id:'virgo', start:[8,23], end:[9,22] },
-    { id:'libra', start:[9,23], end:[10,22] },
-    { id:'scorpio', start:[10,23], end:[11,21] },
-    { id:'sagittarius', start:[11,22], end:[12,21] },
-    { id:'capricorn', start:[12,22], end:[1,19] },
-    { id:'aquarius', start:[1,20], end:[2,18] },
-    { id:'pisces', start:[2,19], end:[3,20] }
-  ];
-
-  function getCurrentSunSign(){
-    const now = new Date();
-    const val = (now.getMonth() + 1) * 100 + now.getDate();
-    for(const sd of SIGN_DATES){
-      const startVal = sd.start[0] * 100 + sd.start[1];
-      const endVal = sd.end[0] * 100 + sd.end[1];
-      if(startVal <= endVal){
-        if(val >= startVal && val <= endVal) return sd;
-      } else {
-        if(val >= startVal || val <= endVal) return sd;
-      }
-    }
-    return SIGN_DATES[0];
-  }
-
-  const MONTH_THEMES = [
-    { title:"Janvier — Nouveaux départs", text:"Le début d'année invite naturellement à poser des intentions claires. C'est une période propice pour structurer ses projets et repartir sur des bases solides." },
-    { title:"Février — Introspection et tendresse", text:"Un mois plus intérieur, où les émotions prennent le dessus sur la raison. Les liens affectifs se resserrent, et il est bon de ralentir un peu." },
-    { title:"Mars — Renouveau et élan", text:"L'énergie repart à la hausse. C'est le moment idéal pour initier ce qui a été mis en pause, avec une motivation renouvelée." },
-    { title:"Avril — Audace et action", text:"Un climat plus impulsif s'installe, qui pousse à sortir de sa zone de confort. L'action prime sur l'hésitation ce mois-ci." },
-    { title:"Mai — Ancrage et sensualité", text:"Le rythme ralentit légèrement, laissant plus de place au plaisir simple et à la stabilité. Un mois pour savourer plutôt que courir." },
-    { title:"Juin — Curiosité et échanges", text:"Les conversations se multiplient, les idées circulent. C'est une période fertile pour apprendre, discuter et se connecter aux autres." },
-    { title:"Juillet — Émotions et attachements", text:"Le cœur prend le devant de la scène. Les proches et le foyer occupent une place centrale, avec une sensibilité plus à fleur de peau." },
-    { title:"Août — Rayonnement et confiance", text:"Une énergie plus affirmée s'installe, portée par l'envie de se montrer et de créer. Le mois encourage à occuper sa place pleinement." },
-    { title:"Septembre — Équilibre et harmonie", text:"Après l'intensité de l'été, un besoin de remise en ordre se fait sentir. C'est un bon moment pour ajuster ce qui semblait déséquilibré." },
-    { title:"Octobre — Transformation et intensité", text:"Un climat plus profond s'installe, propice à l'introspection et aux remises en question. Ce qui doit changer commence à se révéler." },
-    { title:"Novembre — Expansion et liberté", text:"L'envie de voir plus loin domine. C'est une période stimulante pour élargir ses horizons, apprendre et explorer de nouvelles idées." },
-    { title:"Décembre — Bilan et structure", text:"L'année se referme, invitant à faire le point. Un mois pour consolider ce qui a été construit avant de repartir sur de nouvelles bases." }
-  ];
-
-  const TRAIT_OPENERS = [
-    "{sign} incarne à merveille l'énergie {element}, avec une intensité qui ne passe jamais inaperçue.",
-    "Sous l'influence de {planet}, {sign} développe naturellement un sens aigu de l'observation.",
-    "{sign} avance dans la vie avec une détermination tranquille, propre aux signes de {element}.",
-    "Gouverné par {planet}, {sign} a ce don rare de savoir ce qu'il veut, même dans le doute.",
-    "{sign} porte en lui toute la richesse de l'élément {element} : intense, entier, difficile à ignorer."
-  ];
-  const TRAIT_MIDDLES = [
-    "Sa plus grande force ? Une capacité à rester lui-même en toutes circonstances.",
-    "On lui reconnaît une loyauté sans faille envers ceux qu'il aime.",
-    "Son intuition le guide souvent mieux que n'importe quel calcul.",
-    "Il a ce talent discret de faire sentir aux autres qu'ils comptent.",
-    "Sa curiosité naturelle le pousse toujours à voir plus loin que les apparences."
-  ];
-  const TRAIT_CLOSINGS = [
-    "Son axe de progression : apprendre à lâcher prise sur ce qu'il ne contrôle pas.",
-    "Son défi : accepter que la vulnérabilité n'est pas une faiblesse.",
-    "Il gagnerait à faire un peu plus confiance au temps, plutôt qu'à vouloir tout accélérer.",
-    "Sa marge de progrès : oser demander de l'aide sans y voir un échec.",
-    "Le vrai travail pour lui : écouter aussi ce qu'il ressent, pas seulement ce qu'il pense."
-  ];
-
-  function renderNews(){
-    const moon = getMoonPhase();
-    document.getElementById('moonEmoji').textContent = moon.emoji;
-    document.getElementById('moonName').textContent = moon.name;
-    document.getElementById('moonIllum').textContent = moon.illum + '% de la lune est éclairée';
-
-    const sd = getCurrentSunSign();
-    const sunSign = SIGNS.find(s => s.id === sd.id);
-    document.getElementById('seasonSymbol').textContent = sunSign.symbol;
-    document.getElementById('seasonSymbol').style.color = elementColor(sunSign.element);
-    document.getElementById('seasonName').textContent = 'Saison ' + sunSign.name;
-    document.getElementById('seasonSub').textContent = sunSign.range;
-
-    const theme = MONTH_THEMES[new Date().getMonth()];
-    document.getElementById('monthThemeTitle').textContent = theme.title;
-    document.getElementById('monthThemeText').textContent = theme.text;
-
-    const weekNum = Math.floor(Date.now() / (7 * 86400000));
-    const featured = SIGNS[weekNum % SIGNS.length];
-    const rng = mulberry32(hashString(featured.id + '-featured-' + weekNum));
-    const pick = (arr) => arr[Math.floor(rng() * arr.length)];
-    const traitText = [pick(TRAIT_OPENERS), pick(TRAIT_MIDDLES), pick(TRAIT_CLOSINGS)]
-      .map(s => fillTemplate(s, featured)).join(' ');
-
-    document.getElementById('featuredSymbol').textContent = featured.symbol;
-    document.getElementById('featuredSymbol').style.color = elementColor(featured.element);
-    document.getElementById('featuredName').textContent = featured.name;
-    document.getElementById('featuredText').textContent = traitText;
-  }
-
-  renderNews();
-
-  // --- Articles ---
-  // Pour ajouter un article : donnez le titre et le texte à Claude, il l'ajoute ici.
-  // Dans le texte : une ligne vide sépare les paragraphes, "## " au début d'une ligne
-  // crée un sous-titre, "* " au début de plusieurs lignes crée une liste à puces,
-  // et **texte** met en gras.
-  const ARTICLES = [
-    {
-      title: "🌕 Éclipse lunaire du 28 août 2026 : ce qu'elle pourrait révéler pour votre signe",
-      date: "28 août 2026",
-      text: `Le 28 août 2026, le ciel offrira un nouveau rendez-vous astronomique majeur : une éclipse lunaire partielle.
-
-Cette éclipse intervient seulement quelques semaines après l'éclipse solaire du 12 août. Elle clôt ainsi une période particulièrement riche en phénomènes célestes.
-
-Mais au-delà du spectacle astronomique, cette pleine Lune en Poissons possède également une dimension symbolique intéressante en astrologie.
-
-## 🌑 Qu'est-ce qu'une éclipse lunaire ?
-
-Une éclipse lunaire se produit lorsque la Terre se place entre le Soleil et la Lune. Notre planète projette alors son ombre sur la surface lunaire.
-
-Le 28 août, l'éclipse sera partielle : une partie importante du disque lunaire passera dans l'ombre de la Terre, tandis qu'une autre partie restera éclairée.
-
-L'éclipse sera particulièrement profonde : au maximum, environ **96 % du disque lunaire** se trouvera dans l'ombre terrestre.
-
-En France, le phénomène commencera dans la nuit. La phase pénombrale débutera vers 3 h 23, tandis que la phase partielle commencera vers 5 h 12. Le maximum sera atteint vers 6 h 12, avant la fin de la phase partielle vers 7 h 13.
-
-La Lune pourra également prendre une teinte rougeâtre ou cuivrée sur la partie plongée dans l'ombre, même si l'éclipse ne sera pas une éclipse totale.
-
-## ♓ Une pleine Lune en Poissons
-
-En astrologie tropicale, cette pleine Lune se produit dans le signe des **Poissons**, autour de 4°54'. Le Soleil se trouve alors en face, dans le signe de la **Vierge**.
-
-Cette opposition forme ce que les astrologues appellent l'axe Poissons–Vierge, qui oppose symboliquement deux façons de fonctionner. Côté ♓ Poissons, l'axe met en avant :
-
-* Intuition
-* Émotions
-* Imagination
-* Lâcher-prise
-* Spiritualité
-
-Côté ♍ Vierge, il met en avant :
-
-* Organisation
-* Logique
-* Travail
-* Habitudes
-* Sens du détail
-
-L'éclipse peut donc être interprétée comme un moment symbolique où il devient nécessaire de trouver un équilibre entre écouter ses émotions et garder les pieds sur terre.
-
-## 🔮 Que représente cette éclipse en astrologie ?
-
-Dans l'astrologie, une éclipse lunaire est traditionnellement associée à des prises de conscience, des culminations et des changements.
-
-La Lune étant symboliquement associée aux émotions, à l'intimité et au monde intérieur, une éclipse lunaire peut être interprétée comme une période où certaines choses deviennent plus difficiles à ignorer.
-
-Et parce que cette éclipse se produit en Poissons, certains astrologues lui attribuent des thèmes comme :
-
-* 🌙 La fin d'un cycle
-* 💭 Les émotions longtemps mises de côté
-* ✨ L'intuition
-* ❤️ Les relations
-* 🕊️ Le lâcher-prise
-* 🔮 Les rêves et aspirations
-
-Cela ne signifie évidemment pas qu'un événement précis va nécessairement se produire. **L'astrologie est une pratique symbolique et culturelle, et non une méthode scientifique permettant de prédire l'avenir.**
-
-## ♈ Éclipse du 28 août : signe par signe
-
-## ♈ Bélier
-
-Cette éclipse pourrait symboliquement t'inviter à ralentir. Tu as peut-être tendance à vouloir avancer rapidement et à résoudre immédiatement les problèmes ; cette période pourrait plutôt t'encourager à écouter ce que tu ressens réellement. Une situation que tu repousses pourrait revenir dans tes pensées. **Mot-clé : introspection.**
-
-## ♉ Taureau
-
-Cette période pourrait mettre l'accent sur tes relations et ton cercle social. Certaines personnes pourraient prendre davantage de place dans ta vie, tandis que d'autres pourraient naturellement s'en éloigner. L'éclipse peut symboliquement t'aider à faire le tri entre les relations qui te font avancer et celles qui t'épuisent. **Mot-clé : entourage.**
-
-## ♊ Gémeaux
-
-Pour les Gémeaux, cette éclipse pourrait mettre en lumière la vie professionnelle et les ambitions. Tu pourrais ressentir le besoin de revoir certains objectifs ou de te demander si la direction que tu prends correspond réellement à tes envies. Une prise de conscience pourrait t'amener à envisager une nouvelle voie. **Mot-clé : orientation.**
-
-## ♋ Cancer
-
-L'éclipse pourrait t'encourager à sortir de ta zone de confort. Voyage, nouvelles expériences, apprentissage ou simplement envie de découvrir autre chose : quelque chose pourrait réveiller ta curiosité. Tu pourrais également remettre en question certaines croyances ou convictions. **Mot-clé : ouverture.**
-
-## ♌ Lion
-
-Après l'intense période de l'éclipse solaire du 12 août, cette éclipse pourrait t'inviter à regarder davantage ce qui se passe derrière les apparences. Certaines émotions ou questions personnelles pourraient refaire surface. C'est peut-être le moment de comprendre ce que tu veux vraiment, plutôt que ce que tu veux montrer aux autres. **Mot-clé : profondeur.**
-
-## ♍ Vierge
-
-Cette éclipse se déroule directement face à ton signe. Elle pourrait donc symboliquement mettre l'accent sur tes relations : couple, amitié, famille ou associations. Une relation pourrait évoluer, se renforcer ou te montrer quelque chose que tu n'avais pas encore compris. **Mot-clé : relations.**
-
-## ♎ Balance
-
-Ton quotidien pourrait être au centre de tes réflexions. Cette période pourrait te pousser à revoir certaines habitudes, ton organisation ou ton équilibre entre obligations et temps personnel. Parfois, changer une petite habitude peut avoir un impact beaucoup plus important qu'on ne l'imagine. **Mot-clé : équilibre.**
-
-## ♏ Scorpion
-
-L'éclipse pourrait réveiller ton côté créatif et émotionnel. Amour, passion, loisirs, projets personnels… quelque chose pourrait te donner envie de retrouver ce qui te fait réellement vibrer. Tu pourrais également avoir envie de prendre davantage de risques dans un domaine qui te tient à cœur. **Mot-clé : passion.**
-
-## ♐ Sagittaire
-
-Cette période pourrait te ramener vers la famille et les racines. Certaines questions liées à ton passé pourraient refaire surface. L'éclipse pourrait symboliquement t'encourager à comprendre ce que tu souhaites conserver de ton passé… et ce que tu souhaites définitivement laisser derrière toi. **Mot-clé : racines.**
-
-## ♑ Capricorne
-
-Les échanges pourraient prendre une importance particulière. Une conversation, un message ou une information pourrait te faire voir une situation sous un angle complètement différent. Cette période pourrait également être favorable à l'apprentissage et aux nouvelles idées. **Mot-clé : communication.**
-
-## ♒ Verseau
-
-L'éclipse pourrait t'amener à réfléchir à tes valeurs et à ta sécurité. Qu'est-ce qui est réellement important pour toi ? Ton argent ? Ton indépendance ? Ton temps ? Tes relations ? Cette période pourrait être l'occasion de remettre certaines priorités à leur juste place. **Mot-clé : valeurs.**
-
-## ♓ Poissons
-
-C'est probablement ton éclipse. La Lune étant en Poissons, cette période pourrait symboliquement être particulièrement introspective pour toi. Identité, émotions, relations et projets personnels pourraient être remis en perspective. Tu pourrais avoir la sensation de fermer un chapitre et de commencer à comprendre quelle direction tu souhaites réellement prendre. **Mot-clé : transformation.**
-
-## ✨ Quels signes pourraient ressentir cette éclipse le plus fortement ?
-
-Dans une lecture astrologique, les signes mutables sont particulièrement mis en avant puisque l'éclipse se produit à environ 4°54' des Poissons et s'inscrit sur l'axe Poissons–Vierge. Il s'agit notamment des signes suivants :
-
-* ♊ Gémeaux
-* ♍ Vierge
-* ♐ Sagittaire
-* ♓ Poissons
-
-Les personnes ayant leur Soleil, leur Lune ou d'autres placements importants dans les premiers degrés de ces signes peuvent également être davantage concernées selon leur thème natal.
-
-## 🌕 Une éclipse qui invite à lâcher prise ?
-
-L'éclipse du 28 août possède une particularité intéressante : elle constitue le dernier grand rendez-vous d'éclipse de 2026.
-
-Symboliquement, cela renforce l'idée de fin de cycle souvent associée aux éclipses lunaires et au signe des Poissons.
-
-Après l'énergie très expressive de l'éclipse solaire du 12 août en Lion, l'ambiance astrologique change complètement. On passe symboliquement de « Je veux commencer quelque chose » à « Qu'est-ce que je dois laisser derrière moi ? »
-
-Cette période peut donc être intéressante pour faire le point sur les choses que l'on souhaite conserver, celles que l'on souhaite transformer et celles dont on est enfin prêt à se détacher.
-
-## 🔮 Résumé : que retenir de l'éclipse du 28 août ?
-
-* 🌑 Éclipse : lunaire partielle
-* 📅 Date : 28 août 2026
-* ♓ Signe astrologique : Poissons
-* ♍ Soleil opposé : Vierge
-* 🌕 Phase : pleine Lune
-* ⏰ Maximum en France : environ 6 h 12
-* ✨ Thèmes astrologiques symboliques : émotions, fin de cycle, intuition, relations et lâcher-prise
-
-Les quatre signes à surveiller particulièrement : **♊ Gémeaux — ♍ Vierge — ♐ Sagittaire — ♓ Poissons.**
-
-Mais l'éclipse peut être interprétée différemment selon le thème natal de chacun.
-
-Et toi, que souhaites-tu laisser derrière toi avant d'entrer dans un nouveau chapitre ? 🌕✨
-
-🔮 Les Douze Astres — Ton univers, écrit dans les étoiles.`
-    },
-    {
-      title: "Éclipse solaire du 12 août 2026 : un phénomène exceptionnel",
-      date: "12 août 2026",
-      text: `Le 12 août 2026, le ciel a offert un spectacle particulièrement impressionnant : une éclipse solaire a traversé une partie de l'hémisphère Nord.
-
-Lors d'une éclipse solaire, la Lune vient se placer entre la Terre et le Soleil et masque temporairement une partie de sa lumière. Lorsque les trois astres sont parfaitement alignés et que la Lune recouvre entièrement le Soleil, on parle d'éclipse solaire totale.
-
-L'éclipse du 12 août 2026 était justement **totale sur une partie de sa trajectoire**, notamment en Islande, au Groenland, dans l'Atlantique Nord et en Espagne. En France métropolitaine, elle était en revanche **partielle** : le disque solaire n'était jamais complètement masqué.
-
-## ☀️ Une éclipse particulièrement visible en France
-
-La France a tout de même bénéficié d'un spectacle remarquable.
-
-À Paris, environ **92 % du Soleil** a été occulté au maximum de l'éclipse. Dans certaines régions proches de la frontière espagnole, l'occultation a dépassé 99 %. L'éclipse s'est produite en soirée, ce qui a également permis d'observer un Soleil très bas sur l'horizon.
-
-Dans les régions situées sur la bande de totalité, le phénomène était encore plus spectaculaire : pendant quelques instants, la Lune a complètement recouvert le disque solaire, plongeant temporairement le paysage dans une obscurité inhabituelle.
-
-La totalité a duré moins de deux minutes dans la plupart des endroits concernés.
-
-## 🌌 Pourquoi une éclipse solaire est-elle si impressionnante ?
-
-Une éclipse totale permet notamment d'observer la **couronne solaire**, l'atmosphère extérieure du Soleil normalement difficile à distinguer à cause de l'intense luminosité de sa surface.
-
-Pour les scientifiques, ces quelques minutes représentent également une occasion précieuse d'étudier notre étoile et son influence sur l'environnement terrestre. Des équipes soutenues par la NASA ont notamment utilisé des avions volant à haute altitude et des ballons scientifiques afin d'étudier le Soleil et les changements provoqués dans l'atmosphère par l'obscurcissement temporaire du ciel.
-
-## 🔮 Et en astrologie, que représente une éclipse solaire ?
-
-Au-delà de l'astronomie, les éclipses occupent une place importante dans l'astrologie.
-
-Dans l'interprétation astrologique, une **éclipse solaire** est traditionnellement associée aux nouveaux départs, aux changements et aux périodes de transition.
-
-Elle peut symboliser la fermeture d'un chapitre et l'ouverture d'une nouvelle période. Certains astrologues considèrent également les éclipses comme des moments où certaines situations deviennent plus difficiles à ignorer.
-
-Il est toutefois important de distinguer ces interprétations de l'astronomie : **l'astrologie est une pratique symbolique et culturelle et ne constitue pas une méthode scientifique permettant de prédire les événements ou la personnalité.**
-
-## ♌ Quels signes peuvent ressentir cette période plus fortement ?
-
-Dans une lecture astrologique, l'impact d'une éclipse est généralement interprété en fonction du signe dans lequel elle se produit ainsi que du thème natal de chaque personne.
-
-Les signes fixes — **Taureau, Lion, Scorpion et Verseau** — peuvent notamment être mis en avant dans les interprétations liées aux périodes de transformation et de changement.
-
-Pour ces signes, cette période peut symboliquement être associée à une remise en question, à une décision importante ou à la nécessité de tourner une page.
-
-Mais chaque thème astrologique étant différent, il n'existe pas une interprétation unique valable pour toutes les personnes nées sous le même signe.
-
-## ✨ Une période idéale pour prendre un nouveau départ ?
-
-Dans la tradition astrologique, une éclipse solaire peut être considérée comme une invitation à réfléchir à ce que l'on souhaite réellement changer.
-
-C'est donc une période symbolique qui peut encourager à :
-
-* 🌙 laisser derrière soi certaines habitudes
-* ❤️ réfléchir à ses relations
-* 💼 revoir ses objectifs professionnels
-* 🔮 écouter davantage ses intuitions
-* ✨ ouvrir un nouveau chapitre de sa vie
-
-L'éclipse ne signifie pas nécessairement qu'un événement précis va se produire. Elle peut plutôt être utilisée comme un **moment symbolique de réflexion et de renouveau**.
-
-## 🌟 Et maintenant ?
-
-L'éclipse du 12 août 2026 restera comme l'un des grands rendez-vous astronomiques de l'année.
-
-Pour certains, elle aura été avant tout un phénomène scientifique exceptionnel. Pour d'autres, elle représentera également un symbole de changement et de renouveau.
-
-Une chose est certaine : lorsque la Lune vient temporairement cacher le Soleil, le ciel nous rappelle à quel point les mouvements des astres peuvent encore susciter notre curiosité et notre imagination.
-
-Et toi, qu'as-tu ressenti pendant cette éclipse ? 🌑✨`
-    }
-  ];
-
-  function inlineFormat(str){
-    return str.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  }
-
-  function formatArticleBody(text){
-    const blocks = text.split(/\n\s*\n/);
-    return blocks.map(block => {
-      const trimmed = block.trim();
-      if(trimmed.startsWith('## ')){
-        return `<h3 class="article-h3">${inlineFormat(trimmed.replace(/^##\s*/, ''))}</h3>`;
-      }
-      const lines = trimmed.split('\n').map(l => l.trim()).filter(Boolean);
-      if(lines.length > 1 && lines.every(l => l.startsWith('* '))){
-        const items = lines.map(l => `<li>${inlineFormat(l.replace(/^\*\s*/, ''))}</li>`).join('');
-        return `<ul class="article-list">${items}</ul>`;
-      }
-      return `<p>${inlineFormat(trimmed)}</p>`;
-    }).join('');
-  }
-
-  function renderArticles(){
-    const el = document.getElementById('articlesList');
-    if(ARTICLES.length === 0){
-      el.innerHTML = '<p class="week-hint">Aucun article pour l\'instant — revenez bientôt.</p>';
-      return;
-    }
-    el.innerHTML = ARTICLES.map(a => `
-      <div class="article-card">
-        <div class="article-title">${a.title}</div>
-        <div class="article-date">${a.date}</div>
-        <div class="article-body">${formatArticleBody(a.text)}</div>
-      </div>
-    `).join('');
-  }
-
-  renderArticles();
-
-  // --- Onglet Histoire ---
-  const SIGN_HISTORY = {
-    aries: {
-      myth: "Dans la mythologie grecque, le Bélier est le bélier au pelage d'or qui sauva Phrixos et Hellé en les portant dans les airs pour échapper à un sacrifice. Sa toison, offerte aux dieux, devint plus tard la célèbre Toison d'or que Jason et les Argonautes partirent chercher.",
-      symbol: "Le symbole du Bélier représente les cornes recourbées de l'animal — une image de force, d'impulsion et de nouveau départ, puisque ce signe ouvre traditionnellement le zodiaque."
-    },
-    taurus: {
-      myth: "Le Taureau renvoie au mythe de Zeus qui, pour séduire la princesse Europe, se transforma en un magnifique taureau blanc. Il l'enleva sur son dos et traversa la mer jusqu'en Crète. C'est aussi l'une des plus anciennes constellations connues, déjà observée par les Babyloniens.",
-      symbol: "Le symbole figure la tête et les cornes du taureau, évoquant la force tranquille, l'ancrage et la ténacité associés à ce signe de terre."
-    },
-    gemini: {
-      myth: "Les Gémeaux représentent Castor et Pollux, fils jumeaux de Léda mais de pères différents — l'un mortel, l'autre fils de Zeus. À la mort de Castor, Pollux demanda à partager son immortalité avec son frère ; Zeus les réunit alors pour l'éternité dans le ciel.",
-      symbol: "Le symbole des deux traits parallèles représente les jumeaux, souvent lus comme deux colonnes ou deux silhouettes liées — image de dualité et de lien indéfectible."
-    },
-    cancer: {
-      myth: "Le Cancer fait référence au crabe envoyé par la déesse Héra pour distraire Héraclès pendant son combat contre l'Hydre de Lerne. Écrasé par le héros, il fut malgré tout placé parmi les étoiles par Héra, en récompense de sa loyauté.",
-      symbol: "Le symbole évoque les pinces du crabe, parfois interprétées comme une image de protection et de refuge — cohérent avec la sensibilité et l'attachement au foyer prêtés à ce signe."
-    },
-    leo: {
-      myth: "Le Lion est associé au Lion de Némée, une bête invulnérable aux armes que devait vaincre Héraclès lors de son premier travail. Le héros finit par l'étouffer à mains nues ; Zeus plaça ensuite l'animal dans le ciel en hommage à cet exploit.",
-      symbol: "Le symbole stylise la crinière et la queue du lion, incarnant la royauté, le courage et le rayonnement associés à ce signe gouverné par le Soleil."
-    },
-    virgo: {
-      myth: "La Vierge est souvent identifiée à Astrée, déesse de la justice et de l'innocence, qui vivait parmi les hommes durant l'Âge d'or avant de remonter au ciel, lassée de la corruption du monde. Elle est aussi parfois associée à Déméter, déesse des moissons.",
-      symbol: "Le symbole représente une jeune femme tenant un épi de blé, en écho à l'étoile la plus brillante de la constellation, Spica, dont le nom signifie justement « épi »."
-    },
-    libra: {
-      myth: "La Balance est le seul signe du zodiaque représenté par un objet plutôt qu'un être vivant. Les Grecs y voyaient à l'origine les pinces du Scorpion voisin ; ce sont les Romains qui en firent une constellation à part, symbole des scèptres de la justice tenus par Astrée ou Thémis.",
-      symbol: "Le symbole du plateau de balance évoque l'équilibre, la mesure et la recherche d'harmonie, en résonance avec l'équinoxe d'automne auquel ce signe est historiquement lié."
-    },
-    scorpio: {
-      myth: "Le Scorpion renvoie au mythe d'Orion, chasseur si fier de ses talents qu'il se vanta de pouvoir tuer n'importe quel animal. Pour le punir, un scorpion fut envoyé le piquer mortellement. Les deux furent placés aux extrémités opposées du ciel, de sorte qu'ils ne se lèvent jamais ensemble.",
-      symbol: "Le symbole figure la queue recourbée et le dard du scorpion, image de l'intensité, du pouvoir de transformation et de la part de mystère associés à ce signe."
-    },
-    sagittarius: {
-      myth: "Le Sagittaire est représenté par un centaure archer, souvent rapproché de Chiron, le plus sage des centaures, précepteur de nombreux héros grecs comme Achille. Sa nature mi-homme mi-cheval symbolise la tension entre instinct et sagesse.",
-      symbol: "Le symbole figure une flèche tendue vers le haut, évoquant la quête d'idéal, la curiosité et l'envie d'aller toujours plus loin propres à ce signe de feu."
-    },
-    capricorn: {
-      myth: "Le Capricorne est lié au dieu Pan, mi-homme mi-bouc, qui, pour échapper au monstre Typhon, plongea dans un fleuve et vit son bas du corps se transformer en queue de poisson. Zeus immortalisa cette forme hybride, chèvre et poisson, dans le ciel.",
-      symbol: "Le symbole combine les cornes de la chèvre et la queue du poisson, représentant l'ambition terrestre alliée à une profondeur émotionnelle plus discrète."
-    },
-    aquarius: {
-      myth: "Le Verseau est associé à Ganymède, jeune prince troyen d'une beauté remarquable, enlevé par Zeus (transformé en aigle) pour devenir l'échanson des dieux sur l'Olympe, chargé de leur verser le nectar.",
-      symbol: "Le symbole des deux lignes ondulées représente l'eau versée depuis la cruche de Ganymède, image de générosité, de circulation des idées et d'indépendance d'esprit."
-    },
-    pisces: {
-      myth: "Les Poissons évoquent Aphrodite et son fils Éros qui, poursuivis par le monstre Typhon, se jetèrent dans l'Euphrate et se transformèrent en poissons pour lui échapper, en prenant soin de nouer leurs queues ensemble pour ne jamais se perdre.",
-      symbol: "Le symbole figure deux poissons reliés par un cordon et nageant en sens opposés, image de la dualité intérieure et de la profonde sensibilité prêtées à ce signe d'eau."
-    }
-  };
-
-  const historyChipsEl = document.getElementById('historyChips');
-  SIGNS.forEach(sign => {
-    const chip = document.createElement('button');
-    chip.className = 'chip';
-    chip.style.setProperty('--accent', elementColor(sign.element));
-    chip.dataset.id = sign.id;
-    chip.innerHTML = `<span class="chip-symbol">${sign.symbol}</span><span>${sign.name}</span>`;
-    chip.addEventListener('click', () => selectHistorySign(sign.id));
-    historyChipsEl.appendChild(chip);
-  });
-
-  const SIGN_ICONS = {
-    aries: `<circle cx="80" cy="94" r="9"/><path d="M66,90 C50,90 45,70 58,60 C68,52 78,60 74,72"/><path d="M94,90 C110,90 115,70 102,60 C92,52 82,60 86,72"/>`,
-    taurus: `<circle cx="80" cy="100" r="15"/><path d="M68,88 C55,80 55,60 70,50"/><path d="M92,88 C105,80 105,60 90,50"/>`,
-    gemini: `<line x1="60" y1="55" x2="100" y2="55"/><line x1="60" y1="115" x2="100" y2="115"/><line x1="67" y1="55" x2="67" y2="115"/><line x1="93" y1="55" x2="93" y2="115"/>`,
-    cancer: `<ellipse cx="80" cy="92" rx="24" ry="16"/><path d="M58,86 C45,80 42,65 52,58"/><path d="M102,86 C115,80 118,65 108,58"/><line x1="62" y1="106" x2="52" y2="118"/><line x1="98" y1="106" x2="108" y2="118"/>`,
-    leo: `<path d="M55,78 A25,25 0 1,1 105,78"/><path d="M70,108 C60,118 80,123 75,108"/><circle cx="80" cy="78" r="6"/>`,
-    virgo: `<line x1="80" y1="50" x2="80" y2="118"/><line x1="80" y1="65" x2="66" y2="75"/><line x1="80" y1="80" x2="94" y2="90"/><line x1="80" y1="95" x2="66" y2="105"/><line x1="80" y1="55" x2="70" y2="50"/><line x1="80" y1="55" x2="90" y2="50"/>`,
-    libra: `<line x1="80" y1="55" x2="80" y2="112"/><line x1="55" y1="65" x2="105" y2="65"/><path d="M52,68 C52,80 68,80 68,68"/><path d="M92,68 C92,80 108,80 108,68"/><line x1="60" y1="112" x2="100" y2="112"/>`,
-    scorpio: `<path d="M55,60 L55,92 L72,92 L72,58 L88,58 L88,100"/><path d="M88,100 C88,110 100,112 103,102"/><line x1="103" y1="102" x2="110" y2="108"/><line x1="103" y1="102" x2="98" y2="110"/>`,
-    sagittarius: `<line x1="55" y1="115" x2="112" y2="58"/><line x1="112" y1="58" x2="98" y2="62"/><line x1="112" y1="58" x2="108" y2="72"/><line x1="66" y1="98" x2="86" y2="78"/>`,
-    capricorn: `<path d="M55,58 C48,72 56,84 68,80"/><path d="M68,80 C82,74 94,80 94,92 C94,102 84,106 80,98"/><path d="M94,92 C104,90 110,100 100,106"/>`,
-    aquarius: `<path d="M50,72 C60,62 70,82 80,72 C90,62 100,82 110,72"/><path d="M50,94 C60,84 70,104 80,94 C90,84 100,104 110,94"/>`,
-    pisces: `<path d="M60,55 C45,70 45,110 60,125"/><path d="M100,55 C115,70 115,110 100,125"/><line x1="60" y1="90" x2="100" y2="90"/>`
-  };
-
-  function renderHistoryMedallion(sign){
-    const svg = document.getElementById('historyMedallion');
-    const color = elementColor(sign.element);
-    const frame = `<circle cx="80" cy="80" r="72" fill="none" stroke="${color}" stroke-width="0.75" opacity="0.4"/>`;
-    const icon = `<g fill="none" stroke="${color}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">${SIGN_ICONS[sign.id]}</g>`;
-    svg.innerHTML = frame + icon;
-  }
-
-  function selectHistorySign(id){
-    document.querySelectorAll('#historyChips .chip').forEach(c => c.classList.toggle('selected', c.dataset.id === id));
-    const sign = SIGNS.find(s => s.id === id);
-    const info = SIGN_HISTORY[id];
-    const color = elementColor(sign.element);
-
-    renderHistoryMedallion(sign);
-    document.getElementById('historyName').textContent = sign.name;
-    document.getElementById('historyRange').textContent = sign.range;
-    document.getElementById('historyMyth').textContent = info.myth;
-    document.getElementById('historySymbolMeaning').textContent = info.symbol;
-  }
-
-  selectHistorySign(SIGNS[0].id); // pré-sélection pour éviter un onglet vide au premier affichage
-</script>
 
 </body>
 </html>
