@@ -791,13 +791,32 @@
     background:var(--nebula);
     border:1px solid var(--line);
     border-radius:10px;
-    padding:30px 28px;
-    margin-bottom:16px;
+    padding:24px 26px;
+    margin-bottom:12px;
+    transition:border-color .15s ease;
   }
+  .article-card.expanded{ border-color:var(--gold); }
+  .article-header{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    cursor:pointer;
+  }
+  .article-header-text{ flex:1; min-width:0; }
+  .article-chevron{
+    flex:none;
+    font-family:'JetBrains Mono', monospace;
+    color:var(--gold);
+    font-size:13px;
+    margin-top:4px;
+    transition:transform .2s ease;
+  }
+  .article-card.expanded .article-chevron{ transform:rotate(180deg); }
   .article-title{
     font-family:'Cinzel', serif;
-    font-size:20px;
-    margin-bottom:6px;
+    font-size:19px;
+    margin-bottom:5px;
   }
   .article-date{
     font-family:'JetBrains Mono', monospace;
@@ -805,8 +824,22 @@
     color:var(--muted);
     text-transform:uppercase;
     letter-spacing:.06em;
-    margin-bottom:18px;
+    margin-bottom:8px;
   }
+  .article-excerpt{
+    font-size:13.5px;
+    line-height:1.5;
+    color:var(--muted);
+    margin:0;
+  }
+  .article-card.expanded .article-excerpt{ display:none; }
+  .article-body{
+    display:none;
+    margin-top:22px;
+    padding-top:22px;
+    border-top:1px solid var(--line);
+  }
+  .article-card.expanded .article-body{ display:block; }
   .article-body p{
     font-size:15.5px;
     line-height:1.7;
@@ -2079,19 +2112,37 @@ Et toi, qu'as-tu ressenti pendant cette éclipse ? 🌑✨`
     }).join('');
   }
 
+  function excerptOf(text){
+    const firstBlock = text.split(/\n\s*\n/)[0].trim();
+    const plain = firstBlock.replace(/^##\s*/, '').replace(/\*\*(.+?)\*\*/g, '$1').replace(/^\*\s*/, '');
+    return plain.length > 130 ? plain.slice(0, 130).trim() + '…' : plain;
+  }
+
   function renderArticles(){
     const el = document.getElementById('articlesList');
     if(ARTICLES.length === 0){
       el.innerHTML = '<p class="week-hint">Aucun article pour l\'instant — revenez bientôt.</p>';
       return;
     }
-    el.innerHTML = ARTICLES.map(a => `
-      <div class="article-card">
-        <div class="article-title">${a.title}</div>
-        <div class="article-date">${a.date}</div>
+    el.innerHTML = ARTICLES.map((a, i) => `
+      <div class="article-card${i === 0 ? ' expanded' : ''}">
+        <div class="article-header">
+          <div class="article-header-text">
+            <div class="article-title">${a.title}</div>
+            <div class="article-date">${a.date}</div>
+            <p class="article-excerpt">${excerptOf(a.text)}</p>
+          </div>
+          <span class="article-chevron">▾</span>
+        </div>
         <div class="article-body">${formatArticleBody(a.text)}</div>
       </div>
     `).join('');
+
+    document.querySelectorAll('#articlesList .article-card').forEach(card => {
+      card.querySelector('.article-header').addEventListener('click', () => {
+        card.classList.toggle('expanded');
+      });
+    });
   }
 
   renderArticles();
